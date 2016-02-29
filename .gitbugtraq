@@ -1,0 +1,9 @@
+[bugtraq "bug"]
+  url = http://192.168.0.239:81/zentao/bug-view-%BUGID%.html
+  logregex = "[Bb]ugs?:?(\\s*(,|and)?\\s*#?\\d+)+\n(\\d+)"
+[bugtraq "story"]
+  url = http://192.168.0.239:81/zentao/story-view-%BUGID%.html
+  logregex = "[Ss]torys?:?(\\s*(,|and)?\\s*#?\\d+)+\n(\\d+)"
+[bugtraq "task"]
+  url = http://192.168.0.239:81/zentao/task-view-%BUGID%.html
+  logregex = "[Tt]asks?:?(\\s*(,|and)?\\s*#?\\d+)+\n(\\d+)"
