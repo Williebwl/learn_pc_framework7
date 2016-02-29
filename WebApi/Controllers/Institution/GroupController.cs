@@ -39,7 +39,7 @@ namespace WebApi.Controllers.Institution
         //public virtual IList<GroupVM> GetNav() => GetInfoForNav();
 
 
-        //public virtual AppGroupVM GetAppGroups(long id) => GetAppGroupInfos(id);
+        public virtual AppGroupVM GetAppGroups(long id) => GetAppGroupInfos(id);
 
     }
 }

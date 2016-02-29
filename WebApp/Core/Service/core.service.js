@@ -74,7 +74,7 @@
                 return this.put('Delete' + (id ? '/' + id : ''), config)
             },
             this.fnGetformValidInfo = function (mark) {
-                return this.$$http.get('Core/Form/!GetFormValidInfo', { params: { mark: mark } });
+                return this.$$http.get('Core/Form/GetFormValidInfo', { params: { mark: mark } });
             },
             this.fnSequence = function (data) {
                 return this.put('Sequence', data);
