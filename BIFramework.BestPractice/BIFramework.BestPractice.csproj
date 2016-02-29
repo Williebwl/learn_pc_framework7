@@ -39,6 +39,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BIFramework">
+      <HintPath>..\WebApi\DLL\BIFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="BIFramework.Data">
+      <HintPath>..\WebApi\DLL\BIFramework.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="BIFramework.Data.MySql">
+      <HintPath>..\WebApi\DLL\BIFramework.Data.MySql.dll</HintPath>
+    </Reference>
+    <Reference Include="BIFramework.Data.Sql2005">
+      <HintPath>..\WebApi\DLL\BIFramework.Data.Sql2005.dll</HintPath>
+    </Reference>
+    <Reference Include="BIFramework.Domain">
+      <HintPath>..\WebApi\DLL\BIFramework.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="BIFramework.Domain.EntityFramework">
+      <HintPath>..\WebApi\DLL\BIFramework.Domain.EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="BIFramework.MQ">
+      <HintPath>..\WebApi\DLL\BIFramework.MQ.dll</HintPath>
+    </Reference>
+    <Reference Include="BIFramework.Utils">
+      <HintPath>..\WebApi\DLL\BIFramework.Utils.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
       <Private>True</Private>
@@ -77,41 +101,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\BIFramework.Core\BIFramework.csproj">
-      <Project>{cf988d59-84e9-4b80-a5d4-2bf11338481d}</Project>
-      <Name>BIFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BIFramework.Data.MySql\BIFramework.Data.MySql.csproj">
-      <Project>{7b17dc8a-3f9c-4cb6-8812-851060f46c16}</Project>
-      <Name>BIFramework.Data.MySql</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BIFramework.Data.Sql2005\BIFramework.Data.Sql2005.csproj">
-      <Project>{988c2432-150e-4d16-b484-2f51f1971dab}</Project>
-      <Name>BIFramework.Data.Sql2005</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BIFramework.Data\BIFramework.Data.csproj">
-      <Project>{c69c4db1-3fac-4e06-b68f-d1465cc71813}</Project>
-      <Name>BIFramework.Data</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BIFramework.Domain\BIFramework.Domain.csproj">
-      <Project>{8520b36a-073a-4c40-b968-5309fe6866f7}</Project>
-      <Name>BIFramework.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BIFramework.Domain.EntityFramework\BIFramework.Domain.EntityFramework.csproj">
-      <Project>{35cbf0fc-2a76-4974-8e5d-7c4b4f3a7cdd}</Project>
-      <Name>BIFramework.Domain.EntityFramework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BIFramework.MQ\BIFramework.MQ.csproj">
-      <Project>{beab2d46-66d5-4fd7-980f-91bbef385f47}</Project>
-      <Name>BIFramework.MQ</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BIFramework.BestPractice.Impl\BIFramework.BestPractice.Impl.csproj">
       <Project>{d4c0eaf7-3127-49fa-9117-aee78491097d}</Project>
       <Name>BIFramework.BestPractice.Impl</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BIFramework.Utils\BIFramework.Utils.csproj">
-      <Project>{f98dd6ed-b240-4561-875a-ada2a91efdfa}</Project>
-      <Name>BIFramework.Utils</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

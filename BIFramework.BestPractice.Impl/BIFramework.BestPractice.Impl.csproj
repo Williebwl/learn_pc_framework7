@@ -39,6 +39,21 @@
     <DocumentationFile>..\OutPut\BIFramework.BestPractice.Impl.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BIFramework">
+      <HintPath>..\WebApi\DLL\BIFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="BIFramework.Data">
+      <HintPath>..\WebApi\DLL\BIFramework.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="BIFramework.Domain">
+      <HintPath>..\WebApi\DLL\BIFramework.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="BIFramework.MQ">
+      <HintPath>..\WebApi\DLL\BIFramework.MQ.dll</HintPath>
+    </Reference>
+    <Reference Include="BIFramework.Utils">
+      <HintPath>..\WebApi\DLL\BIFramework.Utils.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -61,32 +76,6 @@
     <Compile Include="2 DomainService\Repository\UserRepository.cs" />
     <Compile Include="2 DomainService\Service\DDDService.cs" />
     <Compile Include="1 DataService\Service\ISampleService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BIFramework.Core\BIFramework.csproj">
-      <Project>{cf988d59-84e9-4b80-a5d4-2bf11338481d}</Project>
-      <Name>BIFramework</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\BIFramework.Data\BIFramework.Data.csproj">
-      <Project>{c69c4db1-3fac-4e06-b68f-d1465cc71813}</Project>
-      <Name>BIFramework.Data</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\BIFramework.Domain\BIFramework.Domain.csproj">
-      <Project>{8520b36a-073a-4c40-b968-5309fe6866f7}</Project>
-      <Name>BIFramework.Domain</Name>
-      <Private>False</Private>
-    </ProjectReference>
-    <ProjectReference Include="..\BIFramework.MQ\BIFramework.MQ.csproj">
-      <Project>{beab2d46-66d5-4fd7-980f-91bbef385f47}</Project>
-      <Name>BIFramework.MQ</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\BIFramework.Utils\BIFramework.Utils.csproj">
-      <Project>{f98dd6ed-b240-4561-875a-ada2a91efdfa}</Project>
-      <Name>BIFramework.Utils</Name>
-      <Private>False</Private>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
