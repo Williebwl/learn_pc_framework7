@@ -1,15 +1,12 @@
 ﻿using System.Collections.Generic;
-using System.Web.Http;
 using System.Linq;
 
 namespace WebApi.Controllers.Institution
 {
     using BIStudio.Framework.Data;
-    using BIStudio.Framework.Institution;
     using BIStudio.Framework.UI;
-    using Models.Institution;
-    using Models.Tenant;
 
+    using WebApi.Controllers.Tenant;
     /// <summary>
     /// 用户组
     /// </summary>

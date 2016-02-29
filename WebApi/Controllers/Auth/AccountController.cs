@@ -1,10 +1,14 @@
-﻿namespace WebApi.Controllers.Auth
-{
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
     using BIStudio.Framework;
     using BIStudio.Framework.Data;
     using BIStudio.Framework.Domain;
     using BIStudio.Framework.UI;
-    using Models.Auth;
+using BIStudio.Framework.Utils;
+
+namespace WebApi.Controllers.Auth
+{
 
     public partial class AccountController : ApplicationService<AccountVM, AccountPageQuery>
     {

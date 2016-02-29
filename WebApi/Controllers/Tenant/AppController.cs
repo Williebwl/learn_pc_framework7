@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
+using BIStudio.Framework.Tenant;
+using BIStudio.Framework.UI;
 
 namespace WebApi.Controllers.Tenant
 {
-    using BIStudio.Framework.Tenant;
-    using BIStudio.Framework.UI;
-    using Models.Auth;
-    using Models.Tenant;    /// <summary>
-                            /// 应用
-                            /// </summary>
+    /// <summary>
+    /// 应用
+    /// </summary>
     [RoutePrefix("api/App")]
     public partial class AppController : ApplicationService
     {

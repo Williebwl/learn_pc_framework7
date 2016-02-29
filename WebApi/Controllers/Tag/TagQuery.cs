@@ -2,13 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.Data;
+using BIStudio.Framework.Domain;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Tag
+namespace WebApi.Controllers.Tag
 {
-    using BIStudio.Framework.Data;
-    using BIStudio.Framework.Domain;
-    using BIStudio.Framework.UI;
-
     public class TagQuery : PagedQuery
     {
         /// <summary>

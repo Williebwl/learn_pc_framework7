@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Tag
+namespace WebApi.Controllers.Tag
 {
-    using BIStudio.Framework.UI;
-
     public class TagVM : ViewModel
     {
         public long? ID { get; set; }

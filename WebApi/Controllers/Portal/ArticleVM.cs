@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace WebApi.Models.Portal
+namespace WebApi.Controllers.Portal
 {
     /// <summary>
     /// 文档视图模型

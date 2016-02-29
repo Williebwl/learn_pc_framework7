@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.ComponentModel.DataAnnotations;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Auth
+namespace WebApi.Controllers.Auth
 {
-    using BIStudio.Framework.UI;
-
     /// <summary>
     /// 平台账号视图模型
     /// </summary>

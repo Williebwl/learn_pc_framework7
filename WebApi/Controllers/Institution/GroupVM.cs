@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Institution
+namespace WebApi.Controllers.Institution
 {
-    using BIStudio.Framework.UI;
-
     /// <summary>
     /// 用户组
     /// </summary>

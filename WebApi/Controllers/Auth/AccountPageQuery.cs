@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.Data;
 
-namespace WebApi.Models.Auth
+namespace WebApi.Controllers.Auth
 {
-    using BIStudio.Framework.Data;
-
     public class AccountPageQuery : PagedQuery
     {
     }

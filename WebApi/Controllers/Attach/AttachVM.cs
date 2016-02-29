@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Attach
+namespace WebApi.Controllers.Attach
 {
-    using BIStudio.Framework.UI;
 
     public class AttachVM : ViewModel
     {

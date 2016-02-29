@@ -1,16 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BIStudio.Framework;
+using BIStudio.Framework.Data;
+using BIStudio.Framework.Domain;
+using BIStudio.Framework.Institution;
+using BIStudio.Framework.Tenant;
+using WebApi.Controllers.Tenant;
 
 namespace WebApi.Controllers.Institution
 {
-    using BIStudio.Framework;
-    using BIStudio.Framework.Data;
-    using BIStudio.Framework.Domain;
-    using BIStudio.Framework.Institution;
-    using BIStudio.Framework.Tenant;
-    using Models.Institution;
-    using Models.Tenant;
-
     public partial class GroupController
     {
         protected IRepository<SYSGroup> _group;

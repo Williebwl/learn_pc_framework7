@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.Data;
+using BIStudio.Framework.Domain;
+using BIStudio.Framework.Tag;
+using BIStudio.Framework.UI;
 
 namespace WebApi.Controllers.Tag
 {
-    using BIStudio.Framework.Data;
-    using BIStudio.Framework.Domain;
-    using BIStudio.Framework.Tag;
-    using BIStudio.Framework.UI;
-    using Models.Tag;
     public partial class TagController : ApplicationService<TagVM, TagQuery, SYSTag>
     {
         protected IRepository<SYSTag> _tagRepository;

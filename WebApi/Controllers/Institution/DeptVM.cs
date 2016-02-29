@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.Domain;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Institution
+namespace WebApi.Controllers.Institution
 {
-    using BIStudio.Framework.Domain;
-    using BIStudio.Framework.UI;
 
     public class DeptVM : ViewModel, ITreeVM
     {

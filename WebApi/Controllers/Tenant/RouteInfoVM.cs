@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Tenant
+namespace WebApi.Controllers.Tenant
 {
-    using BIStudio.Framework.UI;
-
     /// <summary>
     /// 路由
     /// </summary>

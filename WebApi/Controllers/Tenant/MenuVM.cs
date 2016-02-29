@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.Domain;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Tenant
+namespace WebApi.Controllers.Tenant
 {
-    using BIStudio.Framework.Domain;
-    using BIStudio.Framework.UI;
-
     [Mark]
     public class MenuVM : ViewModel, ITreeVM
     {

@@ -8,14 +8,13 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using BIStudio.Framework;
+using BIStudio.Framework.File;
+using BIStudio.Framework.UI;
+using Ionic.Zip;
 
 namespace WebApi.Controllers.Attach
 {
-    using BIStudio.Framework;
-    using BIStudio.Framework.File;
-    using BIStudio.Framework.UI;
-    using Ionic.Zip;
-    using Models.Attach;
     public class AttachController : ApplicationService
     {
         IBiAttach _bo = CFAspect.Resolve<IBiAttach>();

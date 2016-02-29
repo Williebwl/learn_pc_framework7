@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Text;
 using System.Web.Http;
+using BIStudio.Framework.Auth;
+using BIStudio.Framework.UI;
+using Newtonsoft.Json;
 
 namespace WebApi.Controllers.Auth
 {
-    using BIStudio.Framework.Auth;
-    using BIStudio.Framework.UI;
-    using Models.Auth;
-    using Newtonsoft.Json;
 
     public class LoginController : ApplicationService
     {

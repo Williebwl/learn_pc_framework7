@@ -3,15 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web.Http;
+using BIStudio.Framework;
+using BIStudio.Framework.Data;
+using BIStudio.Framework.Tenant;
+using BIStudio.Framework.UI;
 
 namespace WebApi.Controllers.Tenant
 {
-    using BIStudio.Framework;
-    using BIStudio.Framework.Data;
-    using BIStudio.Framework.Tenant;
-    using BIStudio.Framework.UI;
-    using Models.Tenant;
-
     /// <summary>
     /// 菜单
     /// </summary>

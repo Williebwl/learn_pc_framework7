@@ -1,15 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using BIStudio.Framework;
+using BIStudio.Framework.Data;
+using BIStudio.Framework.Domain;
+using BIStudio.Framework.UI.Models;
+using BIStudio.Framework.Tag;
 
 namespace WebApi.Controllers.Tag
 {
-    using BIStudio.Framework;
-    using BIStudio.Framework.Data;
-    using BIStudio.Framework.Domain;
-    using BIStudio.Framework.UI.Models;
-    using BIStudio.Framework.Tag;
-    using Models.Tag;
     public partial class TagController
     {
         [HttpGet]

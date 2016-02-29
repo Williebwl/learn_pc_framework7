@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Auth
+namespace WebApi.Controllers.Auth
 {
-    using BIStudio.Framework.UI;
-
     public class LoginVM : ViewModel
     {
         public string LoginName { get; set; }

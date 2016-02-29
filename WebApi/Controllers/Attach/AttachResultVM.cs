@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Attach
+namespace WebApi.Controllers.Attach
 {
-    using BIStudio.Framework.UI;
-
     /// <summary>
     /// 附件上传结果
     /// </summary>

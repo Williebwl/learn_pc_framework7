@@ -1,7 +1,7 @@
-﻿namespace WebApi.Models.Tag
-{
-    using BIStudio.Framework.UI;
+﻿using BIStudio.Framework.UI;
 
+namespace WebApi.Controllers.Tag
+{
     public class TagGroupVM : ViewModel
     {
         /// <summary>

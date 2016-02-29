@@ -2,17 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-
-
-namespace WebApi.Controllers.Auth
-{
     using BIStudio.Framework;
     using BIStudio.Framework.Auth;
     using BIStudio.Framework.Data;
     using BIStudio.Framework.Domain;
     using BIStudio.Framework.Utils;
-    using Models.Auth;
 
+
+namespace WebApi.Controllers.Auth
+{
     public partial class AccountController
     {
         protected IRepository<SYSAccount> accountBO;
@@ -35,7 +33,7 @@ namespace WebApi.Controllers.Auth
                         };
             return query.ToPagedList(info);
         }
-
+        
         protected virtual EditableKeyValuePair<string, int>[] GetStatus()
         {
             return ALEnumDescription.GetFieldTexts(typeof(AccountStatusEnum)).Select(d => new EditableKeyValuePair<string, int>(d.EnumDisplayText, d.EnumValue)).ToArray();

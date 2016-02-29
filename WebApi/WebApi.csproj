@@ -225,48 +225,46 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Attach\AttachResultVM.cs" />
+    <Compile Include="Controllers\Attach\AttachVM.cs" />
+    <Compile Include="Controllers\Attach\FileVM.cs" />
     <Compile Include="Controllers\Auth\AccountController`.cs" />
+    <Compile Include="Controllers\Auth\AccountPageQuery.cs" />
+    <Compile Include="Controllers\Auth\AccountVM.cs" />
+    <Compile Include="Controllers\Auth\LoginVM.cs" />
     <Compile Include="Controllers\Core\MetadataController.cs" />
+    <Compile Include="Controllers\Institution\DeptVM.cs" />
+    <Compile Include="Controllers\Institution\GroupVM.cs" />
     <Compile Include="Controllers\Portal\ArticleController.cs" />
-    <Compile Include="Models\Auth\AccountPageQuery.cs" />
-    <Compile Include="Models\Portal\ArticleVM.cs" />
-    <Compile Include="Models\Auth\AccountVM.cs" />
-    <Compile Include="Models\Tenant\AppAccessVM.cs" />
+    <Compile Include="Controllers\Portal\ArticleVM.cs" />
+    <Compile Include="Controllers\Tag\TagClassVM.cs" />
+    <Compile Include="Controllers\Tag\TagGroupVM.cs" />
+    <Compile Include="Controllers\Tag\TagQuery.cs" />
+    <Compile Include="Controllers\Tag\TagVMs.cs" />
+    <Compile Include="Controllers\Tenant\AppAccessVM.cs" />
+    <Compile Include="Controllers\Tenant\AppEditVM.cs" />
+    <Compile Include="Controllers\Tenant\AppGroupVM.cs" />
+    <Compile Include="Controllers\Tenant\AppVM.cs" />
+    <Compile Include="Controllers\Tenant\MenuVM.cs" />
+    <Compile Include="Controllers\Tenant\RouteInfoVM.cs" />
+    <Compile Include="Controllers\Tenant\RouteVM.cs" />
     <Compile Include="Controllers\Tenant\AppController.cs" />
     <Compile Include="Controllers\Tenant\AppController`.cs" />
-    <Compile Include="Models\Tenant\AppEditVM.cs" />
-    <Compile Include="Models\Tenant\AppVM.cs" />
     <Compile Include="Controllers\Attach\AttachController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\Attach\AttachResultVM.cs" />
-    <Compile Include="Models\Attach\AttachVM.cs" />
-    <Compile Include="Models\Attach\FileVM.cs" />
     <Compile Include="Controllers\Core\FormController.cs" />
     <Compile Include="Controllers\Institution\DeptController.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Models\Institution\DeptVM.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\Tenant\AppGroupVM.cs" />
     <Compile Include="Controllers\Institution\GroupController.cs" />
     <Compile Include="Controllers\Institution\GroupController`.cs" />
-    <Compile Include="Models\Institution\GroupVM.cs" />
     <Compile Include="Controllers\Auth\LoginController.cs" />
-    <Compile Include="Models\Auth\LoginVM.cs" />
-    <Compile Include="Models\Tenant\RouteInfoVM.cs" />
-    <Compile Include="Models\Tenant\RouteVM.cs" />
     <Compile Include="Controllers\Tag\TagClassController.cs" />
     <Compile Include="Controllers\Tag\TagClassController`.cs" />
     <Compile Include="Controllers\Tag\TagController`.cs" />
-    <Compile Include="Models\Tag\TagQuery.cs" />
-    <Compile Include="Models\Tag\TagClassVM.cs" />
     <Compile Include="Controllers\Tag\TagController.cs" />
     <Compile Include="Controllers\Tag\TagGroupController.cs" />
-    <Compile Include="Models\Tag\TagGroupVM.cs" />
-    <Compile Include="Models\Tenant\MenuVM.cs" />
-    <Compile Include="Models\Tag\TagVMs.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -293,7 +291,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Controllers\Permission\" />
-    <Folder Include="Models\Permission\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Doc\创建SQLServer同义词.sql" />

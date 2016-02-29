@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Tenant
+namespace WebApi.Controllers.Tenant
 {
-    using BIStudio.Framework.UI;
-
     /// <summary>
     /// 应用
     /// </summary>

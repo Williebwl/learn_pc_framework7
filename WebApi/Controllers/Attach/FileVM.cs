@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.File;
+using BIStudio.Framework.UI;
 
-namespace WebApi.Models.Attach
+namespace WebApi.Controllers.Attach
 {
-    using BIStudio.Framework.File;
-    using BIStudio.Framework.UI;
 
     /// <summary>
     /// 文件信息

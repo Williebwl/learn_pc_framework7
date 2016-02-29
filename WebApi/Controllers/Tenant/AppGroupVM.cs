@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using BIStudio.Framework.UI;
+using WebApi.Controllers.Institution;
 
-namespace WebApi.Models.Tenant
+namespace WebApi.Controllers.Tenant
 {
-    using BIStudio.Framework.UI;
-    using Institution;
     public class AppGroupVM : ViewModel
     {
         public long? AppID { get; set; }

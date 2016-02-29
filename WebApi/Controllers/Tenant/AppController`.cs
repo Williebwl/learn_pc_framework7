@@ -1,15 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using BIStudio.Framework;
+using BIStudio.Framework.Domain;
+using BIStudio.Framework.Institution;
+using BIStudio.Framework.Tenant;
+using BIStudio.Framework.UI;
 
 namespace WebApi.Controllers.Tenant
 {
-    using BIStudio.Framework;
-    using BIStudio.Framework.Domain;
-    using BIStudio.Framework.Institution;
-    using BIStudio.Framework.Tenant;
-    using BIStudio.Framework.UI;
-    using Models.Auth;
-    using Models.Tenant;
     public partial class AppController : ApplicationService
     {
         protected IRepository<SYSApp> _appBO;
