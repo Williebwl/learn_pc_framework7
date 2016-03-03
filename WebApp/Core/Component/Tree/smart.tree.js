@@ -5,28 +5,25 @@ define('smart.tree', ['page-Route', 'Assets/Js/Plugins/tree.js', 'ext'],
 
         //声明并创建指令逻辑体
         var smartTreeDirectiveLink = function (scope, $element, attr, ctrl) {
+            var dataAttr = (dataAttr = (attr.conf || attr.biSmartTree)) ? dataAttr + '.data' : attr.data;
 
-            function fnCreate() {
-                ctrl.fnCreate();
+            ctrl.conf = scope.$eval(attr.conf || attr.biSmartTree) || {},
+            ctrl.$element = $element,
 
-                $element.empty();
-
-                if (!ctrl.conf || !ctrl.conf.data || !ctrl.conf.data.length) return;
-
-                ctrl.conf.$tree = $element.treeview(ctrl.conf);
-            };
-
-            scope.$watchCollection('data', fnCreate);
+            scope.$watchCollection(dataAttr, ctrl.fnCreate)
         };
 
         //声明并创建指令控制器
         var smartTreeController = function ($scope) {
-            var self = this; self.conf = $scope.conf || {};
+            var self = this; 
 
-            self.fnCreate = function () {
-                self.data = $scope.data;
+            this.fnCreate = function (data) {
+                self.conf.Tree = Array.isArray(data) && !self.conf.isTree ? data.getTree() : data,
+                self.$element.empty()
 
-                self.conf.data = self.tree = Array.isArray(self.data) && !self.conf.isTree ? self.data.getTree() : self.data;
+                if (!self.conf.Tree || !self.conf.Tree.length) return;
+
+                self.conf.$tree = self.$element.treeview(self.conf)
             }
         };
 
@@ -36,10 +33,6 @@ define('smart.tree', ['page-Route', 'Assets/Js/Plugins/tree.js', 'ext'],
                 restrict: 'EA',
                 priority: 100,
                 controller: smartTreeController,
-                scope: {
-                    conf: '=',
-                    data: '='
-                },
                 link: smartTreeDirectiveLink
             };
         };

@@ -575,14 +575,14 @@
             return {
                 restrict: 'AC',
                 controller: function ($scope) {
-                    var ids = ($scope.infos || $scope).CheckedInfos = [], self = this, $cbxs = [], $cbxAll = self.$cbxAll = [];
+                    var ids = [], self = this, $cbxs = [], $cbxAll = self.$cbxAll = [];
 
                     function fnSetAll(ck) {
                         $cbxAll.forEach(function ($cbx) { $cbx.prop('checked', ck); });
                     }
 
                     this.bind = function ($val) {
-                        var ck = $val.ck || $val.key.ck || $val.key.checked || 0;
+                        var ck = $val.ck || $val.key && ($val.key.ck || $val.key.checked) || 0;
 
                         if ($val.$index === 0) { if (ck) fnSetAll(ck); ids.length = $cbxs.length = 0; }
                         else if (!ck) fnSetAll(ck);
@@ -597,21 +597,22 @@
                     this.fnCheckedAll = function () {
                         var ck = $(this).prop('checked');
 
-                        fnSetAll(ck), ids.length = 0;
+                        fnSetAll(ck), ids.length = 0,
 
                         $cbxs.forEach(function ($cbx) {
-                            $cbx.prop('checked', ck);
-                            ck && ids.push($cbx.$val);
+                            $cbx.prop('checked', ck),
+                            ck && ids.push($cbx.$val)
                         })
-
                     }
 
                     this.fnChecked = function (e) {
-                        var ck = $(this).prop('checked'), $val = e.data.$val;
-                        ck ? ids.push($val) : ids.remove($val);
-                        fnSetAll($cbxs.length === ids.length);
+                        $(this).prop('checked') ? ids.push(e.data.$val) : ids.remove(e.data.$val),
+                        fnSetAll($cbxs.length === ids.length)
                     }
+
+                    this.init = function (conf) { conf.ids = ids, conf.$cbxs = $cbxs, conf.$cbxAll = $cbxAll }
                 },
+                scope: { conf: '=' },
                 compile: function (tpl, tplAttr) {
                     var expression = $('[ng-repeat]:first', tpl).attr('ng-repeat'),
                     match = expression.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+as\s+([\s\S]+?))?(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
@@ -619,7 +620,8 @@
                     var key = match[3] || match[1];
 
                     return function (scope, $element, attr, ctrl) {
-                        ctrl.key = key;
+                        ctrl.init(scope.conf || scope.$parent.$eval(attr.biCheckbox) || (scope.$parent.CheckedInfo = {})),
+                        ctrl.key = key
                     }
                 }
             };
@@ -653,7 +655,7 @@
 
                             if (ctrl && ctrl.fnCheckedAll && ctrl.fnChecked) {
                                 isall ? $element.on('click', ctrl.$cbxAll.push($element) && ctrl.fnCheckedAll) :
-                                $element.on('click', { $val: ctrl.bind.call($element, $element.$val = { $index: scope.$index, key: scope.$eval(attr.ngValue || ctrl.key) }) }, ctrl.fnChecked);
+                                $element.on('click', { $val: ctrl.bind.call($element, $element.$val = { $index: scope.$index, key: scope.$eval(attr.ngValue), info: scope.$eval(ctrl.key) }) }, ctrl.fnChecked);
                             }
                         }
                     } else element.addClass('form-control');

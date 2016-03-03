@@ -104,42 +104,55 @@
             return page.ext(ListPage)
 
             function fnSearch($view, $service, $scope) {
-                var params = $view.Params = { i: 0 },
+                var params = $view.Params = {},
+                    i = 0,
+                    self = this,
                     pageConfig = $view.PageConfig = {
                         pageSelect: 0,
-                        onChange: function (i) {
+                        onChange: function (ii) {
                             /// <summary>调用查询</summary>
                             /// <param name="i" type="Number">查询标示</param>
 
                             //调用Service.fnGetAll方法查询数据
-                            $service.fnGetPaged($view.GetSearchParams(pageConfig, params))
+                            $service.fnGetPaged(self.GetPagedParams.call(params, pageConfig, refreshSearchParams))
                                     .success(function (d) {
-                                        if (angular.isNumber(i) && params.i !== i) return;
+                                        if (angular.isNumber(ii) && i !== ii) return;
 
                                         $view.PageInfo = d;
                                     });
                         }
-                    }
+                    },
+                    refreshSearchParams, lastKey, lastSetTimeout;
 
-                $view.GetSearchParams = function (pageConfig, params) {
-                    var val = (val = params.inputVal) && val != '输入关键字' ? val : '';
+                //获取分页参数
+                this.GetPagedParams = function (pageConfig) {
+                    page.extend(params, { PageIndex: pageConfig.currentPage, PageSize: pageConfig.itemsPerPage })
 
-                    return { Key: val, PageIndex: pageConfig.currentPage, PageSize: pageConfig.itemsPerPage };
+                    return page.isFunction(self.GetSearchParams) && self.GetSearchParams.call(params, pageConfig, refreshSearchParams), this;
                 }
 
+                //获取查询参数
+                this.GetSearchParams = page.noop;
+
+                //查询
                 $view.fnSearch = function () {
                     /// <summary>搜索框自动调用查询</summary>
 
-                    if (params.lastVal === params.inputVal) return;
+                    if (lastKey === params.Key) return;
 
-                    if (params.lastSetTimeout) clearTimeout(params.lastSetTimeout);
+                    if (lastSetTimeout) clearTimeout(lastSetTimeout);
 
-                    params.lastSetTimeout = setTimeout(function (o) { pageConfig.onChange(++o.i) }, 600, params);
+                    lastSetTimeout = setTimeout(function (o) { pageConfig.onChange(++i) }, 600, params);
 
-                    params.lastVal = params.inputVal;
+                    lastKey = params.Key;
                 }
 
-                $view.fnGetAll = this.fnRefreshSearch = pageConfig.onChange.bind(pageConfig)
+                $view.fnGet = pageConfig.onChange.bind(pageConfig)
+
+                this.fnRefreshSearch = function (s, e) {
+                    refreshSearchParams = { origin: (s.origin = e.origin, s), data: e.data },
+                    $view.fnGet()
+                }
 
                 $scope.$on('$$RefreshSearch', this.fnRefreshSearch);
             }
@@ -296,7 +309,7 @@
             },
             $view.fnSelected = $view.fnSearchChange = function (active) {
                 this.LastActive = this.Active, this.Active = active,
-                self.$rootScope.$broadcast('$$RefreshSearch', { target: self.Type, Search: this })
+                self.$rootScope.$broadcast('$$RefreshSearch', { origin: self.Type, data: this })
             }.bind($view.Search)
         }
 
@@ -313,14 +326,39 @@
 
             this.super($view, $service, $scope),
 
-            this.Type = 'core.toolbar',
+            this.Type = 'core.toolbar'
+        }
 
-            $scope.fnAdd = function () {
-                $scope.$emit('$$ToolBarAdd')
-            },
-            $scope.fnDelete = function () {
-                $scope.$emit('$$ToolBarDelete')
-            }
+        return page.ext(ViewPage)
+    })
+
+    /******************************************
+    ********     数据导入核心组件      **********
+    *******************************************/
+    define('core.import', ['core.page'],
+    function (page) {
+        function ViewPage($view, $service, $scope) {
+            if (!this || this.constructor === Window) return new ViewPage($view, $service, GetScope($view, $scope));
+
+            this.super($view, $service, $scope),
+
+            this.Type = 'core.import'
+        }
+
+        return page.ext(ViewPage)
+    })
+
+    /******************************************
+    ********     数据导出核心组件      ********
+    *******************************************/
+    define('core.export', ['core.page'],
+    function (page) {
+        function ViewPage($view, $service, $scope) {
+            if (!this || this.constructor === Window) return new ViewPage($view, $service, GetScope($view, $scope));
+
+            this.super($view, $service, $scope),
+
+            this.Type = 'core.export'
         }
 
         return page.ext(ViewPage)
@@ -356,17 +394,17 @@
 
                 //添加
                 $view.fnAdd = function (data) {
-                    $scope.$emit('$$Add', { target: self.Type, data: data })
+                    $scope.$emit('$$Add', { origin: self.Type, data: data })
                 },
 
                 //修改
                 $view.fnDelete = function (data) {
-                    $scope.$emit('$$Delete', { target: self.Type, data: data })
+                    $scope.$emit('$$Delete', { origin: self.Type, data: data })
                 },
 
                 //活动对象变化
                 $view.fnActiveChange = function (data) {
-                    $scope.$emit('$$ActiveChange', { target: self.Type, data: data })
+                    $scope.$emit('$$ActiveChange', { origin: self.Type, data: data })
                 },
 
                 //保存附件

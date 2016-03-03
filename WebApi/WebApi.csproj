@@ -233,6 +233,7 @@
     <Compile Include="Controllers\Auth\AccountVM.cs" />
     <Compile Include="Controllers\Auth\LoginVM.cs" />
     <Compile Include="Controllers\Core\MetadataController.cs" />
+    <Compile Include="Controllers\Institution\DeptController`.cs" />
     <Compile Include="Controllers\Institution\DeptVM.cs" />
     <Compile Include="Controllers\Institution\GroupVM.cs" />
     <Compile Include="Controllers\Portal\ArticleController.cs" />

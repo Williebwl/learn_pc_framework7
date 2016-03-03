@@ -6,18 +6,15 @@
     <members>
         <member name="T:BIStudio.Framework.Institution.SYSDept">
             <summary>
-             在这里添加类说明。
+            部门
             </summary>
-            <remarks>
-            上海拜特信息技术有限公司[2009-8-25]
-            </remarks>
         </member>
         <member name="P:BIStudio.Framework.Institution.SYSDept.SystemID">
             <summary>
-            单位id
+             服务提供商ID
             </summary>
         </member>
-        <member name="P:BIStudio.Framework.Institution.SYSDept.Name">
+        <member name="P:BIStudio.Framework.Institution.SYSDept.DeptName">
             <summary>
             部门名称
             </summary>
@@ -25,6 +22,11 @@
         <member name="P:BIStudio.Framework.Institution.SYSDept.ShortName">
             <summary>
             部门名称简称
+            </summary>
+        </member>
+        <member name="P:BIStudio.Framework.Institution.SYSDept.DeptCode">
+            <summary>
+            代码
             </summary>
         </member>
         <member name="P:BIStudio.Framework.Institution.SYSDept.ParentID">
@@ -57,19 +59,19 @@
             部门负责人
             </summary>
         </member>
-        <member name="P:BIStudio.Framework.Institution.SYSDept.Code">
+        <member name="P:BIStudio.Framework.Institution.SYSDept.IsEnabled">
             <summary>
-            代码
-            </summary>
-        </member>
-        <member name="P:BIStudio.Framework.Institution.SYSDept.IsStop">
-            <summary>
-            是否停用 1启用 0 停用
+            是否启用（1-启用，0-停用）
             </summary>
         </member>
         <member name="P:BIStudio.Framework.Institution.SYSDept.IsUnit">
             <summary>
             是否单位 0部门 1单位
+            </summary>
+        </member>
+        <member name="P:BIStudio.Framework.Institution.SYSDept.Remark">
+            <summary>
+            备注
             </summary>
         </member>
         <member name="T:BIStudio.Framework.Institution.SYSGroup">

@@ -12,27 +12,27 @@ define('paging', ['page', 'ext'],
         'use strict';
 
         /// <field type="json">分页默认配置信息</field>
-        var defConf = { pageSelect: 1, pageTurning: 1, currentPage: 1, totalItems: 0, itemsPerPage: 15, inputValue: 1, umpPageNum: 1, sFirst: "首页", sLast: "尾页", sNext: "下一页", sPrevious: "上一页" };
+        var defConf = { pageSelect: 1, pageTurning: 1, CurrentPage: 1, TotalItems: 0, ItemsPerPage: 15, inputValue: 1, umpPageNum: 1, sFirst: "首页", sLast: "尾页", sNext: "下一页", sPrevious: "上一页" };
 
         var biPaginationTemplate = '<div class="table-paging clearfix">\
                                         <div class="page-select pull-left" ng-if="conf.pageSelect">\
                                             <span>\
                                                 每页显示\
-                                                <select class="number-select" ng-model="conf.itemsPerPage" \
+                                                <select class="number-select" ng-model="conf.ItemsPerPage" \
                                                         ng-options="option for option in conf.perPageOptions " ng-change="PerPageChange($event)"></select> 条\
                                             </span>\
-                                            <span>共<span class="total" ng-bind="conf.totalItems"></span>条</span>\
+                                            <span>共<span class="total" ng-bind="conf.TotalItems"></span>条</span>\
                                             <span>当前第<input type="text" class="number-input" ng-model="conf.jumpPageNum" ng-change="jumpToPage($event)"> 页</span>\
                                         </div>\
                                         <ul class="pagination pagination-sm pull-right" ng-if="conf.pageTurning">\
-                                            <li ng-class="{disabled: conf.currentPage <= 1}" ng-click="changeCurrentPage(1)"><a href="javascript:;" ng-bind="conf.sFirst">首页</a></li>\
-                                            <li ng-class="{disabled: conf.currentPage <= 1}" ng-click="prevPage()"><a href="javascript:;" ng-bind="conf.sPrevious">上一页</a></li>\
-                                            <li ng-repeat="item in pageList track by $index" ng-class="{active: item == conf.currentPage, disabled:conf.currentPage == conf.numberOfPages&&conf.currentPage==1,separate: item == \'...\'}"\
+                                            <li ng-class="{disabled: conf.CurrentPage <= 1}" ng-click="changeCurrentPage(1)"><a href="javascript:;" ng-bind="conf.sFirst">首页</a></li>\
+                                            <li ng-class="{disabled: conf.CurrentPage <= 1}" ng-click="prevPage()"><a href="javascript:;" ng-bind="conf.sPrevious">上一页</a></li>\
+                                            <li ng-repeat="item in pageList track by $index" ng-class="{active: item == conf.CurrentPage, disabled:conf.CurrentPage == conf.TotalPages&&conf.CurrentPage==1,separate: item == \'...\'}"\
                                                 ng-click="changeCurrentPage(item)">\
                                                 <a href="javascript:;" ng-bind="item"></a>\
                                             </li>\
-                                            <li ng-class="{disabled: conf.currentPage == conf.numberOfPages}" ng-click="nextPage()"><a href="javascript:;" ng-bind="conf.sNext">下一页</a></li>\
-                                            <li ng-class="{disabled: conf.currentPage == conf.numberOfPages}" ng-click="changeCurrentPage(conf.numberOfPages)"><a href="javascript:;" ng-bind="conf.sLast">尾页</a></li>\
+                                            <li ng-class="{disabled: conf.CurrentPage == conf.TotalPages}" ng-click="nextPage()"><a href="javascript:;" ng-bind="conf.sNext">下一页</a></li>\
+                                            <li ng-class="{disabled: conf.CurrentPage == conf.TotalPages}" ng-click="changeCurrentPage(conf.TotalPages)"><a href="javascript:;" ng-bind="conf.sLast">尾页</a></li>\
                                         </ul>\
                                     </div>';
 
@@ -45,7 +45,7 @@ define('paging', ['page', 'ext'],
 
             conf.Ctrl = this, conf.perPageOptions = [];
 
-            for (var i = conf.itemsPerPage = conf.itemsPerPage || 15, s = i, l = i * 6; i <= l; i += s) conf.perPageOptions.push(i);
+            for (var i = conf.ItemsPerPage = conf.ItemsPerPage || 15, s = i, l = i * 6; i <= l; i += s) conf.perPageOptions.push(i);
 
             // 定义分页的长度必须为奇数 (default:9)
             conf.pagesLength = parseInt(conf.pagesLength, 10) || 9;
@@ -57,24 +57,24 @@ define('paging', ['page', 'ext'],
 
             // pageList数组
             this.getPagination = function getPagination() {
-                // conf.currentPage
-                conf.currentPage = parseInt(conf.currentPage, 10) || 1;
+                // conf.CurrentPage
+                conf.CurrentPage = parseInt(conf.CurrentPage, 10) || 1;
 
-                // conf.totalItems
-                conf.totalItems = parseInt(conf.totalItems, 10) || 0;
+                // conf.TotalItems
+                conf.TotalItems = parseInt(conf.TotalItems, 10) || 0;
 
-                // numberOfPages
-                conf.numberOfPages = Math.ceil(conf.totalItems / conf.itemsPerPage) || 1;
+                // TotalPages
+                conf.TotalPages = Math.ceil(conf.TotalItems / conf.ItemsPerPage) || 1;
 
                 // jumpPageNum
-                conf.jumpPageNum = conf.currentPage = conf.currentPage < 1 ? 1 : conf.currentPage > conf.numberOfPages ? conf.numberOfPages : conf.currentPage;
+                conf.jumpPageNum = conf.CurrentPage = conf.CurrentPage < 1 ? 1 : conf.CurrentPage > conf.TotalPages ? conf.TotalPages : conf.CurrentPage;
 
-                if ((conf.currentPage == 1 || this.change) && conf.numberOfPages <= conf.pagesLength) {
+                if ((conf.CurrentPage == 1 || this.change) && conf.TotalPages <= conf.pagesLength) {
                     $scope.pageList = [];
-                    for (i = 1, l = conf.numberOfPages ; i <= l; i++) $scope.pageList.push(i);
+                    for (i = 1, l = conf.TotalPages ; i <= l; i++) $scope.pageList.push(i);
                 }
-                else if (conf.numberOfPages > conf.pagesLength) {
-                    var c = conf.pagesLength, offset = (c - 1) / 2, a = conf.currentPage, b = conf.numberOfPages, isLast = a == b;
+                else if (conf.TotalPages > conf.pagesLength) {
+                    var c = conf.pagesLength, offset = (c - 1) / 2, a = conf.CurrentPage, b = conf.TotalPages, isLast = a == b;
                     $scope.pageList = [];
 
                     if (a > offset + 1) $scope.pageList.push('...');
@@ -90,33 +90,34 @@ define('paging', ['page', 'ext'],
             this.pagingChanged = function pagingChanged(pageInfo) {
                 if (pageInfo) {
                     pageInfo.ck = false;
-                    conf.totalItems = pageInfo.TotalItems;
+                    conf.TotalItems = pageInfo.TotalItems;
                     conf.Items = pageInfo.Items;
                 }
+
                 $scope.$parent.$broadcast(($scope.conf.id || '') + 'PagingChanged', conf);
             }
 
             // prevPage
             this.prevPage = $scope.prevPage = function () {
-                if (conf.currentPage > 1) {
-                    conf.currentPage -= 1;
+                if (conf.CurrentPage > 1) {
+                    conf.CurrentPage -= 1;
                 }
             }
 
             this.nextPage = $scope.nextPage = function () {
-                if (conf.currentPage < conf.numberOfPages) {
-                    conf.currentPage += 1;
+                if (conf.CurrentPage < conf.TotalPages) {
+                    conf.CurrentPage += 1;
                 }
             }
 
             // 变更当前页
             this.changeCurrentPage = $scope.changeCurrentPage = function (item) {
-                conf.currentPage = parseInt(item) || conf.currentPage;
+                conf.CurrentPage = parseInt(item) || conf.CurrentPage;
             }
 
             // 跳转页
             this.jumpToPage = $scope.jumpToPage = function () {
-                conf.currentPage = conf.jumpPageNum = parseInt(conf.jumpPageNum) || conf.currentPage;
+                conf.CurrentPage = conf.jumpPageNum = parseInt(conf.jumpPageNum) || conf.CurrentPage;
             }
         }
 
@@ -129,18 +130,18 @@ define('paging', ['page', 'ext'],
             }
 
             scope.$watch(function () {
-                return Math.ceil(conf.totalItems / conf.itemsPerPage) || 1;
+                return Math.ceil(conf.TotalItems / conf.ItemsPerPage) || 1;
             }, function () { ctrl.change = true; })
 
             scope.$watch(function () {
-                return conf.currentPage + ' ' + conf.totalItems + ' ' + conf.itemsPerPage;
+                return conf.CurrentPage + ' ' + conf.TotalItems + ' ' + conf.ItemsPerPage;
             }, $.proxy(ctrl.getPagination, ctrl));
 
             scope.$parent.$watch('PageInfo', ctrl.pagingChanged);
             scope.$parent.$watch('infos.PageInfo', ctrl.pagingChanged);
 
             scope.$watch(function () {
-                return conf.currentPage + ' ' + conf.itemsPerPage;
+                return conf.CurrentPage + ' ' + conf.ItemsPerPage;
             }, function () {
                 scope.$parent.$broadcast((conf.id || '') + 'PagingChange', conf);
 

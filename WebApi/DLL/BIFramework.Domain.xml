@@ -44,6 +44,26 @@
             是否删除
             </summary>
         </member>
+        <member name="T:BIStudio.Framework.Domain.ITreeAudited">
+            <summary>
+            树结构
+            </summary>
+        </member>
+        <member name="P:BIStudio.Framework.Domain.ITreeAudited.ParentID">
+            <summary>
+            父节点标示
+            </summary>
+        </member>
+        <member name="P:BIStudio.Framework.Domain.ITreeAudited.Path">
+            <summary>
+            节点路径
+            </summary>
+        </member>
+        <member name="P:BIStudio.Framework.Domain.ITreeAudited.Layer">
+            <summary>
+            节点所属层级
+            </summary>
+        </member>
         <member name="T:BIStudio.Framework.Domain.IUpdateAudited">
             <summary>
             表示更新审计
@@ -303,6 +323,15 @@
             <summary>
             聚合根类别
             </summary>
+        </member>
+        <member name="M:BIStudio.Framework.Domain.RepositoryExtension.Modify``1(BIStudio.Framework.Domain.IRepository{``0},``0[])">
+            <summary>
+            保存修改
+            </summary>
+            <typeparam name="TEntity">数据类型</typeparam>
+            <param name="bo">数据仓储对象</param>
+            <param name="entitys">需要保存的数据</param>
+            <returns>保存失败的数据</returns>
         </member>
         <member name="M:BIStudio.Framework.Domain.RepositoryUtils.As``1(System.Data.DataRow,BIStudio.Framework.Domain.IUnitOfWork)">
             <summary>

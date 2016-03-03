@@ -34,6 +34,8 @@
 
             $.extend(dfop, settings);
 
+            if (settings.Tree) dfop.data = settings.Tree;
+
             if (dfop.endsinglecheck) dfop.singlecheck = !0;
 
             if (!dfop.data || !dfop.data.length) return this;

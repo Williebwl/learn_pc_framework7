@@ -29,7 +29,7 @@
             //'ztree.core': 'Assets/Js/Plugins/ztree.core.js',
             //'ztree.excheck': 'Assets/Js/Plugins/ztree.excheck.js',
             //'module.tree': 'System/Module/module.tree.js',
-            //'smart.tree': 'Core/Component/Tree/smart.tree.js',
+            'smart.tree': 'Core/Component/Tree/smart.tree.js',
             'core.tree': 'Core/Service/core.tree.js',
             'core.dialog': 'Core/Service/core.dialog.js',
             //'jqValidate': 'Assets/Js/Lib/jquery.validate.min.js',

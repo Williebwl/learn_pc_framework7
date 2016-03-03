@@ -4,7 +4,7 @@ using System.Web.Http;
 using BIStudio.Framework;
 using BIStudio.Framework.Data;
 using BIStudio.Framework.Domain;
-using BIStudio.Framework.UI.Models;
+using BIStudio.Framework.UI;
 using BIStudio.Framework.Tag;
 
 namespace WebApi.Controllers.Tag

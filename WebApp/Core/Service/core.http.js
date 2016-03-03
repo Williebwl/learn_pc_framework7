@@ -2,7 +2,7 @@
         function () {
             'use strict';
 
-            var api = coreHttp.Api = 'http://localhost:2266/';
+            var api = coreHttp.Api = 'http://localhost:2206/';
 
             function coreHttp($http) {
                 if (sessionStorage.Token) $http.defaults.headers.common.Authorization = sessionStorage.Token;

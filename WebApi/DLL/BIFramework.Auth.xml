@@ -9,7 +9,7 @@
             通行证状态
             </summary>
         </member>
-        <member name="F:BIStudio.Framework.Auth.AccountStatusEnum.Locking">
+        <member name="F:BIStudio.Framework.Auth.AccountStatusEnum.Locked">
             <summary>
             锁定
             </summary>
