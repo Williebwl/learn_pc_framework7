@@ -77,7 +77,7 @@
                         <div class="form-group" ng-show="editInfo.DisplayMode.v!=2">
                             <label class="col-lg-2 control-label"><span class="dangger">*</span>导航模板：</label>
                             <div class="col-lg-7">
-                                <input type="text" ng-model="editInfo.Menu.NavUrl" ng-value="editInfo.Menu.NavUrl=editInfo.DisplayMode.v!=2?'System/Nav/default.nav.html':''" ng-readonly="!editInfo.DisplayMode.v" class="form-control">
+                                <input type="text" ng-model="editInfo.Menu.NavUrl" ng-readonly="!editInfo.DisplayMode.v" class="form-control">
                             </div>
                         </div>
                         <div class="form-group" ng-show="editInfo.DisplayMode.v==2">
@@ -101,8 +101,7 @@
                                        placeholder="{{editInfo.DisplayMode.v?'':'可不设置'}}"
                                        ng-readonly="editInfo.DisplayMode.v!=1"
                                        class="form-control"
-                                       ng-model="editInfo.Menu.ContainerUrl"
-                                       ng-value="editInfo.Menu.ContainerUrl=editInfo.DisplayMode.v==2?'System/Nav/default.navContainer.iframe.html':''">
+                                       ng-model="editInfo.Menu.ContainerUrl">
                                 <span class="help-block" ng-hide="editInfo.DisplayMode.v>0">内容区模板默认读取导航中第一个菜单的模板</span>
                             </div>
                         </div>
