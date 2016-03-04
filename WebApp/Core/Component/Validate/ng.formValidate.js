@@ -13,9 +13,10 @@
 
                     if (!formValidate.mark || !formValidate.form.is('form') || !formValidate.$form) return;
 
-                    coreService.fnGetformValidInfo(formValidate.mark, function (vm) {
-                        if (!vm || !$.isPlainObject(vm) || $.isEmptyObject(vm)) return; biFormValidate.bindVM((formValidate.VMInfo = vm) && formValidate);
-                    });
+                    coreService.fnGetformValidInfo(formValidate.mark)
+                               .success(function (vm) {
+                                   if (!vm || !$.isPlainObject(vm) || $.isEmptyObject(vm)) return; biFormValidate.bindVM((formValidate.VMInfo = vm) && formValidate);
+                               }).error(function () { console.log("【" + formValidate.mark + "】验证信息获取失败！") });
 
                     scope.$on('$ViewRest', function (s, e) { biFormValidate.$formValidateRest(formValidate) })
 
