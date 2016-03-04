@@ -5,7 +5,7 @@
         core.controller('AppEditCtrl',
             function ($scope, appService, groupService, tagService, iconService) {
                 //继承并返回页面对象
-                var page = core($scope, appService);
+                var page = core($scope, appService), oldMenu;
                 //加载所有应用图标
                 $scope.Icons = appService.fnGetIcons(),
                 //加载所有显示模式
@@ -32,7 +32,7 @@
                         (function (editInfo) {
                             page.extend(editInfo, d),
                             editInfo.App && $scope.AppTypes && ($scope.AppType = $scope.AppTypes.find(function (o) { return o.ID == editInfo.App.AppTypeID }) || $scope.AppTypes[0]),
-                            editInfo.Menu && (editInfo.DisplayMode = $scope.DisplayModes.find(function (o) { return o.v == editInfo.Menu.DisplayModeID }),
+                            (oldMenu = editInfo.Menu) && (editInfo.DisplayMode = $scope.DisplayModes.find(function (o) { return o.v == editInfo.Menu.DisplayModeID }),
                             editInfo.Menu.Icon && (editInfo.icon = $scope.Icons.find(function (o) { return o.icon == editInfo.Menu.Icon && o.background == editInfo.Menu.IconBackGround })),
                             editInfo.IsToolbar = !!editInfo.Menu.ToolBarUrl)
                         }(page.editInfo))
@@ -67,6 +67,8 @@
                     page.fnValidate(mark)//触发表单验证
                 },
                 $scope.$watch('editInfo.DisplayMode', function (mode) {
+                    if ($scope.editInfo.ID) return;
+
                     $scope.editInfo.Menu || ($scope.editInfo.Menu = {})
 
                     switch (mode.v) {
@@ -80,6 +82,7 @@
                             $scope.editInfo.Menu.ContainerUrl = 'System/Nav/default.navContainer.iframe.html';
                             break;
                     }
+
                 })
             })
 
