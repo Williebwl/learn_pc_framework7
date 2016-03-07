@@ -52,62 +52,72 @@
       <HintPath>..\packages\AsyncIO.0.1.18.0\lib\net40\AsyncIO.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework">
-      <HintPath>DLL\BIFramework.dll</HintPath>
+    <Reference Include="BIFramework, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.7.0.1\lib\net461\BIFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Auth">
-      <HintPath>DLL\BIFramework.Auth.dll</HintPath>
+    <Reference Include="BIFramework.Auth, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Auth.7.0.1\lib\net461\BIFramework.Auth.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Cache">
-      <HintPath>DLL\BIFramework.Cache.dll</HintPath>
+    <Reference Include="BIFramework.Cache, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Cache.7.0.1\lib\net461\BIFramework.Cache.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Data">
-      <HintPath>DLL\BIFramework.Data.dll</HintPath>
+    <Reference Include="BIFramework.Data, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Data.7.0.1\lib\net461\BIFramework.Data.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Data.MySql">
-      <HintPath>DLL\BIFramework.Data.MySql.dll</HintPath>
+    <Reference Include="BIFramework.Data.Sql2005, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Data.Sql2005.7.0.1\lib\net461\BIFramework.Data.Sql2005.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Data.Sql2005">
-      <HintPath>DLL\BIFramework.Data.Sql2005.dll</HintPath>
+    <Reference Include="BIFramework.Domain, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Domain.7.0.1\lib\net461\BIFramework.Domain.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Domain">
-      <HintPath>DLL\BIFramework.Domain.dll</HintPath>
+    <Reference Include="BIFramework.Domain.EntityFramework, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Domain.EntityFramework.7.0.1\lib\net461\BIFramework.Domain.EntityFramework.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Domain.EntityFramework">
-      <HintPath>DLL\BIFramework.Domain.EntityFramework.dll</HintPath>
+    <Reference Include="BIFramework.File, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.File.7.0.1\lib\net461\BIFramework.File.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.File">
-      <HintPath>DLL\BIFramework.File.dll</HintPath>
+    <Reference Include="BIFramework.Institution, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Institution.7.0.1\lib\net461\BIFramework.Institution.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Institution">
-      <HintPath>DLL\BIFramework.Institution.dll</HintPath>
+    <Reference Include="BIFramework.Log, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Log.7.0.1\lib\net461\BIFramework.Log.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Log">
-      <HintPath>DLL\BIFramework.Log.dll</HintPath>
+    <Reference Include="BIFramework.MQ, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.MQ.7.0.1\lib\net461\BIFramework.MQ.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.MQ">
-      <HintPath>DLL\BIFramework.MQ.dll</HintPath>
+    <Reference Include="BIFramework.Permission, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Permission.7.0.1\lib\net461\BIFramework.Permission.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Permission">
-      <HintPath>DLL\BIFramework.Permission.dll</HintPath>
+    <Reference Include="BIFramework.Tag, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Tag.7.0.1\lib\net461\BIFramework.Tag.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Tag">
-      <HintPath>DLL\BIFramework.Tag.dll</HintPath>
+    <Reference Include="BIFramework.Tenant, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Tenant.7.0.1\lib\net461\BIFramework.Tenant.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Tenant">
-      <HintPath>DLL\BIFramework.Tenant.dll</HintPath>
+    <Reference Include="BIFramework.UI, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.UI.7.0.1\lib\net461\BIFramework.UI.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.UI">
-      <HintPath>DLL\BIFramework.UI.dll</HintPath>
+    <Reference Include="BIFramework.Utils, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Utils.7.0.1\lib\net461\BIFramework.Utils.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Utils">
-      <HintPath>DLL\BIFramework.Utils.dll</HintPath>
-    </Reference>
-    <Reference Include="BIStandard.Portal">
-      <HintPath>DLL\BIStandard.Portal.dll</HintPath>
-    </Reference>
-    <Reference Include="Dapper, Version=1.40.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Dapper.1.42\lib\net45\Dapper.dll</HintPath>
+    <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Dapper.1.50.0-beta8\lib\net451\Dapper.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EmitMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -120,6 +130,10 @@
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.85.4.369, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\ICSharpCode.SharpZipLib.dll.0.85.4.369\lib\net20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
@@ -176,11 +190,15 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -236,8 +254,6 @@
     <Compile Include="Controllers\Institution\DeptController`.cs" />
     <Compile Include="Controllers\Institution\DeptVM.cs" />
     <Compile Include="Controllers\Institution\GroupVM.cs" />
-    <Compile Include="Controllers\Portal\ArticleController.cs" />
-    <Compile Include="Controllers\Portal\ArticleVM.cs" />
     <Compile Include="Controllers\Tag\TagClassVM.cs" />
     <Compile Include="Controllers\Tag\TagGroupVM.cs" />
     <Compile Include="Controllers\Tag\TagQuery.cs" />
