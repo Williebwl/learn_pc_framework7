@@ -169,7 +169,7 @@
 
                                   if (!currentScopes.ShowDialog) currentScopes.ShowDialog = function (id, d, e) {
                                       var func = $dialog[angular.isString(id) && id || key];
-                                      angular.isFunction(func) && func(d || id, e);
+                                      angular.isFunction(func) && func(d || id, e)
                                   };
 
                                   var cleanupLastIncludeContent = function () {
@@ -252,10 +252,12 @@
                       }
 
                       function fn() {
+                          
                           $element.html(ctrl.template),
-                          $compile($element.contents())(scope),
-                          angular.isFunction(scope.ShowDialog) && scope.ShowDialog(ctrl.ViewData),
+                          $compile($element.contents())(scope), 
+                          scope.hasOwnProperty('ShowDialog') && angular.isFunction(scope.ShowDialog) && scope.ShowDialog(ctrl.ViewData),
                           scope.$digest()
+                          
                       }
 
                       Array.isArray(ctrl.Url) && require(ctrl.Url, fn) || fn();

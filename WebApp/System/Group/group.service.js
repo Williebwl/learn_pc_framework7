@@ -7,8 +7,11 @@ define(['core.Service'],
             this.fnGetNav = function (key) {
                 return this.get('Get', { params: { Key: key } })
             },
-            this.fnGetAppGroups = function (appid, success, error) {
-                return this.get('GetAppGroups/' + (appid || 0), success, error)
+            this.fnGetAppAccess = function (appid) {
+                return this.get('GetAppAccess/' + (appid || 0))
+            },
+            this.fnSaveAppAccess = function (groupid,data) {
+                return this.put('SaveAppAccess/' + (groupid || 0), data)
             }
         }
 

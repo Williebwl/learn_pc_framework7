@@ -2,6 +2,97 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui'],
     function ($, bootstrap, coreState) {
         'use strict'
 
+        // 左侧滚动条
+        function setNavHeight(){
+            $(".lef-mainnnav").css("height", $(window).height() - $(".index-logo").outerHeight(true) - $(".user-portrait").outerHeight(true) - $(".lef-footer").outerHeight(true))
+        }
+        // 主体区域
+        function setMainHeight(){
+            $(".contentpanel").outerHeight($(window).height() - $(".header-bar").outerHeight() -$(".fixed-footer").height() )
+        }
+        // 字母表
+        function setLetterHeight(){
+            var perH = Math.floor(( $(window).height() - $(".header-bar").outerHeight() ) / $(".letter-list li").length)
+            $(".letter-list ul li").css({"height":perH,'lineHeight':perH+'px'})
+        }
+
+            // 适应窗口
+        $(window).resize(function(){
+            setNavHeight();
+            setMainHeight();
+            setLetterHeight();
+        })
+
+        setNavHeight();
+        setMainHeight();
+        setLetterHeight();
+
+        $(document).on("click",'[data-toggle="tooltip modal"]',function(){
+            if ($(window).width() <= 800 && $(window).width() > 481){            
+                setLayout(false, -130, 70, -200, 0, 0, -200); 
+                $(this).parents(".left-nav").removeClass('zIndex');
+            }else if($(window).width() <= 480){         
+                setLayout(false, -200, 0, -200, 0, -70, -200);
+                $(".left-nav").removeClass('zIndex');
+            }
+        })
+
+        // 菜单适应宽度
+        function setLayout(arrow, fixnav, fixcontent, fullnav, fullcontent, fixaside, fullaside) {
+            if (arrow === true) {
+                $(".toggle-menu .fa-caret-right").hide();
+                $(".toggle-menu .fa-caret-left").css("display", "block");
+            } else {
+                $(".toggle-menu .fa-caret-left").hide();
+                $(".toggle-menu .fa-caret-right").css("display", "block");
+            };
+            $(".fixed-nav .left-nav").stop().animate({ 'left': fixnav }, 200);
+            $(".fixed-nav #content").stop().animate({ 'left': fixcontent }, 200);
+            $(".fullwidth-nav .left-nav").stop().animate({ 'left': fullnav }, 200);
+            $(".fullwidth-nav #content").stop().animate({ 'left': fullcontent }, 200);
+            $(".fixed-nav .fold-menu").stop().animate({ 'left': fixaside }, 200);
+            $(".fullwidth-nav .fold-menu").stop().animate({ 'left': fullaside }, 200);
+        }
+        $(window).resize(function () {
+            if ($(window).width() > 1200) {
+                setLayout(true, 70, 270, 200, 400, 0, 0);
+            } else if ($(window).width() <= 1200 && $(window).width() > 800) {
+                setLayout(false, -130, 70, 0, 200, 0, 0);
+            } else if ($(window).width() <= 800 && $(window).width() > 481) {
+                setLayout(false, -130, 70, -200, 0, 0, -200);
+            } else if ($(window).width() <= 480) {
+                setLayout(false, -200, 0, -200, 0, -70, -200);
+            }
+        });
+        $(document).on("click", ".toggle-menu .fa-caret-left", function () {
+            if ($(window).width() > 800) {
+                setLayout(false, -130, 70, 0, 200);
+            } else if ($(window).width() <= 800 && $(window).width() > 480) {
+                setLayout(false, -130, 70, -200, 0, 0, -200);
+            } else if ($(window).width() <= 480) {
+                setLayout(false, -200, 0, -200, 0, -70, -200);
+            }
+        }).on("click", ".toggle-menu .fa-caret-right", function () {
+            if ($(window).width() > 800) {
+                setLayout(true, 70, 270, 200, 400);
+            } else if ($(window).width() <= 800 && $(window).width() > 480) {
+                setLayout(true, 70, 70, 200, 0, 0, 0);
+                $(".left-nav").addClass('zIndex');
+            } else if ($(window).width() <= 480) {
+                $(".left-nav").addClass('zIndex');
+                setLayout(true, 70, 0, 200, 0, 0, 0);
+            }
+        }).on("click", function (e) {
+            if ($(window).width() <= 800 && $(window).width() > 481 && $(e.target).closest(".left-nav").length == 0 && $(e.target).closest(".fold-menu").length == 0) {
+                setLayout(false, -130, 70, -200, 0, 0, -200); 
+                $(".left-nav").removeClass('zIndex');               
+            } else if ($(window).width() <= 480 && $(e.target).closest(".left-nav").length == 0 && $(e.target).closest(".fold-menu").length == 0) {
+                setLayout(false, -200, 0, -200, 0, -70, -200);
+                $(".left-nav").removeClass('zIndex');
+            }
+        })
+
+
         /** 表单向导 start**/
         $(document).on("click", ".wizard .wizard-header li", function () {
             var $self = $(this);
@@ -87,8 +178,12 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui'],
 
 
         /** 左边栏滚动条 **/
-        $(function () { CustomScrollbar.call($('.aside > .nav')) })
+        $(function () { CustomScrollbar.call($('aside > section > .lef-mainnnav')) })
         /** 左边栏滚动条 **/
+
+        /** tooltip **/
+        $(document).on('mouseover', '[data-toggle="tooltip"]', function () { $(this).removeAttr('data-toggle').tooltip().triggerHandler('mouseover') })
+        /** tooltip **/
 
         return {
             ToolBarLoaded: function (s, e) {
@@ -103,7 +198,6 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui'],
 
             },
             ContentLoaded: function (s, e) {
-                $('[data-toggle="tooltip"]', e.$element).tooltip()
                 //$('[data-toggle="popover"]', e.$element).popover()
             }
         };
@@ -112,4 +206,5 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui'],
         function CustomScrollbar() {
             this.mCustomScrollbar({ theme: "minimal" });
         }
+
     });

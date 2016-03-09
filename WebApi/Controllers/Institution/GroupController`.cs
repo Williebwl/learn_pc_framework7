@@ -1,58 +1,90 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using BIStudio.Framework;
-using BIStudio.Framework.Data;
-using BIStudio.Framework.Domain;
-using BIStudio.Framework.Institution;
-using BIStudio.Framework.Tenant;
-using WebApi.Controllers.Tenant;
 
 namespace WebApi.Controllers.Institution
 {
-    public partial class GroupController
+    using BIStudio.Framework;
+    using BIStudio.Framework.Data;
+    using BIStudio.Framework.Domain;
+    using BIStudio.Framework.Institution;
+    using BIStudio.Framework.Tenant;
+    using BIStudio.Framework.UI;
+    using Tenant;
+
+    public partial class GroupController : ApplicationService<GroupVM, Query, SYSGroup>
     {
-        protected IRepository<SYSGroup> _group;
-        protected IRepository<SYSGroupUser> _groupUser;
-        protected IRepository<SYSAppAccess> _appAccess;
+        public GroupController() : base("GroupName") { }
 
-        //protected virtual IList<GroupVM> GetAll(Query info)
-        //{
-        //    var q = from d in _group.Entities
-        //            orderby d.GroupTypeID, d.Sequence
-        //            select new GroupVM
-        //            {
-        //                ID = d.ID,
-        //                SystemID = d.SystemID,
-        //                AppID = d.AppID,
-        //                GroupCode = d.GroupCode,
-        //                GroupName = d.GroupName,
-        //                GroupType = d.GroupType,
-        //                GroupTypeID = d.GroupTypeID,
-        //                GroupFlag = d.GroupFlag,
-        //                GroupFlagID = d.GroupFlagID,
-        //                UserCount = (from b in _groupUser.Entities where b.GroupID == d.ID select b.GroupID).Count()
-        //            };
+        protected IRepository<SYSGroup> _groupBO;
+        protected IRepository<SYSGroupUser> _groupUserBO;
+        protected IRepository<SYSAppAccess> _appAccessBO;
+        protected IRepository<SYSApp> _appBO;
+        protected IRepository<SYSMenu> _menuBO;
 
-        //    return q.ToArray();
-        //}
+        #region 查询
 
-        protected virtual AppGroupVM GetAppGroupInfos(long appID)
+        public virtual IEnumerable<GroupVM> GetAllInfos(Query info)
         {
-            var q1 = from d in _group.Entities
-                     where !_appAccess.Entities.Any(b => d.ID == b.GroupID && b.AppID == appID)
+            var q = from d in _groupBO.Entities
+                    orderby d.GroupTypeID, d.Sequence
+                    select new GroupVM
+                    {
+                        ID = d.ID,
+                        SystemID = d.SystemID,
+                        AppID = d.AppID,
+                        GroupCode = d.GroupCode,
+                        GroupName = d.GroupName,
+                        GroupType = d.GroupType,
+                        GroupTypeID = d.GroupTypeID,
+                        GroupFlag = d.GroupFlag,
+                        GroupFlagID = d.GroupFlagID,
+                        UserCount = (from b in _groupUserBO.Entities where b.GroupID == d.ID select b.GroupID).Count()
+                    };
+
+            return q.ToArray();
+        }
+
+        protected virtual GroupAppVM GetAppAccessInfos(long groupID)
+        {
+            var q1 = from d in _appBO.Entities
+                     where !_appAccessBO.Entities.Any(b => d.ID == b.AppID && b.GroupID == groupID)
                      select d;
 
-            var q2 = from d in _group.Entities
-                     where _appAccess.Entities.Any(b => d.ID == b.GroupID && b.AppID == appID)
+            var q2 = from d in _appBO.Entities
+                     where _appAccessBO.Entities.Any(b => d.ID == b.AppID && b.GroupID == groupID)
                      select d;
 
+            var vm = new GroupAppVM { GroupID = groupID, AllApps = q1.Map<SYSApp, AppVM>().ToArray(), GroupApps = q2.Map<SYSApp, AppVM>().ToArray() };
 
-            return new AppGroupVM
+            var q3 = from d in _menuBO.Entities
+                     where d.Layer == 0
+                     select new { d.AppID, d.Icon };
+
+            var menuInfos = q3.ToArray();
+
+            Action<AppVM> forEach = (d) => { d.Icon = menuInfos.FirstOrDefault(b => b.AppID == d.ID)?.Icon; };
+
+            vm.AllApps.ForEach(forEach);
+            vm.GroupApps.ForEach(forEach);
+
+            return vm;
+        }
+
+        #endregion 查询
+
+        protected virtual bool SaveAppAccessInfos(long groupId, AppAccessVM[] infos)
+        {
+            _appAccessBO.Remove(d => d.GroupID == groupId);
+
+            if (infos != null && _appAccessBO.Add(infos.Map<AppAccessVM, SYSAppAccess>().ToArray()).Any())
             {
-                AppID = appID,
-                AllGroups = q1.Map<SYSGroup, GroupVM>().ToArray(),
-                AppGroups = q2.Map<SYSGroup, GroupVM>().ToArray()
-            };
+                (_appAccessBO as ITransientDependency).UnitOfWork.Rollback();
+
+                return false;
+            }
+
+            return true;
         }
     }
 }

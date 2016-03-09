@@ -367,11 +367,11 @@ namespace WebApi.Controllers.Attach
         {
             var vm = new AttachResultVM { Key = Guid.NewGuid().ToString() };
 
-            if (string.IsNullOrEmpty(tableName) || !(tableID > 0)) goto End;
+            if (string.IsNullOrEmpty(tableName) || !(tableID > 0)) return vm;
 
             vm.Files = _bo.GetInfos(tableName, tableID.Value, customType).Map<SYSAttach, FileVM>().ToList();
 
-            End: return vm;
+            return vm;
         }
 
         /// <summary>

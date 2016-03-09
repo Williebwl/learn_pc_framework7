@@ -21,7 +21,7 @@
     <script type="text/javascript">
         var controller = request("controller"), action = request("action");
         $("p").append(FirstToUpper(controller) + '.' + FirstToUpper(action) + " 服务");
-        $.get('/Core/Metadata/GetAction?controller=' + controller + '&action=' + action, function (a) {
+        $.get('../Core/Metadata/GetAction?controller=' + controller + '&action=' + action, function (a) {
             $.each(a, function (i, d) {
 
                 var link = GetHost() + '/' + d.Link, html = '<table class="actionInfo" border="0" cellpadding="0" cellspacing="0"><tr><td class="title">接 口：</td><td colspan="2">' + d.Name + '</td></tr>';

@@ -1,0 +1,177 @@
+@charset "utf-8";
+/*主色  #F1F2F3 */
+/*元素色  #F1F2F3 */
+/*边框色  #ddd */
+/*深色 #F1F2F3*/
+/*浅淡色 #F1F7FF*/
+a{
+	color: #222; 
+}
+.fold-menu{
+    background: #F1F2F3;
+}
+.fold-menu .index-logo{
+    background: #E8EAED;
+}
+.user-portrait{
+    background: #F1F2F3;
+}
+.mainnav > li > a{
+    background: #F1F2F3;
+}
+.mainnav > li.active:before, .mainnav > li:hover:before{
+    background: #E8EAED;
+}
+.scroller .mCSB_scrollTools .mCSB_dragger{
+   width: 4px;
+   right: 6px;
+   border-radius: 4px;
+   background: #F1F2F3;
+}
+.btn.btn-default{
+  background-color: #F1F2F3;
+  border-color: #ddd;
+  padding: 5px 15px;
+  color: #666;
+}
+@media screen and (max-width: 800px){
+  .btn.btn-default{
+    padding: 5px 8px;
+  }
+}
+.btn.btn-default:active, 
+.btn.btn-default:focus, 
+.btn.btn-default:hover{
+    color: #222;
+    background-color: #F1F2F3;
+    border-color: #F1F2F3;
+   -moz-box-shadow: none;
+   -webkit-box-shadow: none;
+   box-shadow: none;
+}
+.contact-user h1{
+    color: #222;	
+}
+.letter-list li.active{
+    background: #F1F2F3;
+    color: #222;
+}
+.header-bar .toggle-menu:hover{
+    background: #F1F2F3;
+}
+.header-bar .toggle-menu:hover i{
+    color: #222;
+}
+.nav-list li.active a,
+.nav-list li:hover a{
+	background: #F1F2F3;
+	color: #222;
+}
+table.table-default thead tr > th,
+table.table-default thead tr > td{
+   color: #ffffff;
+   background-color: #F1F2F3;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+   background-color: #F1F2F3;
+   border-color: #F1F2F3;
+}
+.prop-form-info div h1{
+	color: #F1F2F3;
+}
+.block-list li:hover {
+    background: #F1F2F3;
+    border: 1px solid #F1F2F3;
+}
+.block-list li:hover i, .block-list li:hover span{
+    color: #666;
+}
+.checkbox-default input:checked + i,.radio-default input:checked + i{
+   color: #F1F2F3;
+}
+.progress-bar-default{
+	background-color: #F1F2F3;
+}
+.icon-group-bordered .icon-items:hover{
+    background-color: #F1F2F3;
+    color: #222;
+    border-color: #F1F2F3;
+}
+.list-panel > div.active,
+.list-panel > div:hover{
+    background: rgba(0,106,255,0.08);
+}
+.btn.btn-icon:hover,
+.btn.btn-icon.active {
+   background: #F1F2F3;
+   border-color: #F1F2F3;
+   color: #222;
+   -moz-box-shadow: none;
+   -webkit-box-shadow: none;
+   box-shadow: none;
+}
+.band-list li:hover{
+    background: #E4EFFF;
+}
+.band-list li.active{
+    background: #F1F2F3;
+    color: #222;
+}
+.table-selected td{
+  background: #F1F7FF;
+}
+.table-bordered-default{
+  border-left: 4px solid #F1F2F3;
+}
+.nav-tabs-default.nav-pills >li.active,
+.nav-tabs-default.nav-pills >li:focus,
+.nav-tabs-default.nav-pills >li:hover{
+  background-color: #F1F2F3;
+  color: #222;
+}
+.nav-tabs-default{
+  border-bottom: 1px solid #F1F2F3;
+  margin-left: -10px; 
+  margin-right: -10px; 
+  padding-left: 10px;
+}
+.nav-pills > li.active, 
+.nav-pills > li.active:focus, 
+.nav-pills > li.active:hover{
+    color: #222;
+    background-color: #F1F2F3
+}
+.nav-justified-bordered li.active{
+  border-color: #F1F2F3;
+  color: #222;
+}
+.dropdown-menu > li > a:hover {
+   background-color: #F1F2F3;
+   color: #222;
+}
+.fullwidth-nav .mainnav > li.active > a{
+    background: #E8EAED;
+}
+.fullwidth-nav .mainnav > li > a:hover{
+    background: #E8EAED;
+}
+.mainnav > li > a > i,
+.mainnav > li > a > span{
+  color: #666;
+}
+.fold-menu .index-logo a,
+.user-portrait div{
+  color: #333;
+}
+*[class*="background-"]{
+  background: #e9e9e9;
+  color: #999;
+}
+*[class*="color-"]{
+  color: #999;
+}

@@ -18,7 +18,7 @@
     <script src="Js/js.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
-            $.get('/Core/Metadata/GetControllers', function (result) {
+            $.get('../Core/Metadata/GetControllers', function (result) {
                 if (Array.isArray(result)) {
                     $.each(result, function (i, field) {
                         var content_li = "<li>";

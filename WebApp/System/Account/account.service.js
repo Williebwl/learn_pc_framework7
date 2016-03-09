@@ -5,6 +5,9 @@
         function authAccountService() {
             this.fnGetAllStatus = function () {
                 return this.get('GetAllStatus')
+            },
+            this.fnLogout = function (ids) {
+                return this.put('Logout?ids=' + ids);
             }
         }
 

@@ -1,0 +1,159 @@
+@charset "utf-8";
+/*主色  #2C3748 */
+/*元素色  #2C3748 */
+/*边框色  #2C3748 */
+/*深色 #18202B*/
+/*浅淡色 #F1F7FF*/
+a{
+	color: #2C3748; 
+}
+.fold-menu{
+    background: #2C3748;
+}
+.fold-menu .index-logo{
+    background: #18202B;
+}
+.user-portrait{
+    background: #2C3748;
+}
+.mainnav > li > a{
+    background: #2C3748;
+}
+.mainnav > li.active:before, .mainnav > li:hover:before{
+    background: #18202B;
+}
+.scroller .mCSB_scrollTools .mCSB_dragger{
+   width: 4px;
+   right: 6px;
+   border-radius: 4px;
+   background: #2C3748;
+}
+.btn.btn-default{
+  background-color: #2C3748;
+  border-color: #2C3748;
+  padding: 5px 15px;
+  color: #fff;
+}
+@media screen and (max-width: 800px){
+  .btn.btn-default{
+    padding: 5px 8px;
+  }
+}
+.btn.btn-default:active, 
+.btn.btn-default:focus, 
+.btn.btn-default:hover{
+    color: #fff;
+    background-color: #2C3748;
+    border-color: #2C3748;
+   -moz-box-shadow: none;
+   -webkit-box-shadow: none;
+   box-shadow: none;
+}
+.contact-user h1{
+    color: #2C3748;	
+}
+.letter-list li.active{
+    background: #2C3748;
+    color: #fff;
+}
+.header-bar .toggle-menu:hover{
+    background: #2C3748;
+}
+.header-bar .toggle-menu:hover i{
+    color: #fff;
+}
+.nav-list li.active a,
+.nav-list li:hover a{
+	background: #2C3748;
+	color: #fff;
+}
+table.table-default thead tr > th,
+table.table-default thead tr > td{
+   color: #ffffff;
+   background-color: #2C3748;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+   background-color: #2C3748;
+   border-color: #2C3748;
+}
+.prop-form-info div h1{
+	color: #2C3748;
+}
+.block-list li:hover {
+    background: #2C3748;
+    border: 1px solid #2C3748;
+}
+.checkbox-default input:checked + i,.radio-default input:checked + i{
+   color: #2C3748;
+}
+.progress-bar-default{
+	background-color: #2C3748;
+}
+.icon-group-bordered .icon-items:hover{
+    background-color: #2C3748;
+    color: #fff;
+    border-color: #2C3748;
+}
+.list-panel > div.active,
+.list-panel > div:hover{
+    background: rgba(0,106,255,0.08);
+}
+.btn.btn-icon:hover,
+.btn.btn-icon.active {
+   background: #2C3748;
+   border-color: #2C3748;
+   color: #fff;
+   -moz-box-shadow: none;
+   -webkit-box-shadow: none;
+   box-shadow: none;
+}
+.band-list li:hover{
+    background: #E4EFFF;
+}
+.band-list li.active{
+    background: #2C3748;
+    color: #fff;
+}
+.table-selected td{
+  background: #F1F7FF;
+}
+.table-bordered-default{
+  border-left: 4px solid #2C3748;
+}
+.nav-tabs-default.nav-pills >li.active,
+.nav-tabs-default.nav-pills >li:focus,
+.nav-tabs-default.nav-pills >li:hover{
+  background-color: #2C3748;
+  color: #fff;
+}
+.nav-tabs-default{
+  border-bottom: 1px solid #2C3748;
+  margin-left: -10px; 
+  margin-right: -10px; 
+  padding-left: 10px;
+}
+.nav-pills > li.active, 
+.nav-pills > li.active:focus, 
+.nav-pills > li.active:hover{
+    color: #fff;
+    background-color: #2C3748
+}
+.nav-justified-bordered li.active{
+  border-color: #2C3748;
+  color: #2C3748;
+}
+.dropdown-menu > li > a:hover {
+   background-color: #2C3748;
+   color: #fff;
+}
+.fullwidth-nav .mainnav > li.active > a{
+    background: #18202B;
+}
+.fullwidth-nav .mainnav > li > a:hover{
+    background: #18202B;
+}

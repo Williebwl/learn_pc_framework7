@@ -53,7 +53,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="BIFramework, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.7.0.1\lib\net461\BIFramework.dll</HintPath>
+      <HintPath>..\packages\BIFramework.7.0.2\lib\net461\BIFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BIFramework.Auth, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -65,19 +65,19 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="BIFramework.Data, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Data.7.0.1\lib\net461\BIFramework.Data.dll</HintPath>
+      <HintPath>..\packages\BIFramework.Data.7.0.2\lib\net461\BIFramework.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Data.Sql2005, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Data.Sql2005.7.0.1\lib\net461\BIFramework.Data.Sql2005.dll</HintPath>
+    <Reference Include="BIFramework.Data.Sql2005, Version=7.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Data.Sql2005.7.0.2\lib\net461\BIFramework.Data.Sql2005.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Domain, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Domain.7.0.1\lib\net461\BIFramework.Domain.dll</HintPath>
+    <Reference Include="BIFramework.Domain, Version=7.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Domain.7.0.2\lib\net461\BIFramework.Domain.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Domain.EntityFramework, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Domain.EntityFramework.7.0.1\lib\net461\BIFramework.Domain.EntityFramework.dll</HintPath>
+    <Reference Include="BIFramework.Domain.EntityFramework, Version=7.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Domain.EntityFramework.7.0.2\lib\net461\BIFramework.Domain.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BIFramework.File, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -104,12 +104,12 @@
       <HintPath>..\packages\BIFramework.Tag.7.0.1\lib\net461\BIFramework.Tag.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Tenant, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Tenant.7.0.1\lib\net461\BIFramework.Tenant.dll</HintPath>
+    <Reference Include="BIFramework.Tenant, Version=7.0.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Tenant.7.0.2\lib\net461\BIFramework.Tenant.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BIFramework.UI, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.UI.7.0.1\lib\net461\BIFramework.UI.dll</HintPath>
+      <HintPath>..\packages\BIFramework.UI.7.0.2\lib\net461\BIFramework.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="BIFramework.Utils, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
@@ -253,6 +253,7 @@
     <Compile Include="Controllers\Core\MetadataController.cs" />
     <Compile Include="Controllers\Institution\DeptController`.cs" />
     <Compile Include="Controllers\Institution\DeptVM.cs" />
+    <Compile Include="Controllers\Institution\GroupAppVM.cs" />
     <Compile Include="Controllers\Institution\GroupVM.cs" />
     <Compile Include="Controllers\Tag\TagClassVM.cs" />
     <Compile Include="Controllers\Tag\TagGroupVM.cs" />

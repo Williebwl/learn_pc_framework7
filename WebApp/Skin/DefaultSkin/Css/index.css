@@ -165,7 +165,7 @@ aside {
                     width: calc(100% - 5px);
                     margin-left: 5px;
                     background: #FFFFFF;
-                    border: 0px;
+                    /*border: 0px;*/
                 }
 
                 aside > .nav ul > li > a > i,

@@ -21,7 +21,7 @@
         $(document).ready(function () {
             var op = request("op")
             $("p").append(FirstToUpper(op) + "服务");
-            $.get("/Core/Metadata/GetActions?controller=" + op, function (result) {
+            $.get("../Core/Metadata/GetActions?controller=" + op, function (result) {
                 if (Array.isArray(result)) {
                     $.each(result, function (i, field) {
                         var content_li = "<li>";

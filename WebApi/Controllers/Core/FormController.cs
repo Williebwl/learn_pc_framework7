@@ -30,11 +30,11 @@ namespace WebApi.Controllers.Core
             {
                 var vo = ValidatableObject.AsParallel().Where(vm => vm.Name == d).FirstOrDefault();
 
-                if (vo == null) goto End;
+                if (vo == null) return jo;
 
                 jo.Add(d, JToken.FromObject(ModelValidator.Default.GetPropertyValidationJson(vo.Type)));
 
-                End: return jo;
+                return jo;
             });
         }
 

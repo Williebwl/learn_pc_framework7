@@ -1,9 +1,9 @@
-﻿define(['core.edit', 'System/Tag/tag.service.js', 'System/Group/group.service.js', 'System/Icon/icon.service.js'],
+﻿define(['core.edit', 'System/Tag/tag.service.js', 'System/Icon/icon.service.js'],
     function (core) {
         'use strict'
 
         core.controller('AppEditCtrl',
-            function ($scope, appService, groupService, tagService, iconService) {
+            function ($scope, appService, tagService, iconService) {
                 //继承并返回页面对象
                 var page = core($scope, appService), oldMenu;
                 //加载所有应用图标
@@ -27,7 +27,7 @@
                     editInfo.IsPopUp = !0,
                     editInfo.IsToolbar = !1,
                     editInfo.icon = $scope.Icons[0] || {},
-                    groupService.fnGetAppGroups(editInfo.ID).success(function (d) { $scope.GroupInfo = d }),
+                    appService.fnGetAppAccess(editInfo.ID).success(function (d) { $scope.GroupInfo = d }),
                     editInfo.ID && appService.fnGetEditInfo(editInfo.ID).success(function (d) {
                         (function (editInfo) {
                             page.extend(editInfo, d),

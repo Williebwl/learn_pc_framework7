@@ -1,9 +1,13 @@
 ﻿<div ng-controller="DeptNavCtrl">
-    <div class="nav breadcrumb-wrapper">
+    <div class="toggle-menu">
+        <i class="fa fa-caret-left"></i>
+        <i class="fa fa-caret-right"></i>
+    </div>
+    <div class="breadcrumb-wrapper">
         <a href="">部门</a>/<span>软件开发部</span>
     </div>
-    <div class="content scroller">
-        <h2 class="subtitle">部门列表</h2>
+    <div class="open-navigation scroller">
+        <h2 class="open-subtitle">部门列表</h2>
         <div class="subTreeContent tree-list" bi-smart-tree="TreeConf"></div>
     </div>
 </div>

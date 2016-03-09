@@ -1,42 +1,35 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using System.Web.Http;
 
 namespace WebApi.Controllers.Institution
 {
     using BIStudio.Framework.Data;
-    using BIStudio.Framework.UI;
-
-    using WebApi.Controllers.Tenant;
+    using Tenant;
     /// <summary>
     /// 用户组
     /// </summary>
-    public partial class GroupController : ApplicationService<GroupVM, Query>
+    public partial class GroupController
     {
-        public override IEnumerable<GroupVM> GetAll(Query info)
-        {
-            var q = from d in _group.Entities
-                    orderby d.GroupTypeID, d.Sequence
-                    select new GroupVM
-                    {
-                        ID = d.ID,
-                        SystemID = d.SystemID,
-                        AppID = d.AppID,
-                        GroupCode = d.GroupCode,
-                        GroupName = d.GroupName,
-                        GroupType = d.GroupType,
-                        GroupTypeID = d.GroupTypeID,
-                        GroupFlag = d.GroupFlag,
-                        GroupFlagID = d.GroupFlagID,
-                        UserCount = (from b in _groupUser.Entities where b.GroupID == d.ID select b.GroupID).Count()
-                    };
+        /// <summary>
+        /// 获取用户分组
+        /// </summary>
+        /// <param name="info">查询参数</param>
+        /// <returns>用户分组</returns>
+        public override IEnumerable<GroupVM> GetAll(Query info) => GetAllInfos(info);
 
-            return q.ToArray();
-        }
+        /// <summary>
+        /// 获取用户分组与APP关联信息
+        /// </summary>
+        /// <param name="id">分组id</param>
+        /// <returns>用户分组与APP关联信息</returns>
+        public virtual GroupAppVM GetAppAccess(long id) => GetAppAccessInfos(id);
 
-        //public virtual IList<GroupVM> GetNav() => GetInfoForNav();
-
-
-        public virtual AppGroupVM GetAppGroups(long id) => GetAppGroupInfos(id);
-
+        /// <summary>
+        /// 保存用户组、APP关联关系
+        /// </summary>
+        /// <param name="infos">用户组、APP关联关系</param>
+        /// <returns>是否保存成功</returns>
+        [HttpPut]
+        public virtual bool SaveAppAccess(long id, [FromBody]AppAccessVM[] infos) => SaveAppAccessInfos(id, infos);
     }
 }

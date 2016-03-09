@@ -5,6 +5,7 @@ using BIStudio.Framework.Domain;
 using BIStudio.Framework.Institution;
 using BIStudio.Framework.Tenant;
 using BIStudio.Framework.UI;
+using WebApi.Controllers.Institution;
 
 namespace WebApi.Controllers.Tenant
 {
@@ -17,6 +18,8 @@ namespace WebApi.Controllers.Tenant
 
         protected IAppService _appService;
 
+        #region 查询
+
         protected virtual AppVM GetInfo(long id)
         {
             var q = from d in _appBO.Entities
@@ -25,7 +28,6 @@ namespace WebApi.Controllers.Tenant
 
             return q.Single().Map<SYSApp, AppVM>();
         }
-
 
         protected virtual IList<AppVM> GetInfos()
         {
@@ -62,11 +64,36 @@ namespace WebApi.Controllers.Tenant
             return vm;
         }
 
+        protected virtual AppGroupVM GetAppAccessInfos(long appID)
+        {
+            var q1 = from d in _groupBO.Entities
+                     where !_appAccessBO.Entities.Any(b => d.ID == b.GroupID && b.AppID == appID)
+                     select d;
+
+            var q2 = from d in _groupBO.Entities
+                     where _appAccessBO.Entities.Any(b => d.ID == b.GroupID && b.AppID == appID)
+                     select d;
+
+
+            return new AppGroupVM
+            {
+                AppID = appID,
+                AllGroups = q1.Map<SYSGroup, GroupVM>().ToArray(),
+                AppGroups = q2.Map<SYSGroup, GroupVM>().ToArray()
+            };
+        }
+
+        #endregion 查询
+
+        #region 保存
+
         protected virtual long SaveVM(AppEditVM vm)
         {
             var dto = vm.Map<AppEditVM, SYSAppRegistDTO>();
 
             return _appService.SaveApp(dto) ? dto.App.ID.Value : 0;
         }
+
+        #endregion 保存
     }
 }

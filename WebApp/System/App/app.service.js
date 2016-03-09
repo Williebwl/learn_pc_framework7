@@ -12,6 +12,9 @@
            this.fnSetStatus = function (id, status) {
                return this.put('SetStatus/' + id + '/' + status)
            },
+           this.fnGetAppAccess = function (id) {
+               return this.get('GetAppAccess/' + (id || 0))
+           },
            this.fnGetIcons = function () {
                return [{ name: '任务', icon: 'fa fa-paper-plane', background: 'background-a' },
                        { name: '审批', icon: 'fa fa-users', background: 'background-b' },

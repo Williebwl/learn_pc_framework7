@@ -35,6 +35,14 @@ namespace WebApi.Controllers.Tenant
         [HttpGet]
         public virtual AppEditVM GetEditInfo(long id) => GetEditVM(id);
 
+        /// <summary>
+        /// 获取app用户分组信息
+        /// </summary>
+        /// <param name="id">appid</param>
+        /// <returns>app用户分组信息</returns>
+        [HttpGet]
+        public virtual AppGroupVM GetAppAccess(long id) => GetAppAccessInfos(id);
+
         #endregion 查询
 
         #region 编辑
@@ -62,7 +70,7 @@ namespace WebApi.Controllers.Tenant
         /// <param name="status">状态值</param>
         /// <returns>是否成功</returns>
         [HttpPut, Route("SetStatus/{id}/{status}")]
-        public virtual bool SetStatus(long id, int status)=> _appBO.Modify(new SYSApp { ID = id, IsValid = status });
+        public virtual bool SetStatus(long id, int status) => _appBO.Modify(new SYSApp { ID = id, IsValid = status });
 
         #endregion 编辑
     }

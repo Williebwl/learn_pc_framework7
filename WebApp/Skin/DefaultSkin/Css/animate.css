@@ -1,0 +1,216 @@
+/*淡入淡出*/
+
+*[data-animate="fadein"] {
+    display: block!important;
+    -webkit-animation: fadeout .6s ease both;
+    animation: fadeout .6s ease both;
+}
+
+*[data-animate="fadeout"] {
+    display: none!important;
+    -webkit-animation: fadeout .6s ease both;
+    animation: fadeout .6s ease both;
+}
+
+@-webkit-keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes fadein {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-webkit-keyframes fadeout {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@-keyframes fadeout {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+
+/*滑动*/
+
+*[data-animate="slideLeftin"] {
+    display: block!important;
+    -webkit-animation: slideLeftin .6s ease both;
+    animation: slideLeftin .6s ease both;
+}
+
+*[data-animate="slideLeftout"] {
+    display: none!important;
+    -webkit-animation: slideLeftout .6s ease both;
+    animation: slideLeftout .6s ease both;
+}
+
+@-webkit-keyframes slideLeftin {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideLeftin {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+@-webkit-keyframes slideLeftout {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+@-keyframes slideLeftout {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+
+/*垂直翻转*/
+
+*[data-animate="flipInY"] {
+    display: block!important;
+    -webkit-animation: flipInY .6s ease both;
+    animation: flipInY .6s ease both;
+}
+
+*[data-animate="flipOutY"] {
+    display: none!important;
+    -webkit-animation: flipOutY .6s ease both;
+    animation: flipOutY .6s ease both;
+}
+
+@-webkit-keyframes flipInY {
+    0% {
+        -webkit-transform: perspective(800px) rotateY(90deg);
+        transform: perspective(800px) rotateY(90deg);
+        opacity: 0
+    }
+    40% {
+        -webkit-transform: perspective(800px) rotateY(-10deg);
+        transform: perspective(800px) rotateY(-10deg)
+    }
+    70% {
+        -webkit-transform: perspective(800px) rotateY(10deg);
+        transform: perspective(800px) rotateY(10deg)
+    }
+    100% {
+        -webkit-transform: perspective(800px) rotateY(0deg);
+        transform: perspective(800px) rotateY(0deg);
+        opacity: 1
+    }
+}
+
+@keyframes flipInY {
+    0% {
+        -webkit-transform: perspective(800px) rotateY(90deg);
+        -ms-transform: perspective(800px) rotateY(90deg);
+        transform: perspective(800px) rotateY(90deg);
+        opacity: 0
+    }
+    40% {
+        -webkit-transform: perspective(800px) rotateY(-10deg);
+        -ms-transform: perspective(800px) rotateY(-10deg);
+        transform: perspective(800px) rotateY(-10deg)
+    }
+    70% {
+        -webkit-transform: perspective(800px) rotateY(10deg);
+        -ms-transform: perspective(800px) rotateY(10deg);
+        transform: perspective(800px) rotateY(10deg)
+    }
+    100% {
+        -webkit-transform: perspective(800px) rotateY(0deg);
+        -ms-transform: perspective(800px) rotateY(0deg);
+        transform: perspective(800px) rotateY(0deg);
+        opacity: 1
+    }
+}
+
+@-webkit-keyframes flipOutY {
+    0% {
+        -webkit-transform: perspective(800px) rotateY(0deg);
+        transform: perspective(800px) rotateY(0deg);
+        opacity: 1
+    }
+    100% {
+        -webkit-transform: perspective(800px) rotateY(90deg);
+        transform: perspective(800px) rotateY(90deg);
+        opacity: 0
+    }
+}
+
+@keyframes flipOutY {
+    0% {
+        -webkit-transform: perspective(800px) rotateY(0deg);
+        -ms-transform: perspective(800px) rotateY(0deg);
+        transform: perspective(800px) rotateY(0deg);
+        opacity: 1
+    }
+    100% {
+        -webkit-transform: perspective(800px) rotateY(90deg);
+        -ms-transform: perspective(800px) rotateY(90deg);
+        transform: perspective(800px) rotateY(90deg);
+        opacity: 0
+    }
+}
+
+
+/*angular动画*/
+
+/*#content.ng-enter{
+    display: block!important;
+    -webkit-animation: fadeout .6s ease both;
+    animation: fadeout .6s ease both;
+}
+
+#content.ng-leave {
+    display: none!important;
+    -webkit-animation: fadeout .6s ease both;
+    animation: fadeout .6s ease both;
+}
+*/
+#content.ng-enter {
+    display: block!important;
+    -webkit-animation: slideLeftin .6s ease both;
+    animation: slideLeftin .6s ease both;
+}
+
+#content.ng-leave {
+    display: none!important;
+    -webkit-animation: slideLeftout .6s ease both;
+    animation: slideLeftout .6s ease both;
+}

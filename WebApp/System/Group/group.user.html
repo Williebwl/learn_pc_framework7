@@ -21,9 +21,9 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr ng-repeat="user in PageInfo.Items">
                 <td>1</td>
-                <td class="alignLeft">肖俊日</td>
+                <td class="alignLeft" ng-bind="user.RealName"></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -38,4 +38,7 @@
             </tr>
         </tbody>
     </table>
+    <div bi-Pagination conf="PageConfig"></div>
+
+    <div bi-dialog src="System/Group/group.relateduser.html" id="relatedUser" class="modal fade bs-modal-sm" />
 </div>

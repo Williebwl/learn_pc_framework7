@@ -1,0 +1,159 @@
+@charset "utf-8";
+/*主色  #E24040 */
+/*元素色  #EE5151 */
+/*边框色  #DB4242 */
+/*深色 #D22C2C*/
+/*浅淡色 #F6F1FD*/
+a{
+	color: #E24040; 
+}
+.fold-menu{
+    background: #E24040;
+}
+.fold-menu .index-logo{
+    background: #D22C2C;
+}
+.user-portrait{
+    background: #E24040;
+}
+.mainnav > li > a{
+    background: #E24040;
+}
+.mainnav > li.active:before, .mainnav > li:hover:before{
+    background: #D22C2C;
+}
+.scroller .mCSB_scrollTools .mCSB_dragger{
+   width: 4px;
+   right: 6px;
+   border-radius: 4px;
+   background: #EE5151;
+}
+.btn.btn-default{
+  background-color: #EE5151;
+  border-color: #DB4242;
+  padding: 5px 15px;
+  color: #fff;
+}
+@media screen and (max-width: 800px){
+  .btn.btn-default{
+    padding: 5px 8px;
+  }
+}
+.btn.btn-default:active, 
+.btn.btn-default:focus, 
+.btn.btn-default:hover{
+    color: #fff;
+    background-color: #E24040;
+    border-color: #E24040;
+   -moz-box-shadow: none;
+   -webkit-box-shadow: none;
+   box-shadow: none;
+}
+.contact-user h1{
+    color: #E24040;	
+}
+.letter-list li.active{
+    background: #E24040;
+    color: #fff;
+}
+.header-bar .toggle-menu:hover{
+    background: #E24040;
+}
+.header-bar .toggle-menu:hover i{
+    color: #fff;
+}
+.nav-list li.active a,
+.nav-list li:hover a{
+	background: #E24040;
+	color: #fff;
+}
+table.table-default thead tr > th,
+table.table-default thead tr > td{
+   color: #ffffff;
+   background-color: #EE5151;
+}
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+   background-color: #EE5151;
+   border-color: #EE5151;
+}
+.prop-form-info div h1{
+	color: #E24040;
+}
+.block-list li:hover {
+    background: #E24040;
+    border: 1px solid #E24040;
+}
+.checkbox-default input:checked + i,.radio-default input:checked + i{
+   color: #EE5151;
+}
+.progress-bar-default{
+	background-color: #EE5151;
+}
+.icon-group-bordered .icon-items:hover{
+    background-color: #E24040;
+    color: #fff;
+    border-color: #E24040;
+}
+.list-panel > div.active,
+.list-panel > div:hover{
+    background: rgba(0,106,255,0.08);
+}
+.btn.btn-icon:hover,
+.btn.btn-icon.active {
+   background: #E24040;
+   border-color: #E24040;
+   color: #fff;
+   -moz-box-shadow: none;
+   -webkit-box-shadow: none;
+   box-shadow: none;
+}
+.band-list li:hover{
+    background: #E4EFFF;
+}
+.band-list li.active{
+    background: #E24040;
+    color: #fff;
+}
+.table-selected td{
+  background: #FFF2F2;
+}
+.table-bordered-default{
+  border-left: 4px solid #EE5151;
+}
+.nav-tabs-default.nav-pills >li.active,
+.nav-tabs-default.nav-pills >li:focus,
+.nav-tabs-default.nav-pills >li:hover{
+  background-color: #EE5151;
+  color: #fff;
+}
+.nav-tabs-default{
+  border-bottom: 1px solid #EE5151;
+  margin-left: -10px; 
+  margin-right: -10px; 
+  padding-left: 10px;
+}
+.nav-pills > li.active, 
+.nav-pills > li.active:focus, 
+.nav-pills > li.active:hover{
+    color: #fff;
+    background-color: #EE5151
+}
+.nav-justified-bordered li.active{
+  border-color: #EE5151;
+  color: #EE5151;
+}
+.dropdown-menu > li > a:hover {
+   background-color: #E24040;
+   color: #fff;
+}
+.fullwidth-nav .mainnav > li.active > a{
+    background: #D22C2C;
+}
+.fullwidth-nav .mainnav > li > a:hover{
+    background: #D22C2C;
+}

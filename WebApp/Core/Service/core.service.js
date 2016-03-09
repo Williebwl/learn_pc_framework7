@@ -78,7 +78,10 @@
             },
             this.fnSequence = function (data) {
                 return this.put('Sequence', data);
-            };
+            },
+            this.fnGetCurrentUser = function () {
+                return this.get('GetCurrentUser')
+            }
         }
 
         CoreService.service = function (recipeName, factoryFunction, ControllerName) {

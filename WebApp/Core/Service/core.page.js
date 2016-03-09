@@ -7,105 +7,17 @@
     ***********************************************/
     define('core.container', ['core.page', 'ext'],
         function (page) {
-            //function fnEdit($view, $service, $scope) {
-            //    var page = this, pageConfig = $view.PageConfig;
-            //    $view.fnPost = function () {
-            //        /// <summary>发起添加操作</summary>
-
-            //        $service.CallBack({ e: 0, info: {}, pageConfig: pageConfig });
-            //    }
-
-            //    $view.fnPut = function (info) {
-            //        /// <summary>发起编辑操作</summary>
-            //        /// <param name="info" type="json">需要编辑维护的数据对象</param>
-
-            //        $service.CallBack({ e: 1, info: info });
-            //    }
-
-            //    $view.fnDelete = function (i, id) {
-            //        /// <summary>发起列表数据删除操作</summary>
-            //        /// <param name="i" type="Number">数据在列表中的索引</param>
-            //        /// <param name="id" type="Number">数据唯一标示</param>
-
-            //        var pageInfo = $view.PageInfo;
-            //        if (arguments.length) {
-
-            //            /*
-            //               单条数据删除
-            //            */
-
-            //            page.confirm('确定删除？', function (p) {
-            //                if (!p.s) return;
-
-            //                //调用Web API 删除数据
-            //                $service.fnDelete(id).success(function (d) {
-            //                    if (pageInfo.Items.length === 1) {
-            //                        pageConfig.currentPage = pageConfig.currentPage > 1 ? pageConfig.currentPage - 1 : pageConfig.currentPage;
-            //                        pageConfig.onChange();
-            //                    }
-            //                    else pageInfo.Items.splice(i, 1);
-            //                }).error(function () { page.errorNotice('数据删除失败！'); });
-            //            })
-
-            //        } else if ($view.CheckedInfos) {
-
-            //            /*
-            //              多条数据删除
-            //            */
-
-            //            var ids = ($view.CheckedInfos ? $view.CheckedInfos.select(function () { return this.key.ID || this.key }) : []).join(',');
-
-            //            if (!ids.length) { page.alert('请选择需要删除的项！'); return false; }
-
-            //            page.confirm('确定要删除选择的项？',
-            //                function (p) {
-            //                    if (!p.s) return;
-
-            //                    //调用Web API 删除数据
-            //                    $service.fnDelete(ids)
-            //                            .success(function (d) {
-            //                                ids = $view.CheckedInfos;
-            //                                if ((pageConfig.numberOfPages > pageConfig.currentPage) || (pageConfig.numberOfPages === pageConfig.currentPage && pageInfo.Items.length === ids.length)) {
-            //                                    pageConfig.currentPage = pageConfig.numberOfPages > pageConfig.currentPage ? pageConfig.currentPage : pageConfig.currentPage - 1;
-            //                                    pageConfig.onChange();
-            //                                }
-            //                                else {
-            //                                    ids.sort(function (a, b) { return a.$index - b.$index; });
-            //                                    for (var i = ids.length - 1; i >= 0; i--) pageInfo.Items.splice(ids[i].$index, 1);
-            //                                }
-            //                                ids.length = 0;
-            //                            }).error(function () { page.errorNotice('数据删除失败！'); });
-            //                });
-            //        }
-            //    }
-
-            //    $view.fnSequence = function () {
-            //        if (!$view.View.CanSort) {
-            //            page.alert('没有需要排序的项！');
-            //            return;
-            //        }
-
-            //        var infos = ($view.PageConfig.Items || $view.View.Items).grepAll(function () { return this.SChanged; }, 1),
-            //            data = infos.select(function () { return { ID: this.ID, Sequence: this.Sequence } });
-
-            //        $service.fnSequence(data).success(function () {
-            //            $view.View.CanSort = !1;
-            //            infos.forEach(function (o) { o.SChanged = !1; });
-            //        });
-            //    }
-            //}
-
             function ListPage($view, $service, $scope) {
                 if (!this || this.constructor === Window) return new ListPage($view, $service, GetScope($view, $scope));
 
-                this.super($view, $service, $scope), this.Type = 'core.container', fnSearch.apply(this, arguments)
+                this.super($view, $service, $scope), this.Type = 'core.container', fnSearch.apply(this, arguments), fnEdit.apply(this, arguments)
             }
 
             return page.ext(ListPage)
 
             function fnSearch($view, $service, $scope) {
                 var params = $view.Params = {},
-                    i = 0,
+                    laze = { last: 0 },
                     self = this,
                     pageConfig = $view.PageConfig = {
                         pageSelect: 0,
@@ -113,26 +25,31 @@
                             /// <summary>调用查询</summary>
                             /// <param name="i" type="Number">查询标示</param>
 
-                            //调用Service.fnGetAll方法查询数据
-                            $service.fnGetPaged(self.GetPagedParams.call(params, pageConfig, refreshSearchParams))
-                                    .success(function (d) {
-                                        if (angular.isNumber(ii) && i !== ii) return;
+                            var active = { laze: laze, active: angular.isNumber(ii) && ii || laze.last };
 
-                                        $view.PageInfo = d;
-                                    });
+                            //调用Service.fnGetAll方法查询数据
+                            $service.fnGetPaged(self.fnGetPagedParams.call(params, pageConfig, refreshSearchParams))
+                                    .success(self.fnGetSearchSuccess.bind(active))
+                                    .error(self.fnGetSearchError.bind(active))
                         }
                     },
                     refreshSearchParams, lastKey, lastSetTimeout;
 
                 //获取分页参数
-                this.GetPagedParams = function (pageConfig) {
+                this.fnGetPagedParams = function (pageConfig) {
                     page.extend(params, { PageIndex: pageConfig.currentPage, PageSize: pageConfig.itemsPerPage })
 
-                    return page.isFunction(self.GetSearchParams) && self.GetSearchParams.call(params, pageConfig, refreshSearchParams), this;
-                }
+                    return page.isFunction(self.fnGetSearchParams) && self.fnGetSearchParams.call(params, pageConfig, refreshSearchParams), this;
+                },
 
                 //获取查询参数
-                this.GetSearchParams = page.noop;
+                this.fnGetSearchParams = page.noop,
+
+                //查询成功
+                this.fnGetSearchSuccess = function (data) { if (this.active !== this.laze.last) return; $view.PageInfo = data; },
+
+                //查询失败
+                this.fnGetSearchError = page.noop,
 
                 //查询
                 $view.fnSearch = function () {
@@ -142,19 +59,105 @@
 
                     if (lastSetTimeout) clearTimeout(lastSetTimeout);
 
-                    lastSetTimeout = setTimeout(function (o) { pageConfig.onChange(++i) }, 600, params);
+                    lastSetTimeout = setTimeout(function (o) { pageConfig.onChange(++laze.last) }, 600, params);
 
                     lastKey = params.Key;
+                },
+
+                //查询
+                $view.fnGet = pageConfig.onChange.bind(pageConfig),
+
+                //响应$$RefreshSearch消息
+                $scope.$on('$$RefreshSearch', function (s, e) { $view.fnGet(refreshSearchParams = { origin: (s.origin = e.origin, s), data: e.data }) })
+            }
+
+            function fnEdit($view, $service, $scope) {
+                var self = this;
+
+                $view.fnPost = function () {
+                    /// <summary>发起添加操作</summary>
+
+                    $view.ShowDialog.apply(this, arguments)
                 }
 
-                $view.fnGet = pageConfig.onChange.bind(pageConfig)
+                $view.fnPut = function (info) {
+                    /// <summary>发起编辑操作</summary>
+                    /// <param name="info" type="json">需要编辑维护的数据对象</param>
 
-                this.fnRefreshSearch = function (s, e) {
-                    refreshSearchParams = { origin: (s.origin = e.origin, s), data: e.data },
-                    $view.fnGet()
+                    $view.ShowDialog.apply(this, arguments)
                 }
 
-                $scope.$on('$$RefreshSearch', this.fnRefreshSearch);
+                //    $view.fnDelete = function (i, id) {
+                //        /// <summary>发起列表数据删除操作</summary>
+                //        /// <param name="i" type="Number">数据在列表中的索引</param>
+                //        /// <param name="id" type="Number">数据唯一标示</param>
+
+                //        var pageInfo = $view.PageInfo;
+                //        if (arguments.length) {
+
+                //            /*
+                //               单条数据删除
+                //            */
+
+                //            page.confirm('确定删除？', function (p) {
+                //                if (!p.s) return;
+
+                //                //调用Web API 删除数据
+                //                $service.fnDelete(id).success(function (d) {
+                //                    if (pageInfo.Items.length === 1) {
+                //                        pageConfig.currentPage = pageConfig.currentPage > 1 ? pageConfig.currentPage - 1 : pageConfig.currentPage;
+                //                        pageConfig.onChange();
+                //                    }
+                //                    else pageInfo.Items.splice(i, 1);
+                //                }).error(function () { page.errorNotice('数据删除失败！'); });
+                //            })
+
+                //        } else if ($view.CheckedInfos) {
+
+                //            /*
+                //              多条数据删除
+                //            */
+
+                //            var ids = ($view.CheckedInfos ? $view.CheckedInfos.select(function () { return this.key.ID || this.key }) : []).join(',');
+
+                //            if (!ids.length) { page.alert('请选择需要删除的项！'); return false; }
+
+                //            page.confirm('确定要删除选择的项？',
+                //                function (p) {
+                //                    if (!p.s) return;
+
+                //                    //调用Web API 删除数据
+                //                    $service.fnDelete(ids)
+                //                            .success(function (d) {
+                //                                ids = $view.CheckedInfos;
+                //                                if ((pageConfig.numberOfPages > pageConfig.currentPage) || (pageConfig.numberOfPages === pageConfig.currentPage && pageInfo.Items.length === ids.length)) {
+                //                                    pageConfig.currentPage = pageConfig.numberOfPages > pageConfig.currentPage ? pageConfig.currentPage : pageConfig.currentPage - 1;
+                //                                    pageConfig.onChange();
+                //                                }
+                //                                else {
+                //                                    ids.sort(function (a, b) { return a.$index - b.$index; });
+                //                                    for (var i = ids.length - 1; i >= 0; i--) pageInfo.Items.splice(ids[i].$index, 1);
+                //                                }
+                //                                ids.length = 0;
+                //                            }).error(function () { page.errorNotice('数据删除失败！'); });
+                //                });
+                //        }
+                //    }
+
+                //    $view.fnSequence = function () {
+                //        if (!$view.View.CanSort) {
+                //            page.alert('没有需要排序的项！');
+                //            return;
+                //        }
+
+                //        var infos = ($view.PageConfig.Items || $view.View.Items).grepAll(function () { return this.SChanged; }, 1),
+                //            data = infos.select(function () { return { ID: this.ID, Sequence: this.Sequence } });
+
+                //        $service.fnSequence(data).success(function () {
+                //            $view.View.CanSort = !1;
+                //            infos.forEach(function (o) { o.SChanged = !1; });
+                //        });
+                //    }
             }
 
         })
@@ -274,16 +277,9 @@
             function ViewPage($view, $service, $scope, dialog) {
                 if (!this || this.constructor === Window) return new ViewPage($view, $service, GetScope($view, $scope), dialog);
 
-                this.super($view, $service, $scope);
-
                 this.Type = 'core.view',
 
-                $service.CallBack = function (editInfo) {
-                    /// <summary>传入数据查看对象</summary>
-                    /// <param name="editInfo" type="json">数据查看对象</param>
-
-                    $view.editInfo = editInfo
-                }
+                fnBindShowView(this.super($view, $service, $scope), $view, $service, $scope, page)
             }
 
             return page.ext(ViewPage)
@@ -340,9 +336,9 @@
         function ViewPage($view, $service, $scope) {
             if (!this || this.constructor === Window) return new ViewPage($view, $service, GetScope($view, $scope));
 
-            this.super($view, $service, $scope),
-
             this.Type = 'core.import'
+
+            fnBindShowView(this.super($view, $service, $scope), $view, $service, $scope, page)
         }
 
         return page.ext(ViewPage)
@@ -356,13 +352,38 @@
         function ViewPage($view, $service, $scope) {
             if (!this || this.constructor === Window) return new ViewPage($view, $service, GetScope($view, $scope));
 
-            this.super($view, $service, $scope),
-
             this.Type = 'core.export'
+
+            fnBindShowView(this.super($view, $service, $scope), $view, $service, $scope, page)
         }
 
         return page.ext(ViewPage)
     })
+
+    function fnBindShowView($self, $view, $service, $scope, page) {
+        $self.fnViewRest = page.noop,
+        //显示页面
+        $self.fnShowView = fnShowView,
+        //关闭页面
+        $self.fnCloseView = fnCloseView,
+        fnbindPage.call($scope.$element),
+        //在上级页面中注册ShowDialog方法
+        $scope.$parent.ShowDialog = function (info) { $self.fnLoadPage(info) },
+        $self.fnLoadPage = function (info) { $self.fnBindPage(info) },//页面加载
+        //绑定页面数据
+        $self.fnBindPage = function (info) {
+            $self.fnSetViewInfo(info),//设置编辑信息
+            $self.fnViewRest(),//重置视图
+            $self.fnLoadAttach($view.Info.ID),//加载附件资源
+            $self.fnShowView.call($scope, $view.Info)//显示页面
+        },
+        //设置页面数据
+        $self.fnSetViewInfo = function (info) {
+            $self.$Info = info = info || {},
+            $view.Info = $self.Info = !!info.ID ? page.extend({}, info) : info
+        }
+    }
+
 
     /**************************************
     ********     页面核心组件      ********
@@ -373,7 +394,7 @@
                 if (!this || this.constructor === Window) return new Page($view, $service, GetScope($view, $scope));
 
                 //拓展继承
-                this.super($view, $service, $scope),
+                var $self = this.super($view, $service, $scope);
 
                 //设置类型
                 this.Type = 'core.page',
@@ -480,7 +501,13 @@
                 //成功通知
                 this.successNotice = function (msg, callback) {
                     this.msg.notice(msg, 3, callback, '$editNotice');
-                }
+                },
+
+                this.fnRefreshCurrentUser = function () { $self.$rootScope.$broadcast('$$RefreshCurrentUser') },
+                $scope.$on('$$RefreshCurrentUser', refreshCurrentUser),
+                refreshCurrentUser()
+
+                function refreshCurrentUser() { $service.fnGetCurrentUser().success(function (d) { $view.$$CurrentUser = $self.CurrentUser = d }) }
             }
 
             return core.ext(Page)

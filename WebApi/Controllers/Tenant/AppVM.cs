@@ -70,5 +70,11 @@ namespace WebApi.Controllers.Tenant
         /// 备注
         /// </summary>
         public string Remark { get; set; }
+
+        /// <summary>
+        /// 图标
+        /// </summary>
+        public string Icon { get; set; }
+
     }
 }

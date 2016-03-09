@@ -4,13 +4,31 @@ function (core) {
 
     core.controller('AccountContainerCtrl',
         function ($scope, authAccountService) {
-            core($scope, authAccountService);
+            var page = core($scope, authAccountService);
 
-            $scope.$on('$$RefreshSearch', function (s, e) {
-                authAccountService.fnGet('')
-                                  .success(function (d) { $scope.PageInfo = d })
-                                  .error(function () { $scope.PageInfo = {} });
+            page.GetSearchParams = function (pageConfig, params) {
+                core.extend(this, { Status: params && params.data.Active.Value })
+            },
+            $scope.CheckConf = {},
+            $scope.fnLogout = function () {
+                if (!$scope.CheckConf.ids.length) {
+                    page.alert('请选择需要注销的通行证！')
+                    return
+                }
 
-            })
+                page.confirm('确定要注销选择的通行证？',
+                    function (e) {
+                        if (e.s) {
+                            authAccountService.fnLogout($scope.CheckConf.ids.select(function () { return this.key; }).join(','))
+                                              .success(function (d) {
+                                                  if (!d) page.alert('通行证注销失败！')
+                                                  else {
+                                                      $scope.CheckConf.ids.forEach(function (o) { o.info.IsValid = !1 })
+                                                  }
+                                              })
+                                              .error(function () { page.alert('通行证注销失败！') })
+                        }
+                    })
+            }
         })
 })
