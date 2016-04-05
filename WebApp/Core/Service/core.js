@@ -16,11 +16,24 @@
             extend: Core.inherit = function (target, data) {
                 return $.extend(target.prototype || target, data || Core.fn), target;
             },
-            super: function ($view, $service, $scope, target) {
-                return (Super = (Super || this.constructor).Super) && Super && Super.call(this, $view, $service, $scope || $view.$id && $view || $service.$rootScope), Super === Core && (Super = 0), this
+            super: function () {
+                var suber = this.constructor,
+                    arg = (arg = Array.prototype.slice.call(arguments.length === 1 ? arguments[0] : arguments))[2] || !arg[0].$id ? arg : (arg.splice(2, 0, arg[0]), arg),
+                    queue = [];
+                this.base = this.constructor.prototype,
+                this.hasOwnProperty('Super') && queue.push(this)
+                do {
+                    suber.prototype.hasOwnProperty('Super') && queue.push(suber.prototype)
+                } while (suber = suber.super)
+                while (suber = queue.pop()) suber.Super.apply(suber, arg)
+                return this
             }
         }) && $.extend(Core, {
             ext: function (target, data) {
+                target.prototype = new this(),
+                target.prototype.base = target.prototype,
+                target.super = this,
+                target.prototype.constructor = target
                 return (target.Super = this), $.extend(Core.inherit(target).fn = target.prototype, data), $.extend(target, Core);
             },
             controller: function (recipeName, factoryFunction) {

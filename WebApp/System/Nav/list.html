@@ -1,0 +1,10 @@
+﻿<div ng-controller="ListNavCtrl">
+    <h2 class="open-subtitle">{{module.MenuName}}</h2>
+    <div class="nav-list">
+        <ul>
+            <li ng-repeat="menu in module.Children">
+                <a href="{{'#'+menu.PageRoute}}" ng-click="fnSelected(status)" ng-bind="menu.MenuName"></a>
+            </li>
+        </ul>
+    </div>
+</div>

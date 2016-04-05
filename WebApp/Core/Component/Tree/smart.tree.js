@@ -9,15 +9,16 @@ define('smart.tree', ['page-Route', 'Assets/Js/Plugins/tree.js', 'ext'],
 
             ctrl.conf = scope.$eval(attr.conf || attr.biSmartTree) || {},
             ctrl.$element = $element,
-
             scope.$watchCollection(dataAttr, ctrl.fnCreate)
         };
 
         //声明并创建指令控制器
         var smartTreeController = function ($scope) {
-            var self = this; 
+            var self = this;
 
             this.fnCreate = function (data) {
+                data && data.length && (data[0].isexpand = true)
+
                 self.conf.Tree = Array.isArray(data) && !self.conf.isTree ? data.getTree() : data,
                 self.$element.empty()
 

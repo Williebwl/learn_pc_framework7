@@ -1,5 +1,8 @@
 ﻿using BIStudio.Framework;
+using BIStudio.Framework.Auth;
 using BIStudio.Framework.Configuration;
+using BIStudio.Framework.Data;
+using BIStudio.Framework.Domain;
 using BIStudio.Framework.MQ;
 using System.Net;
 using System.Web;

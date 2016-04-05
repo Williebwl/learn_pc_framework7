@@ -1,10 +1,10 @@
-﻿define(['core.container', 'System/Group/group.service.js', 'System/Account/account.service.js'],
-function (core) {
+﻿define(['core.container', 'evt.action', 'System/Group/group.service.js', 'System/Account/account.service.js'],
+function (core, actionEvent) {
     'use strict'
 
     core.controller('GroupContainerCtrl', function ($scope, groupService) {
         Create($scope, groupService),
-        $scope.$on('$$RefreshSearch', function (s, e) {
+        $scope.$on(actionEvent.OnSearch, function (s, e) {
             groupService.fnGet(e.data.Active.ID)
                         .success(function (d) { $scope.Info = d, d.UserCount = e.data.Active.UserCount })
                         .error(function () { $scope.Info = {} })
@@ -18,7 +18,7 @@ function (core) {
 
         }),
         core.controller('GroupModuleContainerCtrl', function ($scope) {
-            $scope.$on('$$RefreshSearch', function (s, e) {
+            $scope.$on(actionEvent.OnSearch, function (s, e) {
                 groupService.fnGetAppAccess(e.data.Active.ID)
                             .success(function (d) { $scope.AppAccess = d })
                             .error(function () { $scope.AppAccess = {} })

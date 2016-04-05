@@ -1,0 +1,17 @@
+﻿<div ng-controller="IndexNavCtrl">
+    <div class="toggle-menu">
+        <i class="fa fa-caret-left"></i>
+        <i class="fa fa-caret-right"></i>
+    </div>
+
+    <div class="breadcrumb-wrapper">
+        <span ng-bind="moduleInfo.ShortName"></span>
+        <span ng-show="View.NavName"><span class="fa fa-angle-double-right"></span> {{View.NavName}}</span>
+    </div>
+
+    <div class="open-navigation scroller scrollerbar-primary">
+        <div ng-repeat="module in moduleInfo.Children">
+            <div bi-include="module.NavUrl"></div>
+        </div>
+    </div>
+</div>

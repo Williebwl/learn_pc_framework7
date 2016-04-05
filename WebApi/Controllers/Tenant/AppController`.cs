@@ -15,6 +15,7 @@ namespace WebApi.Controllers.Tenant
         protected IRepository<SYSMenu> _menuBO;
         protected IRepository<SYSAppAccess> _appAccessBO;
         protected IRepository<SYSGroup> _groupBO;
+        protected IRepository<SYSGroupUser> _groupUserBO;
 
         protected IAppService _appService;
 

@@ -31,7 +31,6 @@ a{
 .btn.btn-default{
   background-color: #488BE9;
   border-color: #3379ED;
-  padding: 5px 15px;
   color: #fff;
 }
 @media screen and (max-width: 800px){
@@ -243,4 +242,7 @@ table.table-default thead tr > td{
 .query-select{
     color: #fff;
     background: #488BE9;
+}
+.personal-tabs .tab-content li span{
+  color: #488BE9;
 }

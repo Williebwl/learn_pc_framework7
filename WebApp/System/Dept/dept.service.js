@@ -5,6 +5,9 @@
         function institutionDeptService() {
             this.fnGetSmartTree = function () {
                 return this.get('GetSmartTree')
+            },
+            this.fnGetMaxSequence = function () {
+                return this.get('GetMaxSequence')
             }
         }
 

@@ -1,6 +1,6 @@
 ﻿
-define(['page', 'preloader', 'lobibox', 'System/Index/index.service.js'],
-    function (app, preloader, lobibox) {
+define(['page', 'preloader', 'lobibox', 'evt.message', 'evt.route', 'System/Index/index.service.js'],
+    function (app, preloader, lobibox, messageEvent, routeEvent) {
         'use strict';
 
         function indexCtrl($scope, indexService, $timeout) {
@@ -11,8 +11,8 @@ define(['page', 'preloader', 'lobibox', 'System/Index/index.service.js'],
                 pop.hide()
             });
 
-            $scope.$on('$routeChangeSuccess', function (e, arg) {
-                $scope.PageRoute = arg.$$route.Route
+            $scope.$on(routeEvent.OnRouteChanged, function (e, arg) {
+                $scope.PageRoute = arg.$$route && arg.$$route.Route
             });
         }
 
@@ -25,31 +25,36 @@ define(['page', 'preloader', 'lobibox', 'System/Index/index.service.js'],
 
         var mode = ["info", "warning", "error", "success"];
 
-        app.controller('NoticeCtrl',
-            function ($scope, $rootScope, $timeout) {
-                $scope.Notices = [];
+        //app.controller('NoticeCtrl',
+        //    function ($scope, $rootScope, $timeout) {
+        //        $scope.Notices = [];
 
-                function $editNotice(e, arg) {
-                    arg.class = mode[arg.mode] || 'info',
+        //        function $editNotice(e, arg) {
+        //            arg.class = mode[arg.mode] || 'info',
 
-                    $scope.Notices.push(arg),
+        //            $scope.Notices.push(arg),
 
-                    $timeout(function () { $scope.Notices.remove(arg); }, 2000),
+        //            $timeout(function () { $scope.Notices.remove(arg); }, 2000),
 
-                    angular.isFunction(arg.callback) && arg.callback()
-                }
+        //            angular.isFunction(arg.callback) && arg.callback()
+        //        }
 
-                $rootScope.$on('$editNotice', $editNotice);
-            });
+        //        $rootScope.$on(messageEvent.OnNotice, $editNotice);
+        //    });
 
-        //app.run(function ($rootScope, $animate) {
+        app.run(function ($rootScope, $animate) {
+            function $editNotice(e, d) {
+                lobibox.notify(mode[d.mode] || 'info', (d.position = 'top center', d));
+            }
 
-        //    function $message(e, d) {
-        //        lobibox.notify(mode[d.mode] || 'info', d);
-        //    }
+            $rootScope.$on(messageEvent.OnNotice, $editNotice);
 
-        //    $rootScope.$on('$$msg', $message);
-        //});
+            function $message(e, d) {
+                lobibox.notify(mode[d.mode] || 'info', d);
+            }
+
+            $rootScope.$on(messageEvent.OnTask, $message);
+        });
 
         return app;
     });

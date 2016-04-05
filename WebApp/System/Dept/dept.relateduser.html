@@ -1,3 +1,54 @@
-﻿<div ng-controller="DeptRelatedUserCtrl">
-
-</div>
+﻿<form class="form-horizontal" ng-controller="DeptRelatedUserCtrl">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">部门</label>
+        <div class="col-sm-8">
+            <span class="place-label">软件开发部</span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">用户名：</label>
+        <div class="col-sm-8">
+            <select class="select-autocomplete" style="width:100%;">
+                <optgroup label="开发一部">
+                    <option>AAA</option>
+                    <option>BBB</option>
+                    <option>CCC</option>
+                </optgroup>
+                <optgroup label="开发二部">
+                    <option>111</option>
+                    <option>222</option>
+                    <option>333</option>
+                    <option>444</option>
+                </optgroup>
+                <optgroup label="开发三部">
+                    <option>aaa</option>
+                    <option>bbb</option>
+                    <option>ccc</option>
+                </optgroup>
+                <optgroup label="开发四部">
+                    <option>one</option>
+                    <option>two</option>
+                    <option>three</option>
+                </optgroup>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">职位：</label>
+        <div class="col-sm-8">
+            <select class="form-control">
+                <option value="1">项目经理</option>
+                <option value="1">项目经理</option>
+                <option value="1">项目经理</option>
+                <option value="1">项目经理</option>
+                <option value="1">项目经理</option>
+            </select>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">直属领导：</label>
+        <div class="col-sm-8">
+            <input type="text" placeholder="" class="form-control">
+        </div>
+    </div>
+</form>

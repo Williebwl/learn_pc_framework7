@@ -6,16 +6,14 @@ function (core) {
         function ($scope, authAccountService, institutionDeptService) {
             var page = core($scope, authAccountService);
 
-            page.GetSearchParams = function (pageConfig, params) {
-                params && fnbindInfo($scope, params.data.Active, institutionDeptService),
-                core.extend(this, { DeptID: params && params.data.Active.id })
+            page.fnGetSearchParams = function (pageConfig, params) {
+                params && fnbindInfo($scope, params["core.nav"].Active, institutionDeptService),
+                core.extend(this, { DeptID: params && params["core.nav"].Active.id || 0 })
             }
-
-
         })
 
     function fnbindInfo($scope, active, institutionDeptService) {
-        institutionDeptService.fnGet(active.id)
+        institutionDeptService.fnGet(active && active.id || 0)
                               .success(function (d) { $scope.Info = d })
                               .error(function () { $scope.Info = {} })
     }

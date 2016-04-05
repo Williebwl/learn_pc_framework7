@@ -1,37 +1,26 @@
 <div ng-controller="AppNavCtrl">
-    <div class="toggle-menu">
-        <i class="fa fa-caret-left"></i>
-        <i class="fa fa-caret-right"></i>
+    <div class="convenient-btns ng-scope">
+        <button class="btn btn-white" data-toggle="modal" ng-click="ShowDialog()">
+            <i class="fa fa-plus-square"></i><span>创建新应用</span>
+        </button>
     </div>
-    <div class="breadcrumb-wrapper">
-        <a href="">应用</a>/<span ng-bind="View.AppName">通讯录</span>
-    </div>
-    <div class="open-navigation scroller">
-        <div class="open-subtitle">
-            应用列表
-            <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title="提示信息在这"></i>
 
-            <div class="floatRight drop-anchor">
-                <a class="fa fa-plus-circle" data-toggle="tooltip" title="添加" ng-click="fnAdd()"></a>
-                <div bi-dialog src="System/App/app.edit.html" class="dropdown-box dropdown-right-bottom" />
-            </div>
+    <h2 class="open-subtitle">应用列表</h2>
+    <div class="band-list">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="应用名称|代码">
         </div>
-        <div class="band-list">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="应用名称|代码">
-                <span class="input-group-btn"><button type="button" class="btn btn-default"><i class="fa fa-search"></i></button></span>
-            </div>
-            <ul>
-                <li ng-repeat="app in apps" ng-class="{active:app.ID==View.ID,disabled:!app.IsValid}" ng-click="fnActive(app)">
-                    <span>{{app.AppName}} <span ng-if="app.AppCode">(<em class="sword" ng-bind="app.AppCode"></em>)</span></span>
-                    <div class="band-sys" ng-hide="app.AppTypeID">[系统]</div>
-                    <div class="icon-group" ng-show="app.AppTypeID">
-                        <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip modal" data-placement="left" data-target="#modal" ng-click="fnEdit(app)" title="编辑"></a>
-                        <a href="javascript:;" class="icon-items fa fa-close" data-toggle="tooltip" data-placement="left" ng-click="fnDel($event,app)" title="{{app.IsValid?'禁用':'启用'}}"></a>
-                    </div>
-                </li>
-            </ul>
-        </div>
+        <ul>
+            <li ng-repeat="app in apps" ng-class="{active:app.ID==Search.Active.ID,disabled:!app.IsValid}" ng-click="fnSelected(app, app.AppName)">
+                <span>{{app.AppName}} <span ng-if="app.AppCode">(<em class="sword" ng-bind="app.AppCode"></em>)</span></span>
+                <div class="band-sys" ng-hide="app.AppTypeID">[系统]</div>
+                <div class="icon-group" ng-show="app.AppTypeID">
+                    <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip modal" data-placement="left" data-target="#modal" ng-click="fnEdit(app)" title="编辑"></a>
+                    <a href="javascript:;" class="icon-items fa fa-close" data-toggle="tooltip" data-placement="left" ng-click="fnDel($event,app)" title="{{app.IsValid?'禁用':'启用'}}"></a>
+                </div>
+            </li>
+        </ul>
     </div>
-    <div bi-dialog src="System/App/app.edit.html" id="modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" />
+
+    <div bi-dialog src="System/App/App.edit.html" size="lg" />
 </div>

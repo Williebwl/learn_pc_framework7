@@ -4,6 +4,6 @@
 
         core.controller('DeptRelatedUserCtrl',
             function ($scope, institutionDeptService) {
-
+                core($scope, institutionDeptService)
             })
     })

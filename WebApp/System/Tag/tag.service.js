@@ -1,5 +1,4 @@
-﻿
-define(['core.Service'],
+﻿define(['core.Service'],
     function (core) {
         'use strict'
 
@@ -13,5 +12,5 @@ define(['core.Service'],
 
         }
 
-        return core.service('tag', tagService, 'Tag/Tag').service('tagGroup', 'Tag/tagGroup').service('tagClass', tagClassService, 'Tag/TagClass')
+        return core.service('tagClass', tagClassService, 'Tag/TagClass').service('tag', tagService, 'Tag/Tag');
     });

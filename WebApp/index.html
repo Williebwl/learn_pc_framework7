@@ -43,7 +43,7 @@
             <div class="lef-mainnnav fold-mainnnav">
                 <ul class="mainnav">
                     <li ng-repeat="menu in Menus" ng-class="{active:(menu.PageRoute||menu.ID)==PageRoute}">
-                        <a href="{{'#'+(menu.PageRoute||menu.ID)+'?id='+menu.ID}}" data-nav="{{menu.ShortName||menu.MenuName}}">
+                        <a href="{{'#'+(menu.PageRoute||menu.ID)}}" data-nav="{{menu.ShortName||menu.MenuName}}">
                             <i ng-class="menu.Icon||'fa fa-paper-plane'"></i>
                             <span ng-bind="menu.ShortName||menu.MenuName"></span><b class="fa fa-plus"></b>
                         </a>
@@ -58,9 +58,9 @@
 
     <!-- 主体 start -->
     <section id="content">
-        <div id="notice" class="notice" ng-controller="NoticeCtrl">
+        <!--<div id="notice" class="notice" ng-controller="NoticeCtrl">
             <div><div ng-repeat="notice in Notices"><span ng-bind="notice.alert" ng-class="notice.class"></span></div></div>
-        </div>
+        </div>-->
         <div id="toolbar" class="toolbar" bi-toolbar></div>
         <div id="container" bi-container></div>
     </section>

@@ -80,10 +80,10 @@ define('ext', ['jquery'],
         //根据数组创建对象集合
         //callback:回调函数
         Array.prototype.select = function (callback) {
-            var t = [];
-            for (var i = this.length - 1; i >= 0; i--) t.push(callback.call(this[i]));
-            return t;
+            return this.map(function (o) { return callback.call(o, o) })
         };
+
+        Array.prototype.clone = function () { return this.slice(0) }
 
         //返回对应的元素
         //callback:回调函数
@@ -114,14 +114,14 @@ define('ext', ['jquery'],
         };
 
         Array.prototype.getTree = function (tree, showcklayer) {
-            var tree = Array.isArray(tree) ? tree : [], data = this, node, l = $.isNumeric(showcklayer) ? showcklayer : 0;
+            var tree = Array.isArray(tree) ? tree : [], data = this.slice(0), node, l = $.isNumeric(showcklayer) ? showcklayer : 0;
 
             data.forEach(function (o) {
                 if (o.showcheck == undefined) o.showcheck = ($.isNumeric(o.layer) ? o.layer : 0) >= l;
 
                 if (Array.isArray(o.children) && o.children.length) o.children.length = 0;
 
-                o.toString = function () { return this.path || spit(this.pid) + ',' + spit(this.id); };
+                o.toString = function () { return (this.path || spit(this.pid)) + spit(this.Sequence) + ',' + spit(this.id); };
             });
 
             data.sort();
@@ -140,7 +140,7 @@ define('ext', ['jquery'],
             return tree;
         }
 
-        function spit(id) { var z = '0000000000' + id; return z.substr(z.length - 10); };
+        function spit(id) { var z = '0000000000000000' + id; return z.substr(z.length - 16); };
 
         if (!Array.prototype.find) Array.prototype.find = function (predicate, thisArg) {
             var o;

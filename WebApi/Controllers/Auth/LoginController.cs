@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Text;
 using System.Web.Http;
+using BIStudio.Framework;
 using BIStudio.Framework.Auth;
 using BIStudio.Framework.UI;
 using Newtonsoft.Json;
+using BIStudio.Framework.Utils;
 
 namespace WebApi.Controllers.Auth
 {
@@ -24,7 +26,7 @@ namespace WebApi.Controllers.Auth
             auth.AuthorizeLogin(new SYSAuthorizeLoginDTO(authorize.code, vm.LoginName, vm.Password));
             var token = auth.AccessToken(new SYSAccessTokenDTO(ApiKey, Secret, authorize.code));
 
-            return "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(token)));
+            return "Basic " + JsonConvert.SerializeObject(token).ToBase64String();
         }
     }
 }

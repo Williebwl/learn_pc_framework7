@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
-using BIStudio.Framework.Tenant;
-using BIStudio.Framework.UI;
+using System.Linq;
 
 namespace WebApi.Controllers.Tenant
 {
+    using BIStudio.Framework;
+    using BIStudio.Framework.Tenant;
+    using BIStudio.Framework.UI;
+
     /// <summary>
     /// 应用
     /// </summary>
@@ -43,6 +46,21 @@ namespace WebApi.Controllers.Tenant
         [HttpGet]
         public virtual AppGroupVM GetAppAccess(long id) => GetAppAccessInfos(id);
 
+        public virtual IList<AppVM> GetByUser(long id)
+        {
+            var q = from d in _groupUserBO.Entities
+                    from b in _appAccessBO.Entities
+                    from a in _appBO.Entities
+                    where d.UserId == id
+                    && a.IsValid == 1
+                    && b.GroupID == d.GroupID
+                    && a.ID == b.AppID
+                    orderby a.Sequence
+                    select a;
+
+            return q.Map<SYSApp, AppVM>().ToArray();
+        }
+
         #endregion 查询
 
         #region 编辑
@@ -71,6 +89,19 @@ namespace WebApi.Controllers.Tenant
         /// <returns>是否成功</returns>
         [HttpPut, Route("SetStatus/{id}/{status}")]
         public virtual bool SetStatus(long id, int status) => _appBO.Modify(new SYSApp { ID = id, IsValid = status });
+
+        /// <summary>
+        /// 取消用户App
+        /// </summary>
+        /// <param name="id">appID</param>
+        /// <param name="userId">用户id</param>
+        /// <returns>是否成功</returns>
+        [HttpPut]
+        public virtual bool CancelUserApp(long id, [FromUri]long userId)
+        {
+
+            return false;
+        }
 
         #endregion 编辑
     }

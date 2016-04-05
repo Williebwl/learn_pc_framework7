@@ -10,8 +10,14 @@ define(['core.Service'],
             this.fnGetAppAccess = function (appid) {
                 return this.get('GetAppAccess/' + (appid || 0))
             },
-            this.fnSaveAppAccess = function (groupid,data) {
+            this.fnSaveAppAccess = function (groupid, data) {
                 return this.put('SaveAppAccess/' + (groupid || 0), data)
+            },
+            this.fnGetByUser = function (userid) {
+                return this.get('GetByUser/' + (userid || ''))
+            },
+            this.fnCancelUserGroup = function (userid, groupid) {
+                return this.put('CancelUserGroup/' + (groupid || 0), null, { params: { userId: userid } })
             }
         }
 

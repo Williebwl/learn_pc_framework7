@@ -34,6 +34,8 @@ namespace WebApi
                 new { id = RouteParameter.Optional, action = RouteParameter.Optional },
                 new { action = new NamespaceHttpRouteConstraint() });
             config.Services.Replace(typeof(IHttpControllerSelector), new NamespaceHttpControllerSelector(config));
+
+            config.Filters.Add(new DefinedExceptionFilterAttribute());
         }
     }
 }

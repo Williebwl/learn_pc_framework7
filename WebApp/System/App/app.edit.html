@@ -1,9 +1,9 @@
-﻿<div ng-controller="AppEditCtrl" class="dropdown-content modal-dialog  col-lg-6 col-md-8 col-sm-10">
-    <div class="dropdown-header">
+﻿<div class="modal-content" ng-controller="AppEditCtrl">
+    <div class="modal-header">
         <button class="close" type="button" data-close-self>&times;</button>
         <h4>添加应用</h4>
     </div>
-    <div class="dropdown-body">
+    <div class="modal-body">
         <div class="wizard">
             <ul class="wizard-header nav nav-justified nav-circle">
                 <li class="active"><span>基本信息</span><em>1</em></li>
@@ -14,36 +14,36 @@
                 <div class="wizard-pane active">
                     <form class="form-horizontal re-hidden" name="app" bi-Form-Validate="AppVM">
                         <div class="form-group">
-                            <label class="col-lg-2 control-label"><span class="dangger">*</span>应用名称：</label>
-                            <div class="col-lg-6">
+                            <label class="col-sm-3 control-label"><span class="dangger">*</span>应用名称：</label>
+                            <div class="col-sm-6">
                                 <input type="text" name="AppName" placeholder="应用名称不能为空！" class="form-control" ng-model="editInfo.App.AppName">
                             </div>
-                            <div class="app-icon set-app-icon col-lg-2 col-lg-offset-9" data-prop-class=".prop1">
+                            <div class="app-icon set-app-icon col-sm-2 col-sm-offset-9" data-prop-class=".prop1">
                                 <i class="personal-mark" ng-class="editInfo.icon.background+' '+editInfo.icon.icon"></i>
                                 <span ng-bind="editInfo.icon.name"></span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">应用代码：</label>
-                            <div class="col-lg-6">
+                            <label class="col-sm-3 control-label">应用代码：</label>
+                            <div class="col-sm-6">
                                 <input type="text" name="AppCode" placeholder="应用代码不能为空！" class="form-control" ng-model="editInfo.App.AppCode">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">应用类型：</label>
-                            <div class="col-lg-6">
+                            <label class="col-sm-3 control-label">应用类型：</label>
+                            <div class="col-sm-8">
                                 <select name="AppType" class="form-control" ng-model="AppType" ng-options="appType.TagName for appType in AppTypes"></select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">排序号：</label>
-                            <div class="col-lg-6">
+                            <label class="col-sm-3 control-label">排序号：</label>
+                            <div class="col-sm-8">
                                 <input type="text" name="Sequence" placeholder="排序号" class="form-control" ng-model="editInfo.App.Sequence">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">应用说明：</label>
-                            <div class="col-lg-10">
+                            <label class="col-sm-3 control-label">应用说明：</label>
+                            <div class="col-sm-8">
                                 <textarea name="Remark" class="form-control" rows="4" placeholder="应用说明" ng-model="editInfo.App.Remark"></textarea>
                             </div>
                         </div>
@@ -64,8 +64,8 @@
                 <div class="wizard-pane">
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <label class="col-lg-2 control-label">显示模式：</label>
-                            <div class="col-lg-9">
+                            <label class="col-sm-3 control-label">显示模式：</label>
+                            <div class="col-sm-8">
                                 <div class="radio radio-inline radio-default">
                                     <label ng-repeat="mode in DisplayModes">
                                         <input type="radio" name="xsms" ng-model="editInfo.DisplayMode" ng-value="mode">{{mode.n}}
@@ -75,17 +75,17 @@
                             </div>
                         </div>
                         <div class="form-group" ng-show="editInfo.DisplayMode.v!=2">
-                            <label class="col-lg-2 control-label"><span class="dangger">*</span>导航模板：</label>
-                            <div class="col-lg-7">
+                            <label class="col-sm-3 control-label"><span class="dangger">*</span>导航模板：</label>
+                            <div class="col-sm-8">
                                 <input type="text" ng-model="editInfo.Menu.NavUrl" ng-readonly="!editInfo.DisplayMode.v" class="form-control">
                             </div>
                         </div>
                         <div class="form-group" ng-show="editInfo.DisplayMode.v==2">
-                            <label class="col-lg-2 control-label">外部地址：</label>
-                            <div class="col-lg-7">
+                            <label class="col-sm-3 control-label">外部地址：</label>
+                            <div class="col-sm-8">
                                 <input type="text" ng-model="editInfo.Menu.OutsideUrl" class="form-control" ng-value="'http://'">
                             </div>
-                            <div class="col-lg-2">
+                            <div class="col-sm-3">
                                 <div class="checkbox checkbox-inline checkbox-primary">
                                     <label>
                                         <input type="checkbox" name="tc" ng-model="editInfo.IsPopUp">弹出
@@ -95,8 +95,8 @@
                             </div>
                         </div>
                         <div class="form-group" ng-show="editInfo.DisplayMode.v!=2||!editInfo.IsPopUp">
-                            <label class="col-lg-2 control-label">内容区模板：</label>
-                            <div class="col-lg-7">
+                            <label class="col-sm-3 control-label">内容区模板：</label>
+                            <div class="col-sm-8">
                                 <input type="text"
                                        placeholder="{{editInfo.DisplayMode.v?'':'可不设置'}}"
                                        ng-readonly="editInfo.DisplayMode.v!=1"
@@ -106,8 +106,8 @@
                             </div>
                         </div>
                         <div class="form-group" ng-show="editInfo.DisplayMode.v!=2">
-                            <label class="col-lg-2 control-label">内容条工具：</label>
-                            <div class="col-lg-9">
+                            <label class="col-sm-3 control-label">内容条工具：</label>
+                            <div class="col-sm-8">
                                 <div class="radio radio-inline radio-default">
                                     <label>
                                         <input type="radio" name="nrgjt" ng-model="editInfo.IsToolbar" ng-value="false">无
@@ -122,8 +122,8 @@
                         </div>
 
                         <div class="form-group" ng-show="editInfo.IsToolbar&&editInfo.DisplayMode.v!=2">
-                            <label class="col-lg-2 control-label"></label>
-                            <div class="col-lg-7">
+                            <label class="col-sm-3 control-label"></label>
+                            <div class="col-sm-8">
                                 <input ng-model="editInfo.Menu.ToolBarUrl" class="form-control" />
                             </div>
                         </div>

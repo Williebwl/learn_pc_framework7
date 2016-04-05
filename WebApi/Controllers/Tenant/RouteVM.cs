@@ -52,5 +52,13 @@ namespace WebApi.Controllers.Tenant
         public string containerControllerUrl { get; set; }
 
         public bool IsApp { get; set; }
+        /// <summary>
+        /// 路由ID
+        /// </summary>
+        public long ID { get; set; }
+        /// <summary>
+        /// 应用ID
+        /// </summary>
+        public long AppID { get; set; }
     }
 }

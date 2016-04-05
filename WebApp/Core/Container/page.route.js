@@ -7,8 +7,8 @@
 
   日期：2015-08-20
 */
-define('page-Route', ['page', 'angularAMD', 'ext', 'core.http', 'System/Index/common.js', 'paging', 'angular-route', 'bi.ext', 'System/Index/index.js'],
-    function (app, ngRoutes, ext, core, com) {
+define('page-Route', ['page', 'angularAMD', 'ext', 'core.http', 'System/Index/common.js', 'evt.route', 'paging', 'angular-route', 'bi.ext', 'System/Index/index.js'],
+    function (app, ngRoutes, ext, api, com, routeEvent) {
         /// <summary>为程序添加路由，并将其加载到页面。</summary>
         /// <param name="app" type="angular.module">page模块返回对象</param>
         /// <param name="ngRoutes" type="angularAMD">angularAMD模块返回对象</param>
@@ -22,7 +22,7 @@ define('page-Route', ['page', 'angularAMD', 'ext', 'core.http', 'System/Index/co
         //为程序添加路由（路由规则定义详见angular官方文档）
         app.config(['$routeProvider', function ($routeProvider) {
             ext.ajax.Init({
-                url: core.Api + 'Tenant/Menu/GetRoute',
+                url: api + 'Tenant/Menu/GetRoute',
                 success: function (d) {
                     if (d.RedirectTo)
                         $routeProvider.otherwise({
@@ -46,12 +46,12 @@ define('page-Route', ['page', 'angularAMD', 'ext', 'core.http', 'System/Index/co
         }]);
 
         app.run(function ($rootScope) {
-            $rootScope.$on('$ToolBarContentLoaded', com.ToolBarLoaded),
-            $rootScope.$on('$NavContentLoaded', com.NavLoaded),
-            $rootScope.$on('$ContainerContentLoaded', com.ContainerLoaded),
-            $rootScope.$on('$ContentLoaded', com.ContentLoaded),
-            $rootScope.$on('$routeChange', RouteChange),
-            $rootScope.$on('$routeChangeSuccess', function (e, arg) {
+            $rootScope.$on(routeEvent.OnToolBarLoaded, com.ToolBarLoaded),
+            $rootScope.$on(routeEvent.OnNavLoaded, com.NavLoaded),
+            $rootScope.$on(routeEvent.OnContainerLoaded, com.ContainerLoaded),
+            $rootScope.$on(routeEvent.OnContentLoaded, com.ContentLoaded),
+            $rootScope.$on(routeEvent.OnRouteChange, RouteChange),
+            $rootScope.$on(routeEvent.OnRouteChanged, function (e, arg) {
                 !document.oldTitle && (document.oldTitle = document.title),
                 document.title = document.oldTitle + (arg && arg.$$route && arg.$$route.Title ? ' - ' + arg.$$route.Title : '')
             });

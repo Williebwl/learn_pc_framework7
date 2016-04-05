@@ -12,6 +12,7 @@ namespace WebApi.Controllers.Institution
     /// <summary>
     /// 部门视图模型
     /// </summary>
+    [Mark(Name = "DeptVM")]
     public class SYSDeptVM : ViewModel
     {
         #region Write Model
@@ -49,13 +50,13 @@ namespace WebApi.Controllers.Institution
         /// <summary>
         /// 层级 1开始计算
         /// </summary>
-        [Required, Display(Name = "层级 1开始计算")]
+        [Display(Name = "层级 1开始计算")]
         public int? Layer { get; set; }
 
         /// <summary>
         /// 路径
         /// </summary>
-        [Required, StringLength(50), RegularExpression(@"^[\t\r\n\u0020-\u007e]*$", ErrorMessage = "字段 {0} 必须是英文字母、数字或符号。"), Display(Name = "路径")]
+        [Display(Name = "路径")]
         public string Path { get; set; }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace WebApi.Controllers.Institution
         /// <summary>
         /// ID
         /// </summary>
-        [Required, Display(Name = "ID")]
+        [Display(Name = "ID")]
         public long? ID { get; set; }
 
         #endregion

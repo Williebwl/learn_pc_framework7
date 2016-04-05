@@ -5,6 +5,7 @@ using System.Linq;
 namespace WebApi.Controllers.Institution
 {
     using BIStudio.Framework;
+    using BIStudio.Framework.Auth;
     using BIStudio.Framework.Data;
     using BIStudio.Framework.Domain;
     using BIStudio.Framework.Institution;
@@ -16,6 +17,7 @@ namespace WebApi.Controllers.Institution
     {
         public GroupController() : base("GroupName") { }
 
+        protected IRepository<SYSAccount> _accountBO;
         protected IRepository<SYSGroup> _groupBO;
         protected IRepository<SYSGroupUser> _groupUserBO;
         protected IRepository<SYSAppAccess> _appAccessBO;
@@ -75,13 +77,18 @@ namespace WebApi.Controllers.Institution
 
         protected virtual bool SaveAppAccessInfos(long groupId, AppAccessVM[] infos)
         {
-            _appAccessBO.Remove(d => d.GroupID == groupId);
-
-            if (infos != null && _appAccessBO.Add(infos.Map<AppAccessVM, SYSAppAccess>().ToArray()).Any())
+            using (var ctx = BoundedContext.Create())
             {
-                (_appAccessBO as ITransientDependency).UnitOfWork.Rollback();
+                this.DependOn(ctx);
 
-                return false;
+                _appAccessBO.Remove(d => d.GroupID == groupId);
+
+                if (infos != null && _appAccessBO.Add(infos.Map<AppAccessVM, SYSAppAccess>().ToArray()).Any())
+                {
+                    ctx.Rollback();
+
+                    return false;
+                }
             }
 
             return true;

@@ -30,6 +30,12 @@
            },
            this.fnGetEditInfo = function (id) {
                return this.get('GetEditInfo/' + id)
+           },
+           this.fnGetByUser = function (userid) {
+               return this.get('GetByUser/' + (userid || ''))
+           },
+           this.fnCancelUserApp = function (userid, appid) {
+               return this.put('CancelUserApp/' + (appid || 0), null, { params: { userId: userid } })
            }
         }
 

@@ -1,4 +1,4 @@
-﻿define(['core.edit', 'System/Tag/tag.service.js', 'System/Icon/icon.service.js'],
+﻿define(['core.edit', 'System/App/app.service.js', 'System/Tag/tag.service.js', 'System/Icon/icon.service.js'],
     function (core) {
         'use strict'
 
@@ -36,8 +36,8 @@
                             editInfo.Menu.Icon && (editInfo.icon = $scope.Icons.find(function (o) { return o.icon == editInfo.Menu.Icon && o.background == editInfo.Menu.IconBackGround })),
                             editInfo.IsToolbar = !!editInfo.Menu.ToolBarUrl)
                         }(page.editInfo))
-                    }),
-                    page.fnBindPage(editInfo)
+                    })
+                    return editInfo
                 },
                 //对页面数据进行保存前处理
                 page.fnSaveing = function () {
@@ -64,7 +64,7 @@
                 },
                 //下一步
                 $scope.fnNext = function (mark) {
-                    page.fnValidate(mark)//触发表单验证
+                    page.fnFormValidate(mark)//触发表单验证
                 },
                 $scope.$watch('editInfo.DisplayMode', function (mode) {
                     if ($scope.editInfo.ID) return;

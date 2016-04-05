@@ -1,13 +1,50 @@
-﻿<div ng-controller="AccountImportCtrl" class="modal-dialog  col-lg-6 col-md-8 col-sm-10">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
-            <h4 class="modal-title">导入用户</h4>
-        </div>
-        <div class="modal-body"> 按下 ESC 按钮退出。</div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
-        </div>
-    </div>
+﻿<div ng-controller="AccountImportCtrl">
+    <dl class="dropdown-list">
+        <dt class="dropdown-list-title"><i class="fa fa-hand-o-right"></i>下载导入模板</dt>
+        <dd>
+            <div class="remarks">
+                <span>模板：</span>
+                <span>
+                    <a target="_blank" href="Assets/Template/员工信息表模板.xls">员工信息表模板.xls</a>
+                </span>
+            </div>
+            <div class="remarks">
+                <span>说明：</span>
+                <span>下载后填入员工基本信息，如果需要批量修改员工信息，点击“<a href="javascript:;">导出</a>”下载模板</span>
+            </div>
+        </dd>
+        <dt class="dropdown-list-title"><i class="fa fa-hand-o-right"></i>上传员工信息表</dt>
+        <dd>
+            <div class="remarks has-fileinput">
+                <span>员工信息表：</span>
+                <span>
+                    <div class="input-file">
+                        <button class="btn btn-white">选择</button>
+                        <input type="file">
+                    </div>
+                </span>
+            </div>
+            <div class="remarks">
+                <span>自动创建部门：</span>
+                <span>
+                    <div class="radio radio-inline radio-default">
+                        <label>
+                            <input type="radio" name="radio" checked="checked">是
+                            <i class="fa fa-circle-o"></i>
+                        </label>
+                        <label>
+                            <input type="radio" name="radio">否
+                            <i class="fa fa-circle-o"></i>
+                        </label>
+                    </div>
+                </span>
+            </div>
+        </dd>
+    </dl>
+
+    <footer>
+        <button type="button" class="btn  btn-default" data-dismiss="modal">上传</button>
+        <button type="button" class="btn  btn-white" data-dismiss="modal" data-close-self>取消</button>
+    </footer>
 </div>
+

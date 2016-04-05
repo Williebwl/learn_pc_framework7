@@ -15,7 +15,7 @@ define(['page', 'Login/login.service'],
                                     location.href = sessionStorage.referrer !== location.href && sessionStorage.referrer || 'index.html'
                                 }
                             })
-                            .error(function (a, b) { if (b === -1) console.error('请检查WebApi是否可以访问！'); else alert('登录异常'); });
+                            .error(function (a, b) { $scope.errMsg = b === -1 ? '请检查WebApi是否可以访问！' : a.Message });
 	        }
 
 	    }]);

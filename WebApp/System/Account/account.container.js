@@ -1,34 +1,23 @@
-﻿define(['core.container', 'System/Account/account.service.js'],
-function (core) {
+﻿define(['core.container', 'evt.page', 'System/Account/account.service.js'], function (core, pageEvent) {
     'use strict'
 
-    core.controller('AccountContainerCtrl',
-        function ($scope, authAccountService) {
-            var page = core($scope, authAccountService);
+    function Controller($scope, authAccountService) {
+        var page = core($scope, authAccountService, $scope), type;
+        $scope.CheckConf = {};
 
-            page.GetSearchParams = function (pageConfig, params) {
-                core.extend(this, { Status: params && params.data.Active.Value })
-            },
-            $scope.CheckConf = {},
-            $scope.fnLogout = function () {
-                if (!$scope.CheckConf.ids.length) {
-                    page.alert('请选择需要注销的通行证！')
-                    return
-                }
+        page.fnGetSearchParams = function (pageConfig, params) {
+            params["core.nav"] && core.extend(this, { Status: $scope.isValid = type = params && params["core.nav"].Active.Value });
+            params["core.toolbar"] && core.extend(this, params["core.toolbar"]);
+        },
+        $scope.fnLogout = function () {
+            type ?
+            $scope.fnBulkAction('注销', authAccountService.fnLogout) :
+            $scope.fnBulkAction('启用', authAccountService.fnSetEnable);
+        },
+        $scope.fnUnlock = function (user) {
+            $scope.fnConfirmAction('解锁', authAccountService.fnUnlock, [user.Account.ID]);
+        }
+    }
 
-                page.confirm('确定要注销选择的通行证？',
-                    function (e) {
-                        if (e.s) {
-                            authAccountService.fnLogout($scope.CheckConf.ids.select(function () { return this.key; }).join(','))
-                                              .success(function (d) {
-                                                  if (!d) page.alert('通行证注销失败！')
-                                                  else {
-                                                      $scope.CheckConf.ids.forEach(function (o) { o.info.IsValid = !1 })
-                                                  }
-                                              })
-                                              .error(function () { page.alert('通行证注销失败！') })
-                        }
-                    })
-            }
-        })
+    core.controller('AccountContainerCtrl', Controller);
 })

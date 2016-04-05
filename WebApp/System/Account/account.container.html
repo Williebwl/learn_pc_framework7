@@ -1,44 +1,68 @@
-﻿<div ng-controller="AccountContainerCtrl">
+﻿<style type="text/css">
+    <!--
+    div[ng-controller="AccountContainerCtrl"] table td {
+        text-align: left;
+    }
+
+        div[ng-controller="AccountContainerCtrl"] table td.alignCenter {
+            text-align: center;    
+        }
+    -->
+</style>
+<div ng-controller="AccountContainerCtrl">
     <div class="header-bar">
-        <div class="header-toolbar">
-            <button class="btn btn-primary" ng-click="ShowDialog()"><i class="fa fa-pencil-square-o"></i><span>新建用户</span></button>
-            <button class="btn btn-white" ng-click="ShowDialog('import')">批量导入</button>
-            <button class="btn btn-white" ng-click="fnLogout()">注销</button>
+        <div class="input-group pull-left">
+            <input type="text" class="form-control" placeholder="输入关键字" ng-change="fnInstantSearch()" ng-model="Params.Key">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-gray" ng-click="fnSearch()">查询</button>
+                <button type="button" class="btn btn-gray btn-search" ng-click="fnShowSearch($event, 'search')"><i class="fa fa-search-plus"></i></button>
+            </span>
+        </div>
+
+        <div class="header-toolbar pull-right">
+            <button class="btn btn-white" ng-click="fnLogout()" ng-bind="isValid?'注销':'启用'"></button>
+            <button class="btn btn-white" ng-if="!isValid" ng-click="fnDelete()">删除</button>
         </div>
         <div class="help-info">
-            <a href="" class="fa fa-question-circle" data-toggle="tooltip" data-placement="left" title="帮助中心"></a>
-        </div>
-        <div class="search-bar">
-            <input type="text" placeholder="输入关键字" ng-change="fnSearch()" ng-model="Params.Key">
-            <span class="fa fa-search" data-search=".search1" ng-click="fnSearch()"></span>
+            <a href="javascript:;" class="fa fa-question-circle" data-toggle="tooltip" data-placement="left" title="帮助中心"></a>
         </div>
     </div>
     <div class="contentpanel">
         <div class="table-responsive">
-            <table class="table table-bordered" bi-checkbox="CheckConf" conf="CheckConf">
+            <table class="table table-bordered table-hover" bi-checkbox="CheckConf">
                 <thead>
                     <tr>
-                        <td width="3%"><input type="checkbox" isall/></td>
-                        <th width="5%">序号</th>
-                        <th width="20%" class="alignLeft">用户名称</th>
-                        <th width="30%" class="alignLeft">电子邮件</th>
+                        <th width="5%"><input type="checkbox"></th>
+                        <th width="16%">姓名</th>
+                        <th width="16%">用户名</th>
+                        <th width="20%">电子邮件</th>
                         <th width="20%">上次登录时间</th>
-                        <th width="10%">状态</th>
-                        <th width="12%">操作</th>
+                        <th width="23%">所属部门</th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr ng-repeat="user in PageInfo.Items">
-                        <td><input type="checkbox" ng-value="user.ID" /></td>
-                        <td>{{$index+1}}</td>
-                        <td class="alignLeft">{{user.RealName}}（{{user.LoginName}}）</td>
-                        <td class="alignLeft">{{user.Email}}</td>
-                        <td>{{user.LastLoginTime | date:'yyyy-MM-dd HH:mm'}}</td>
-                        <td><span ng-show="user.IsValid">有效</span><span ng-hide="user.IsValid">无效</span></td>
+                <tbody class="sortable-table tbody-hover">
+                    <tr ng-click="fnShowSlider($event, user.Account,'Account')" ng-repeat="user in PageInfo.Items">
+                        <td class="alignCenter"><input type="checkbox" ng-disabled="'System'===user.LoginName" ng-value="user.Account.ID"></td>
                         <td>
+                            <span ng-bind="user.Account.RealName"></span>
                             <div class="icon-group">
-                                <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="编辑" ng-click="ShowDialog(user)"></a>
-                                <a href="javascript:;" class="icon-items fa fa-trash-o" data-toggle="tooltip" data-placement="bottom" title="删除"></a>
+                                <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" title="编辑" ng-click="ShowDialog('edit',user.Account)"></a>
+                                <a href="javascript:;" class="icon-items fa fa-trash-o" data-toggle="tooltip" title="删除" ng-if="!user.IsValid" ng-click="fnDelete(user.Account.ID)"></a>
+                            </div>
+                        </td>
+                        <td>
+                            {{user.LoginName}}
+                            <span class="danger" ng-if="user.IsLocked">
+                                <a href="javascript:;" data-toggle="tooltip" title="已锁定" ng-click="fnUnlock(user)">已锁定</a>
+                            </span>
+                        </td>
+                        <td class="alignCenter" ng-bind="user.Account.Email"></td>
+                        <td class="alignCenter">{{user.LastLoginTime | date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>
+                            <div ng-repeat="position in user.Positions">
+                                {{position.DeptName}}
+                                <span ng-if="position.PositionName" ng-bind="'('+position.PositionName+')'"></span>
+                                <span class="danger" ng-if="!position.IsValid">已停用</span>
                             </div>
                         </td>
                     </tr>
@@ -48,6 +72,7 @@
         </div>
     </div>
 
-    <div bi-dialog src="System/Account/account.edit.html" id="edit" class="modal fade bs-modal-sm" />
-    <div bi-dialog src="System/Account/account.import.html" id="import" class="modal fade bs-modal-sm" />
+    <div bi-dialog src="System/Account/account.edit.html" id="edit" size="md" title="编辑用户信息"></div>
+    <div bi-dialog src="System/Account/account.slider.html" id="slider" />
+    <div bi-dialog src="System/Account/account.search.html" id="search" size="search-panel-sm" />
 </div>

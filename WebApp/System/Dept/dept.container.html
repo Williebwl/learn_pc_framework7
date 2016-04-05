@@ -1,68 +1,80 @@
-﻿<div class="contentpanel" ng-controller="DeptContainerCtrl">
+﻿<style type="text/css">
+    <!--
+    div[ng-controller="DeptContainerCtrl"] table td {
+        text-align: left;
+    }
 
-    <div class="maintop">
-        <div class="maintop-title clearfix">
-            <h2>{{Info.DeptName}}（<span ng-bind="Info.DeptCode"></span>）</h2>
+        div[ng-controller="DeptContainerCtrl"] table td.alignCenter {
+            text-align: center;
+        }
+    -->
+</style>
+<div ng-controller="DeptContainerCtrl">
+    <div class="contentpanel">
+        <div class="maintop">
+            <div class="maintop-title clearfix">
+                <h2>{{Info.DeptName}}<span ng-if="Info.DeptCode">（<span ng-bind="Info.DeptCode"></span>）</span></h2>
+            </div>
+            <p ng-bind="Info.Remark"></p>
         </div>
-        <p ng-bind="Info.Remark"></p>
-    </div>
-    <div class="tabs">
-        <ul class="nav nav-pills nav-tabs-primary">
-            <li class="active">部门用户</li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane fade in active" id="bmyh">
-                <div class="toolbar clearfix">
-                    <div class="pull-left">
-                        <span>该部门共有<strong class="dangger" ng-bind="PageInfo.TotalItems"></strong>个用户</span>
-                        <a href="">[用户岗位分配]</a>
-                        <a href="">[排序]</a>
-                    </div>
-                    <div class="pull-right col-sm-3">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="用户名 | 真实姓名" ng-change="fnSearch()" ng-model="Params.Key">
-                            <span class="input-group-btn" ng-click="fnSearch()"><button type="button" class="btn btn-default"><i class="fa fa-search"></i></button></span>
+        <div>
+            <ul class="nav nav-pills nav-tabs-primary">
+                <li class="active">部门用户</li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active">
+                    <div class="toolbar clearfix">
+                        <div class="pull-left col-sm-4">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="用户名 | 真实姓名" ng-change="fnInstantSearch()" ng-model="Params.Key">
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-gray" ng-click="fnSearch()"><i class="fa fa-search"></i></button>
+                                </span>
+                            </div>
+                        </div>
+                        <span class="pull-left">全部成员(<strong class="danger" ng-bind="PageInfo.TotalItems"></strong>)</span>
+                        <div class="pull-right">
+                            <a href="javascript:;" ng-click="ShowDialog('relatedUser')">[分配用户]</a>
                         </div>
                     </div>
-                </div>
 
-                <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th width="5%">序号</th>
-                                <th width="25%" class="alignLeft">用户姓名</th>
-                                <th width="15%">所属部门</th>
-                                <th width="15%">下属</th>
-                                <th width="10%">排序</th>
-                                <th width="30%">操作</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="user in PageInfo.Items">
-                                <td>1</td>
-                                <td class="alignLeft" ng-bind="user.RealName"></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td class="alignCenter">
-                                    <div class="icon-group">
-                                        <a href="javascript:;" class="icon-items fa fa-star-o" data-toggle="tooltip" data-placement="bottom" title="关注"></a>
-                                        <a href="javascript:;" class="icon-items fa fa-qrcode" data-toggle="tooltip" data-placement="bottom" title="扫一扫"></a>
-                                        <a href="javascript:;" class="icon-items fa fa-envelope-o" data-toggle="tooltip" data-placement="bottom" title="发邮件"></a>
-                                        <a href="javascript:;" class="icon-items fa fa-newspaper-o" data-toggle="tooltip" data-placement="bottom" title="个人信息"></a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div bi-Pagination conf="PageConfig"></div>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" bi-checkbox="CheckConf">
+                            <thead>
+                                <tr>
+                                    <th width="5%" class="alignCenter"><input type="checkbox"></th>
+                                    <th width="18%">姓名</th>
+                                    <th width="15%">用户名</th>
+                                    <th width="19%">邮箱</th>
+                                    <th width="18%">上次登录时间</th>
+                                    <th width="25%">所属部门</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="user in PageInfo.Items" ng-click="fnShowSlider($event, user.Account,'dept')">
+                                    <td class="alignCenter"><input type="checkbox" ng-value="user.Account.ID"></td>
+                                    <td ng-bind="user.Account.RealName"></td>
+                                    <td ng-bind="user.LoginName"></td>
+                                    <td ng-bind="user.Account.Email"></td>
+                                    <td class="alignCenter">{{user.LastLoginTime | date:'yyyy-MM-dd HH:mm'}}</td>
+                                    <td>
+                                        <div ng-repeat="position in user.Positions">
+                                            {{position.DeptName}}
+                                            <span ng-if="position.PositionName" ng-bind="'('+position.PositionName+')'"></span>
+                                            <span class="danger" ng-if="!position.IsValid">已停用</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div bi-Pagination conf="PageConfig"></div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div bi-dialog src="System/Dept/Dept.edit.html" id="edit" class="modal fade bs-modal-sm" />
-    <div bi-dialog src="System/Dept/Dept.view.html" id="view" class="modal fade bs-modal-sm" />
-    <div bi-dialog src="System/Dept/dept.relateduser.html" id="relatedUser" class="modal fade bs-modal-sm" />
+    </div>
+    <div bi-dialog src="System/Dept/dept.relateduser.html" id="relatedUser" size="md" title="分配用户"/>
+    <div bi-dialog src="System/Account/account.slider.html" id="slider" />
 </div>
+
