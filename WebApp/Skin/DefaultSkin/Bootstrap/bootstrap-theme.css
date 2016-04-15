@@ -84,7 +84,7 @@ label{
 .form-horizontal .radio,
 .form-horizontal .radio-inline{
   padding-top: 4px;
-  vertical-align: -2px;
+  vertical-align: 0;
 }
  
 .form-striped .form-group:nth-child(even) {
@@ -101,6 +101,8 @@ label{
 @media (min-width: 768px){ 
   .form-horizontal .control-label {
       padding-top: 4px;
+/*       font-size: 15px;
+      font-family: "Microsoft JhengHei"; */
   }
 }
 .form-control {
@@ -1024,7 +1026,7 @@ div[id^="oDivL_"] tr td{
 }
 
 .tbody-hover .icon-group{
-  position: absolute;
+  /* position: absolute; */
   margin-left: 10px;
   display: none;
 }
@@ -1337,4 +1339,9 @@ table.table-active{
    display:none;
 }
 
-
+.modal-backdrop.fade{
+  visibility: hidden;
+}
+.modal-backdrop.fade.in{
+  visibility: visible;
+}

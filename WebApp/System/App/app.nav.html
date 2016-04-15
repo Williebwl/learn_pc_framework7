@@ -8,19 +8,19 @@
     <h2 class="open-subtitle">应用列表</h2>
     <div class="band-list">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="应用名称|代码">
+            <input type="text" class="form-control" placeholder="应用名称|代码" ng-model="Key" ng-change="fnKeySearch()">
         </div>
         <ul>
-            <li ng-repeat="app in apps" ng-class="{active:app.ID==Search.Active.ID,disabled:!app.IsValid}" ng-click="fnSelected(app, app.AppName)">
+            <li ng-repeat="app in apps" ng-class="{active:app.ID==Search.Active.ID,disabled:!app.IsValid}" ng-click="fnSelect(app, app.AppName)">
                 <span>{{app.AppName}} <span ng-if="app.AppCode">(<em class="sword" ng-bind="app.AppCode"></em>)</span></span>
-                <div class="band-sys" ng-hide="app.AppTypeID">[系统]</div>
-                <div class="icon-group" ng-show="app.AppTypeID">
-                    <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip modal" data-placement="left" data-target="#modal" ng-click="fnEdit(app)" title="编辑"></a>
-                    <a href="javascript:;" class="icon-items fa fa-close" data-toggle="tooltip" data-placement="left" ng-click="fnDel($event,app)" title="{{app.IsValid?'禁用':'启用'}}"></a>
+                <div class="band-sys" ng-show="app.IsBuiltIn">[内置]</div>
+                <div class="icon-group" ng-hide="app.IsBuiltIn">
+                    <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip modal" data-placement="left" data-target="#modal" ng-click="$event.stopPropagation();fnEdit(app)" title="编辑"></a>
+                    <a href="javascript:;" class="icon-items fa fa-{{app.IsValid?'unlock':'lock'}}" data-toggle="tooltip" data-placement="left" ng-click="$event.stopPropagation();fnDel($event,app)" title="{{app.IsValid?'禁用':'启用'}}"></a>
                 </div>
             </li>
         </ul>
     </div>
 
-    <div bi-dialog src="System/App/App.edit.html" size="lg" />
+    <div bi-dialog src="System/App/App.edit.html" size="lg" title="创建新应用" footer="false" />
 </div>

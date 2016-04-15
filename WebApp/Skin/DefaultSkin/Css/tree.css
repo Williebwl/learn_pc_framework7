@@ -15,7 +15,7 @@
 }
 .bbit-tree-icon, .bbit-tree-ec-icon, .bbit-tree-node-cb,.bbit-tree-elbow-line, .bbit-tree-elbow, .bbit-tree-elbow-end, .bbit-tree-elbow-plus, .bbit-tree-elbow-minus, .bbit-tree-elbow-end-plus, .bbit-tree-elbow-end-minus{
 	border: 0 none;
-	height: 18px;
+	height: 24px;
 	margin: 0;
 	padding: 0;
 	vertical-align: top;
@@ -29,7 +29,7 @@
  }
 .bbit-tree-node-collapsed .bbit-tree-node-icon, .bbit-tree-node-expanded .bbit-tree-node-icon, .bbit-tree-node-leaf .bbit-tree-node-icon{
 	border: 0 none;
-	height: 18px;
+	height: 24px;
 	margin: 0;
 	padding: 0;
 	vertical-align: top;
@@ -119,7 +119,7 @@
 }
 
 .bbit-tree-node-el {
-    line-height:18px;
+    line-height:24px;
     cursor:default;
    /* cursor:pointer;*/
 }
@@ -160,22 +160,22 @@
 } 
 
 /****************************/
-.bbit-tree-node-expanded .bbit-tree-node-icon{
-	background-image: none;/*background-image:url('../../../Images/tree/folder-open.gif'); */
+/* .bbit-tree-node-expanded .bbit-tree-node-icon{
+	background-image:url('../../../Assets/Images/tree/folder-open.gif'); 
 }
 
 .bbit-tree-node-leaf .bbit-tree-node-icon{
-	background-image: none;/*background-image:url('../../../Images/tree/leaf.gif'); */
+	background-image:url('../../../Assets/Images/tree/leaf.gif'); 
 }
 
 .bbit-tree-node-collapsed .bbit-tree-node-icon{
-	background-image: none;/*background-image:url('../../../Images/tree/folder.gif'); */
+	background-image:url('../../../Assets/Images/tree/folder.gif'); 
 }
 
 .bbit-tree-node-loading .bbit-tree-node-icon{
-	background-image: none;/*background-image:url('../../../Images/tree/loading.gif') ;*/
+	background-image:url('../../../Assets/Images/tree/loading.gif') ;
 }
-
+ */
 .bbit-tree-node .bbit-tree-node-inline-icon {
     background-image: none;
 }
@@ -190,11 +190,11 @@
 }
 
 .bbit-tree-lines .bbit-tree-elbow-plus{
-	background-image:url('../../../Assets/Images/tree/elbow-plus.gif');
+	background:url('../../../Assets/Images/tree/elbow-plus.gif')  no-repeat 50% 50%;
 }
 
 .bbit-tree-lines .bbit-tree-elbow-minus{
-	background-image:url('../../../Assets/Images/tree/elbow-minus.gif');
+	background:url('../../../Assets/Images/tree/elbow-minus.gif') no-repeat 50% 50%;
 }
 
 .bbit-tree-lines .bbit-tree-elbow-end{
@@ -202,11 +202,11 @@
 }
 
 .bbit-tree-lines .bbit-tree-elbow-end-plus{
-	background-image:url('../../../Assets/Images/tree/elbow-end-plus.gif');
+	background:url('../../../Assets/Images/tree/elbow-plus.gif') no-repeat 50% 50%;
 }
 
 .bbit-tree-lines .bbit-tree-elbow-end-minus{
-	background-image:url('../../../Assets/Images/tree/elbow-end-minus.gif');
+	background:url('../../../Assets/Images/tree/elbow-end-minus.gif') no-repeat 50% 50%;
 }
 
 .bbit-tree-lines .bbit-tree-elbow-line{
@@ -266,3 +266,11 @@
 .bbit-tree-node .bbit-tree-selected {
 	background-color: #d9e8fb;
 }
+
+/* .bbit-tree-node-expanded:before{
+	content: "\f0d7";
+	font-family: "FontAwesome";
+}
+.bbit-tree-lines .bbit-tree-elbow-end-minus{
+	display: none;
+} */

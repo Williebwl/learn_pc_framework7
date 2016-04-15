@@ -21,9 +21,9 @@ namespace BIStudio.Framework.BestPractice
     {
         static void Main(string[] args)
         {
-            CFConfig.Default
-                .RegisterContainer()
-                .RegisterDataMapping()
+            AppRuntime.Module
+                .RegisterModule()
+                .RegisterORMapping()
                 .RegisterEFRepository();
 
             Console.WriteLine("1. 运行Data示例");
@@ -44,16 +44,16 @@ namespace BIStudio.Framework.BestPractice
             }
             else if (key == '3')
             {
-                CFConfig.Default
-                    .RegisterMessageDispatcher();
-                service = CFAspect.Resolve<ISampleService>();
+                AppRuntime.Module
+                        .RegisterMessageDispatcher();
+                service = AppRuntime.Container.Resolve<ISampleService>();
             }
             else if (key == '4')
             {
-                CFConfig.Default
-                    .RegisterMessageBroker()
+                AppRuntime.Module
+                        .RegisterMessageBroker()
                     .RegisterMessageDispatcher("127.0.0.1");
-                service = CFAspect.Resolve<ISampleService>();
+                service = AppRuntime.Container.Resolve<ISampleService>();
             }
             if (service != null)
             {

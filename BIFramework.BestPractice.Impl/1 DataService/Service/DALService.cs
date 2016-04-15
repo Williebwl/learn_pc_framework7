@@ -11,7 +11,7 @@ namespace BIStudio.Framework.BestPractice.Impl
 {
     public class DALService : ISampleService
     {
-        IDBQuery dbQuery = CFAspect.Resolve<IDBQuery>();
+        IDBQuery dbQuery = AppRuntime.Container.Resolve<IDBQuery>();
         public long CreateUser(string name)
         {
             var entity = new { ID = CFID.NewID(), Name = "张三" };

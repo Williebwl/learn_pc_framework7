@@ -4,8 +4,8 @@
     core.controller('IndexNavCtrl', function ($scope, menuService, $routeParams, $route) {
         var page = core($scope, menuService);
 
-        $scope.$on(actionEvent.OnChanged, function ($s, evt) {
-            $scope.View = { NavName: evt.data.NavName };
+        $scope.$on(actionEvent.OnSelect, function ($s, data, title) {
+            $scope.View = { NavName: title };
         });
 
         menuService.fnGetTreeByAppId($route.current.$$route.AppID)

@@ -5,7 +5,7 @@ function (core, pageEvent) {
     core.controller('DeptNavCtrl', function ($scope, institutionDeptService) {
         var page = core($scope, institutionDeptService),
         treeConf = $scope.TreeConf = {
-            onnodeclick: function (dept) { $scope.fnSelected(dept, dept.tag) }
+            onnodeclick: function (dept) { $scope.fnSelect(dept, dept.tag) }
         };
 
         LoadDept()
@@ -13,7 +13,7 @@ function (core, pageEvent) {
         $scope.$on(pageEvent.OnFormPosted, LoadDept),
         $scope.$on(pageEvent.OnFormPut, LoadDept),
 
-        $scope.$element.on('click', '.deptTree .fa-edit', function () { $scope.ShowDialog('edit',GetDept.call(this)) })
+        $scope.$element.on('click', '.deptTree .fa-edit', function () { $scope.ShowDialog('edit', { ID: GetDept.call(this).id }) })
                        .on('click', '.deptTree .fa-trash', function () {
                            var dept = GetDept.call(this)
 
@@ -24,7 +24,7 @@ function (core, pageEvent) {
                                                          .error(function () { page.errorNotice('删除失败！') })
                                })
                        })
-                          
+
         function GetDept() {
             var dept;
 
@@ -35,7 +35,7 @@ function (core, pageEvent) {
 
         function LoadDept() {
             institutionDeptService.fnGetSmartTree()
-                            .success(function (d) { treeConf.data = d, $scope.fnSelected(d[0], d[0].tag) })
+                            .success(function (d) { treeConf.data = d, $scope.fnSelect(d[0], d[0].tag) })
                             .error(function () { treeConf.data = [] })
         }
     })

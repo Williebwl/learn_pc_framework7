@@ -7,7 +7,7 @@
                 //继承并返回页面对象
                 var page = core($scope, appService), oldMenu;
                 //加载所有应用图标
-                $scope.Icons = appService.fnGetIcons(),
+                //$scope.Icons = appService.fnGetIcons(),
                 //加载所有显示模式
                 $scope.DisplayModes = appService.fnGetDisplayModes(),
                 //获取标签
@@ -26,14 +26,14 @@
                     editInfo.DisplayMode = $scope.DisplayModes[0],
                     editInfo.IsPopUp = !0,
                     editInfo.IsToolbar = !1,
-                    editInfo.icon = $scope.Icons[0] || {},
+                    //editInfo.icon = $scope.Icons[0] || {},
                     appService.fnGetAppAccess(editInfo.ID).success(function (d) { $scope.GroupInfo = d }),
                     editInfo.ID && appService.fnGetEditInfo(editInfo.ID).success(function (d) {
                         (function (editInfo) {
                             page.extend(editInfo, d),
                             editInfo.App && $scope.AppTypes && ($scope.AppType = $scope.AppTypes.find(function (o) { return o.ID == editInfo.App.AppTypeID }) || $scope.AppTypes[0]),
                             (oldMenu = editInfo.Menu) && (editInfo.DisplayMode = $scope.DisplayModes.find(function (o) { return o.v == editInfo.Menu.DisplayModeID }),
-                            editInfo.Menu.Icon && (editInfo.icon = $scope.Icons.find(function (o) { return o.icon == editInfo.Menu.Icon && o.background == editInfo.Menu.IconBackGround })),
+                            //editInfo.Menu.Icon && (editInfo.icon = $scope.Icons.find(function (o) { return o.icon == editInfo.Menu.Icon && o.background == editInfo.Menu.IconBackGround })),
                             editInfo.IsToolbar = !!editInfo.Menu.ToolBarUrl)
                         }(page.editInfo))
                     })

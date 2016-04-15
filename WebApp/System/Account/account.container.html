@@ -14,7 +14,7 @@
         <div class="input-group pull-left">
             <input type="text" class="form-control" placeholder="输入关键字" ng-change="fnInstantSearch()" ng-model="Params.Key">
             <span class="input-group-btn">
-                <button type="button" class="btn btn-gray" ng-click="fnSearch()">查询</button>
+                <button type="button" class="btn btn-gray btn-search" ng-click="fnSearch()">查询</button>
                 <button type="button" class="btn btn-gray btn-search" ng-click="fnShowSearch($event, 'search')"><i class="fa fa-search-plus"></i></button>
             </span>
         </div>
@@ -46,7 +46,7 @@
                         <td>
                             <span ng-bind="user.Account.RealName"></span>
                             <div class="icon-group">
-                                <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" title="编辑" ng-click="ShowDialog('edit',user.Account)"></a>
+                                <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" title="编辑" ng-if="user.IsValid" ng-click="ShowDialog('edit',user.Account)"></a>
                                 <a href="javascript:;" class="icon-items fa fa-trash-o" data-toggle="tooltip" title="删除" ng-if="!user.IsValid" ng-click="fnDelete(user.Account.ID)"></a>
                             </div>
                         </td>

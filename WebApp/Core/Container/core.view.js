@@ -9,8 +9,6 @@ define('core.view', ['core.page', 'ext'], function (page) {
 
         this.Type = 'core.view';
 
-        var $self = this;
-
         //页面重置
         this.fnViewRest = page.noop,
 
@@ -18,16 +16,18 @@ define('core.view', ['core.page', 'ext'], function (page) {
         this.fnLoadPage = page.noop
 
         this.Super = function ($view, $service, $scope, injection) {
+            var $current = this;
+
             //设置页面数据
             this.fnSetViewInfo = function (info) {
-                $self.$Info = info = info || {},
-                $view.Info = $self.Info = !!info.ID ? page.extend({}, info) : info
+                $current.$Info = info = info || {},
+                $view.Info = $current.Info = !!info.ID ? page.extend({}, info) : info
             },
-            $scope.ShowDialog && $scope.ShowDialog(function () { return $self.fnBindPage.apply($self, arguments) })
+            $scope.ShowView && $scope.ShowView(function () { return $current.fnBindPage.apply($current, arguments.length ? arguments : [{}]) })
         },
 
         this.fnBindPage = function () {
-            return this.$q.all([this.fnSetViewInfo.apply(this, arguments), this.fnViewRest.apply(this, arguments), this.fnLoadPage.apply(this, arguments), this.fnLoadAttach.apply(this, arguments)])
+            return this.$q.all([this.fnSetViewInfo.apply(this, arguments), this.fnViewRest.apply(this, arguments), this.fnFormReset.apply(this, arguments), this.fnLoadPage.apply(this, arguments), this.fnLoadAttach.apply(this, arguments)])
         }
     }
 

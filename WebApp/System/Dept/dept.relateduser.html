@@ -1,54 +1,29 @@
-﻿<form class="form-horizontal" ng-controller="DeptRelatedUserCtrl">
+﻿<form class="form-horizontal" ng-controller="DeptRelatedUserCtrl" name="PositionUser" bi-Form-Validate="PositionUser">
     <div class="form-group">
         <label class="col-sm-3 control-label">部门</label>
         <div class="col-sm-8">
-            <span class="place-label">软件开发部</span>
+            <span class="place-label" ng-bind="Dept.DeptName+(Dept.DeptCode&&('（'+Dept.DeptCode+'）'))"></span>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-3 control-label">用户名：</label>
+        <label class="col-sm-3 control-label required-label">用户名：</label>
         <div class="col-sm-8">
-            <select class="select-autocomplete" style="width:100%;">
-                <optgroup label="开发一部">
-                    <option>AAA</option>
-                    <option>BBB</option>
-                    <option>CCC</option>
-                </optgroup>
-                <optgroup label="开发二部">
-                    <option>111</option>
-                    <option>222</option>
-                    <option>333</option>
-                    <option>444</option>
-                </optgroup>
-                <optgroup label="开发三部">
-                    <option>aaa</option>
-                    <option>bbb</option>
-                    <option>ccc</option>
-                </optgroup>
-                <optgroup label="开发四部">
-                    <option>one</option>
-                    <option>two</option>
-                    <option>three</option>
-                </optgroup>
-            </select>
+            <select class="form-control" id="User" name="User" style="width:100%;" ng-model="editInfo.User" filter
+                    ng-options="user.UserName group by user.DeptName for user in Users"></select>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-3 control-label">职位：</label>
+        <label class="col-sm-3 control-label required-label">职位：</label>
         <div class="col-sm-8">
-            <select class="form-control">
-                <option value="1">项目经理</option>
-                <option value="1">项目经理</option>
-                <option value="1">项目经理</option>
-                <option value="1">项目经理</option>
-                <option value="1">项目经理</option>
-            </select>
+            <select class="form-control" id="Position" name="Position" style="width:100%;" ng-model="Position" filter
+                    ng-options="position.PositionName+(position.PositionCode&&('('+position.PositionCode+')')) for position in Positions"></select>
         </div>
     </div>
     <div class="form-group">
-        <label class="col-sm-3 control-label">直属领导：</label>
+        <label class="col-sm-3 control-label required-label">直属领导：</label>
         <div class="col-sm-8">
-            <input type="text" placeholder="" class="form-control">
+            <select class="form-control" id="Leader" name="Leader" style="width:100%;" ng-model="editInfo.Leader" filter
+                    ng-options="user.UserName group by user.DeptName for user in Users"></select>
         </div>
     </div>
 </form>

@@ -60,7 +60,7 @@
         //指定要加载的一个依赖数组。
         deps: ['css', 'jquery', 'angular', 'angular-route', 'angularAMD', 'bootstrap', 'scrollbar'],
         //RequireJS获取资源时附加在URL后面的额外的query参数。
-        //urlArgs: 'v=20160329',
+        urlArgs: 'v=20160408',
         //为没有使用define()来声明依赖关系、设置模块的"浏览器全局变量注入"型脚本做依赖和导出配置。
         shim: {
             'jquery': { exports: 'jQuery' },//设置jQuery以让require能够检测jquery模块是否正常加载

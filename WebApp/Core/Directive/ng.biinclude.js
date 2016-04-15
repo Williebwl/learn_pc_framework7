@@ -66,7 +66,7 @@
                                               else if (action !== 0) {
                                                   action = 0, typeof callback === 'function' && (ctrl.callback = callback);
 
-                                                  $templateRequest(src, true).then(function (response) {
+                                                  $templateRequest(require.toUrl(src), true).then(function (response) {
                                                       if (thisChangeId !== changeCounter) return;
                                                       var newScope = scope.$new();
                                                       ctrl.template = response;

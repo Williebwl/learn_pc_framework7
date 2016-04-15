@@ -3,24 +3,24 @@
         <i class="personal-mark background-c fa fa-users" ng-class="background+' '+icon"></i>
         <div class="maintop-title clearfix">
             <h2>{{Info.AppName||''}}<span ng-if="Info.AppCode">（<span ng-bind="Info.AppCode"></span>）</span><i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="帮助"></i></h2>
-            <span>[来源：<em class="dangger">系统</em>]</span>
+            <span>[分组：<em class="dangger">系统</em>]</span>
         </div>
-        <p ng-bind="Info.Remark||'&nbsp;'"></p>
+        <p>{{Info.Remark}}</p>
     </div>
-    <div class="tabs">
+    <div class="tabs" bi-tabs>
         <ul class="nav nav-pills nav-tabs-primary">
-            <li class="active" ng-click="ShowDialog2('params')">应用参数</li>
-            <li ng-click="ShowDialog2('role')">应用角色</li>
-            <li ng-click="ShowDialog2('tag')">应用标签</li>
-            <li ng-click="ShowDialog2('operate')">应用操作</li>
-            <li ng-click="ShowDialog2('deploy')">应用配置</li>
+            <li>应用参数</li>
+            <li>应用角色</li>
+            <li>应用标签</li>
+            <li>应用操作</li>
+            <li>应用配置</li>
         </ul>
         <div class="tab-content">
-            <div bi-dialog src="System/App/app.params.html" id="params" />
-            <div bi-dialog src="System/App/app.role.html" id="role" />
-            <div bi-dialog src="System/App/app.tag.html" id="tag" />
-            <div bi-dialog src="System/App/app.operate.html" id="operate" />
-            <div bi-dialog src="System/App/app.deploy.html" id="deploy" />
+            <div class="tab-pane" src="System/App/app.params.html" id="params" />
+            <div class="tab-pane" src="System/App/app.role.html" id="role" />
+            <div class="tab-pane" src="System/App/app.tag.html" id="tag" />
+            <div class="tab-pane" src="System/App/app.operate.html" id="operate" />
+            <div class="tab-pane" src="System/App/app.deploy.html" id="deploy" />
         </div>
     </div>
 </div>

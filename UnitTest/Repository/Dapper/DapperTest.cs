@@ -24,7 +24,7 @@ namespace BIFramework.Test
         [TestMethod]
         public void DapperData()
         {
-            IDBQuery dbQuery = CFAspect.Resolve<IDBQuery>();
+            IDBQuery dbQuery = AppRuntime.Container.Resolve<IDBQuery>();
             DBBuilder dbBuilder = DBBuilder.Define();
             //单表查询
             dbBuilder = DBBuilder.Select("User", new { LoginName = "system" });
@@ -54,7 +54,7 @@ namespace BIFramework.Test
         [TestMethod]
         public void DapperUnitofwork()
         {
-            var dbQuery = CFAspect.Resolve<IDBQuery>();
+            var dbQuery = AppRuntime.Container.Resolve<IDBQuery>();
             //使用Data.Core插入数据
             dbQuery.Execute(DBBuilder.Delete("TCTest"));
             dbQuery.Execute(DBBuilder.Insert("TCTest", new { ID = CFID.NewID(), Name = "张三" }));

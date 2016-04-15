@@ -44,32 +44,32 @@
       <HintPath>..\packages\AsyncIO.0.1.18.0\lib\net40\AsyncIO.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework, Version=7.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.7.0.4\lib\net461\BIFramework.dll</HintPath>
+    <Reference Include="BIFramework, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.7.0.5\lib\net461\BIFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Data, Version=7.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Data.7.0.4\lib\net461\BIFramework.Data.dll</HintPath>
+    <Reference Include="BIFramework.Data, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Data.7.0.5\lib\net461\BIFramework.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Data.Sql2005, Version=7.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Data.Sql2005.7.0.4\lib\net461\BIFramework.Data.Sql2005.dll</HintPath>
+    <Reference Include="BIFramework.Data.Sql2005, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Data.Sql2005.7.0.5\lib\net461\BIFramework.Data.Sql2005.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Domain, Version=7.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Domain.7.0.4\lib\net461\BIFramework.Domain.dll</HintPath>
+    <Reference Include="BIFramework.Domain, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Domain.7.0.5\lib\net461\BIFramework.Domain.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Domain.EntityFramework, Version=7.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Domain.EntityFramework.7.0.4\lib\net461\BIFramework.Domain.EntityFramework.dll</HintPath>
+    <Reference Include="BIFramework.Domain.EntityFramework, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Domain.EntityFramework.7.0.5\lib\net461\BIFramework.Domain.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.MQ, Version=7.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.MQ.7.0.4\lib\net461\BIFramework.MQ.dll</HintPath>
+    <Reference Include="BIFramework.MQ, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.MQ.7.0.5\lib\net461\BIFramework.MQ.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Utils, Version=7.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Utils.7.0.4\lib\net461\BIFramework.Utils.dll</HintPath>
+    <Reference Include="BIFramework.Utils, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Utils.7.0.5\lib\net461\BIFramework.Utils.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">

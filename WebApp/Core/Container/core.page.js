@@ -1,231 +1,284 @@
 ﻿/**************************************
 ********     页面核心组件      ********
 ***************************************/
-define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 'evt.message', 'evt.user', 'evt.attach'], function (core, lobibox, coreState, pageEvent, actionEvent, messageEvent, userEvent, attachEvent) {
-    'use strict'
+define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 'evt.message', 'evt.user', 'evt.attach'],
+    function (core, lobibox, coreState, pageEvent, actionEvent, messageEvent, userEvent, attachEvent) {
+        'use strict'
 
-    function Page($view, $service, $scope, injection) {
-        if (!this || this.constructor === Window) return new Page().super(arguments);
+        function Page($view, $service, $scope, injection) {
+            if (!this || this.constructor === Window) return new Page().super(arguments);
 
-        var $self = this;
+            var $self = this;
 
-        //设置类型
-        var _type = 'core.page';
-        Object.defineProperty($self, "Type", {
-            get: function () {
-                return _type;
-            },
-            set: function (type) {
-                _type = type;
-            }
-        });
+            this.Type = 'core.page',
 
+            //页面状态
+            this.PageState = coreState;
 
-        //页面状态
-        this.PageState = coreState;
+            this.$rootScope = core.$injector.get('$rootScope');
 
-        this.$rootScope = core.$injector.get('$rootScope');
+            this.$q = core.$injector.get('$q');
 
-        this.$q = core.$injector.get('$q');
+            //页面表单状态
+            coreState.FormState = !0;
 
-        //页面表单状态
-        coreState.FormState = !0;
+            //等待对象
+            this.Promises = {};
 
-        //等待对象
-        this.Promises = {};
-
-        var _injection = {
-            privateProps: {
-                Params: {},
-                CheckConf: {
-                    ids: []
-                }
-            }
-        };
-        this.Super = function ($view, $service, $scope, injection) {
-            injection = core.extend({}, _injection, injection);
-            //设置私有属性
-            Object.getOwnPropertyNames(injection.privateProps).map(function (propName) {
-                !$view.hasOwnProperty(propName) && (propName in $view) && ($view[propName] = injection.privateProps[propName]);
-            });
-            //向子级容器发布事件
-            this.broadcast = function (evtName) {
-                return function (data) {
-                    $scope.$broadcast(evtName, {
-                        origin: $self.Type, data: data || {}
-                    })
-                };
-            }
-            //向父级容器发布事件
-            this.emit = function (evtName) {
-                return function (data) {
-                    $scope.$emit(evtName, {
-                        origin: $self.Type, data: data || {}
-                    })
-                };
-            }
-
-            //添加
-            $view.fnAdd = this.broadcast(actionEvent.OnAdd);
-
-            //修改
-            $view.fnUpdate = this.broadcast(actionEvent.OnUpdate);
-
-            //删除
-            $view.fnDelete = this.broadcast(actionEvent.OnDelete);
-
-            //操作完成
-            $view.fnChanged = this.broadcast(actionEvent.OnChanged);
-
-            //搜索
-            $view.fnSearch = this.broadcast(actionEvent.OnSearch);
-            
-            //保存附件
-            this.fnSaveAttach = function (id, success, error) {
-                var p = {
-                    ID: id, success: success, error: error, sumNumber: 0, sucNumber: 0, errNumber: 0
-                };
-                $scope.$broadcast(attachEvent.OnSave, p), !p.sumNumber && core.isFunction(p.success) && p.success(id)
-            }
-
-            //加载附件
-            this.fnLoadAttach = function (id, success, error) {
-                var p = {
-                    ID: id, success: success, error: error, sumNumber: 0, sucNumber: 0, errNumber: 0
-                };
-                $scope.$broadcast(attachEvent.OnLoad, p), !p.sumNumber && core.isFunction(p.success) && p.success(id)
-            }
-
-
-            //验证表单
-            this.fnFormValidate = function (mark) {
-                var s = {
-                    IsValid: 1, errorNotice: this.errorNotice.bind(this), mark: mark
-                };
-                return $scope.$broadcast(pageEvent.OnFormValidate, s), !(coreState.FormState = s.IsValid)
-            }
-
-            //表单重置
-            this.fnFormReset = function () {
-                $scope.$broadcast(pageEvent.OnFormReset, {
-                    origin: $self.Type, data: $view.editInfo
-                })
-            }
-
-            //用户信息变更
-            function refreshCurrentUser() {
-                $service.fnGetCurrentUser().success(function (d) {
-                    $view.$$CurrentUser = $self.CurrentUser = d
-                })
-            }
-            this.fnRefreshCurrentUser = function () {
-                $self.$rootScope.$broadcast(userEvent.OnChanged)
-            },
-            $scope.$on(userEvent.OnChanged, refreshCurrentUser)
-
-
-            //消息提醒
-            var msgs = this.msg = {
-                base: lobibox,
-                //通知
-                notice: function (msg, mode, type) {
-                    var deferred = $self.$q.defer(), promise = deferred.promise;
-                    return $scope.$emit(type || messageEvent.OnNotice, Page.isObject(msg) ? msg : {
-                        msg: msg, mode: mode || 0, deferred: deferred
-                    }),
-                    promise.ok = promise.pass = function (fn) { return promise.then(function () { fn.apply(this, arguments) }), promise }, promise
-                },
-                //提醒
-                alert: function (msg, type) {
-                    var deferred = $self.$q.defer(), promise = deferred.promise;
-                    return this.base.alert(type || 'info', Page.isObject(msg) ? msg : {
-                        msg: msg,
-                        callback: function () {
-                            deferred.resolve(arguments)
-                        }
-                    }),
-                    promise.ok = promise.pass = function (fn) { return promise.then(function (arg) { fn.apply(this, arg) }), promise }, promise
-                },
-                //确认
-                confirm: function (msg, title) {
-                    var deferred = $self.$q.defer(), promise = deferred.promise;
-                    return this.base.confirm(Page.isObject(msg) ? msg : {
-                        title: title || '确认信息',
-                        msg: msg,
-                        callback: function ($this, type) {
-                            (type === 'yes' ? deferred.resolve : deferred.reject).call(deferred, arguments)
-                        }
-                    }),
-                    promise.ok = promise.pass = function (fn) { return promise.then(function (arg) { fn.apply(this, arg) }), promise },
-                    promise.cancel = function (fn) { return promise.then(null, function (arg) { fn.apply(this, arg) }), promise }, promise
-                },
-                //消息
-                message: function (msg, mode, title, type) {
-                    var deferred = $self.$q.defer(), promise = deferred.promise;
-                    return $scope.$emit(type || messageEvent.OnTask, Page.isObject(msg) ? ((msg.deferred = deferred), msg) : {
-                        msg: msg, mode: mode || 0, title: title || !0, deferred: deferred
-                    }),
-                    promise.ok = promise.pass = function (fn) { return promise.then(function () { fn.apply(this, arguments) }) },
-                    promise.cancel = function (fn) { return promise.then(null, function () { fn.apply(this, arguments) }), promise }, promise
+            var _injection = {
+                privateProps: {
+                    Params: {},
+                    CheckConf: {
+                        ids: []
+                    },
+                    View: {
+                        CanSort: true
+                    }
                 }
             };
 
-            //通知
-            this.notice = msgs.notice.bind(msgs);
+            this.Super = function ($view, $service, $scope, injection) {
+                var $current = this;
 
-            //提醒
-            this.alert = msgs.alert.bind(msgs);
+                injection = core.extend({}, _injection, injection);
 
-            //确认
-            this.confirm = msgs.confirm.bind(msgs);
+                //设置私有属性
+                Object.getOwnPropertyNames(injection.privateProps).map(function (propName) {
+                    !$view.hasOwnProperty(propName) && (propName in $view) && ($view[propName] = injection.privateProps[propName]);
+                });
 
-            //消息
-            this.message = msgs.message.bind(msgs);
+                //向子级容器发布事件
+                this.broadcast = fnBroadcast.bind(this),
 
-            //操作
-            $view.fnAction = function (name, action, args, success, error) {
-                action.apply($service, args)
-                    .success(function (e) {
-                        $self.successNotice('已完成' + name + '操作。');
-                        $view.fnSearch();
-                        if (success) success(e);
+                //向父级容器发布事件
+                this.emit = fnEmit.bind(this),
+
+                //
+                this.fnBindBroadcast = fnBindBroadcast.bind(this),
+
+                //
+                this.fnBindEmit = fnBindEmit.bind(this),
+
+                //添加
+                this.fnAdd = $view.fnAdd = this.fnBindBroadcast(actionEvent.OnAdd);
+
+                //修改
+                this.fnUpdate = $view.fnUpdate = this.fnBindBroadcast(actionEvent.OnUpdate);
+
+                //删除
+                this.fnDelete = $view.fnDelete = this.fnBindBroadcast(actionEvent.OnDelete);
+
+                //搜索
+                this.fnSearch = $view.fnSearch = this.fnBindBroadcast(actionEvent.OnSearch);
+
+                //搜索对象
+                $view.Search = {
+                    LastActive: null,
+                    Active: null,
+                    NavName: null
+                };
+                $view.$on(actionEvent.OnSelect, function ($s, active, navName) {
+                    $view.Search.Active = active.data, $view.Search.LastActive = $view.Search.Active, $view.Search.NavName = navName;
+                });
+
+                //保存附件
+                this.fnSaveAttach = fnBindAttach.call(this, attachEvent.OnSave),
+
+                //加载附件
+                this.fnLoadAttach = fnBindAttach.call(this, attachEvent.OnLoad),
+
+                //验证表单
+                this.fnFormValidate = function (mark) {
+                    var s = { IsValid: 1, errorNotice: this.errorNotice, mark: mark };
+                    return $scope.$broadcast(pageEvent.OnFormValidate, s), coreState.FormState = s.IsValid, s.promise
+                }
+
+                //表单重置
+                this.fnFormReset = function () {
+                    $scope.$broadcast(pageEvent.OnFormReset, {
+                        origin: $current.Type, data: $view.editInfo
                     })
-                    .error(function (e) {
-                        $self.errorNotice('操作无法完成，因为' + e.Message);
-                        if (error) error(e);
-                    });
-            }
-            $view.fnConfirmAction = function (name, action, args, success, error) {
-                $self.confirm('确定要' + name + '此项目吗？').ok(function () {
+                }
+
+                //用户信息变更
+                function refreshCurrentUser() {
+                    $service.fnGetCurrentUser().success(function (d) {
+                        $view.$$CurrentUser = $current.CurrentUser = d
+                    })
+                }
+                this.fnRefreshCurrentUser = function () {
+                    $current.$rootScope.$broadcast(userEvent.OnChange)
+                },
+                $scope.$on(userEvent.OnChange, refreshCurrentUser)
+
+
+
+                //操作
+                this.fnAction = $view.fnAction = function (name, action, args, success, error) {
                     action.apply($service, args)
                         .success(function (e) {
-                            $self.successNotice('已完成' + name + '操作。');
+                            $current.successNotice('已完成' + name + '操作。');
                             $view.fnSearch();
                             if (success) success(e);
                         })
                         .error(function (e) {
-                            $self.errorNotice('操作无法完成，因为' + e.Message);
+                            $current.errorNotice('操作无法完成，因为' + e.Message);
                             if (error) error(e);
                         });
-                });
+                }
+
+                this.fnConfirmAction = $view.fnConfirmAction = function (name, action, args, success, error) {
+                    $current.confirm('确定要' + name + '此项目吗？').ok(function () {
+                        action.apply($service, args)
+                            .success(function (e) {
+                                $current.successNotice('已完成' + name + '操作。');
+                                $view.fnSearch();
+                                if (success) success(e);
+                            })
+                            .error(function (e) {
+                                $current.errorNotice('操作无法完成，因为' + e.Message);
+                                if (error) error(e);
+                            });
+                    });
+                }
+
+                this.fnDelete = $view.fnDelete = function (data) {
+                    if (data) {
+                        $view.fnConfirmAction('删除', $service.fnDelete, [data], function (success) {
+                            $scope.$emit(pageEvent.OnFormDeleted, [data]);
+                            $scope.$emit(pageEvent.OnFormSubmited, [data]);
+                        }, function (error) {
+                            $scope.$emit(pageEvent.OnFormDeleteFailed, [data]);
+                            $scope.$emit(pageEvent.OnFormSubmitFailed, [data]);
+                        });
+                    }
+                }
+
+
             }
+
+            fnBindMsg.call(this)
         }
 
-        //错误通知
-        this.errorNotice = function (msg) {
-            return this.msg.notice(msg, 2);
-        },
+        return core.ext(Page);
 
-        //警告通知
-        this.warningNotice = function (msg) {
-            return this.msg.notice(msg, 1);
-        },
-
-        //成功通知
-        this.successNotice = function (msg) {
-            return this.msg.notice(msg, 3);
+        function sliceArgs(args, startIndex, endIndex) {
+            return Array.prototype.slice.call(args, startIndex || 0, endIndex);
         }
-    }
 
-    return core.ext(Page)
-})
+        /*****************  消息发送 Start  ********************/
+
+        function fnBroadcast() { this.$scope.$broadcast.apply(this.$scope, arguments) }
+
+        function fnEmit() { this.$scope.$emit.apply(this.$scope, arguments) }
+
+        function fnBindBroadcast(evtName) {
+            return function (data) {
+                var arg = sliceArgs(arguments);
+                !(data && data.origin) && (arg.unshift({ origin: this.Type, data: data || {} })),
+                arg.unshift(evtName),
+                this.broadcast.apply(this, arg)
+            }.bind(this)
+        }
+
+        function fnBindEmit(evtName) {
+            return function (data) {
+                var arg = sliceArgs(arguments);
+                !(data && data.origin) && (arg.unshift({ origin: this.Type, data: data || {} })),
+                arg.unshift(evtName),
+                this.emit.apply(this, arg)
+            }.bind(this)
+        }
+
+        /*****************  消息发送 End    ********************/
+
+        /*****************    附件 Start    ********************/
+
+        function fnBindAttach(evtName) {
+            return function (id) {
+                var promise = this.$q(function (a, b) {
+                    var params = { ID: id, Promise: {}, sumNumber: 0, sucNumber: 0, errNumber: 0 };
+                    this.broadcast(evtName, params),
+                    this.$q.all(params.Promise).then(a.bind(this, params), b.bind(this))
+                }.bind(this))
+                return promise.success = function (fn) { return promise.then(function (arg) { fn.apply(this, Array.isArray(arg) ? arg : arguments) }), promise },
+                    promise.error = function (fn) { return promise.then(null, function (arg) { fn.apply(this, Array.isArray(arg) ? arg : arguments) }), promise }, promise
+            }.bind(this)
+        }
+
+        /*****************    附件 End      ********************/
+
+        /*****************  消息通知 Start  ********************/
+
+        function fnBindMsg() {
+            core.extend(this, core.bindThis(this.msg = {
+                base: lobibox,
+                //通知
+                notice: fnNotice,
+                //提醒
+                alert: fnAlert,
+                //确认
+                confirm: fnConfirm,
+                //消息
+                message: fnMessage,
+                //错误通知
+                errorNotice: function (msg) {
+                    return this.notice(msg, 2);
+                },
+                //警告通知
+                warningNotice: function (msg) {
+                    return this.notice(msg, 1);
+                },
+                //成功通知
+                successNotice: function (msg) {
+                    return this.notice(msg, 3);
+                }
+            }, this))
+        }
+
+        function fnNotice(msg, mode, type) {
+            var promise = this.$q(function (a, b) {
+                this.$rootScope.$emit(type || messageEvent.OnNotice, Page.isObject(msg) ? msg : {
+                    msg: msg, mode: mode || 0, success: a, error: b
+                })
+            }.bind(this));
+            return promise.ok = promise.pass = function (fn) { return promise.then(function () { fn.apply(this, arguments) }), promise }, promise
+        }
+
+        function fnAlert(msg, type) {
+            var promise = this.$q(function (a) {
+                this.msg.base.alert(type || 'info', Page.isObject(msg) ? msg : {
+                    msg: msg,
+                    callback: a
+                })
+            }.bind(this));
+            return promise.ok = promise.pass = function (fn) { return promise.then(function (arg) { fn.apply(this, Array.isArray(arg) ? arg : arguments) }), promise }, promise
+        }
+
+        function fnConfirm(msg, title) {
+            var promise = this.$q(function (a, b) {
+                this.msg.base.confirm(Page.isObject(msg) ? msg : {
+                    title: title || '确认信息',
+                    msg: msg,
+                    callback: function ($this, type) {
+                        (type === 'yes' ? a : b)(arguments)
+                    }
+                })
+            }.bind(this));
+            return promise.ok = promise.pass = function (fn) { return promise.then(function (arg) { fn.apply(this, Array.isArray(arg) ? arg : arguments) }), promise },
+            promise.cancel = function (fn) { return promise.then(null, function (arg) { fn.apply(this, Array.isArray(arg) ? arg : arguments) }), promise }, promise
+        }
+
+        function fnMessage(msg, mode, title, type) {
+            var promise = this.$q(function (a, b) {
+                this.$rootScope.$emit(type || messageEvent.OnTask, Page.isObject(msg) ? ((msg.success = a, msg.error = b), msg) : {
+                    msg: msg, mode: mode || 0, title: title || !0, success: a, error: b
+                })
+            }.bind(this));
+            return promise.ok = promise.pass = function (fn) { return promise.then(function () { fn.apply(this, arguments) }) },
+             promise.cancel = function (fn) { return promise.then(null, function () { fn.apply(this, arguments) }), promise }, promise
+        }
+
+        /*****************  消息通知 End  **********************/
+
+    })

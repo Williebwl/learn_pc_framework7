@@ -9,7 +9,7 @@ using BIStudio.Framework.UI;
 
 namespace WebApi.Controllers.Tag
 {
-    public partial class TagController : ApplicationService<TagVM, TagQuery, SYSTag>
+    public partial class TagController : AppService<TagVM, TagQuery, SYSTag>
     {
         protected IRepository<SYSTag> _tagRepository;
         protected IRepository<SYSTagClass> _tagClassRepository;

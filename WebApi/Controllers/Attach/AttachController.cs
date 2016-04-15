@@ -15,9 +15,9 @@ using Ionic.Zip;
 
 namespace WebApi.Controllers.Attach
 {
-    public class AttachController : ApplicationService
+    public class AttachController : AppService
     {
-        IBiAttach _bo = CFAspect.Resolve<IBiAttach>();
+        IBiAttach _bo = AppRuntime.Container.Resolve<IBiAttach>();
 
         protected virtual string BasePath { get { return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "UserFile"); } }
 
@@ -59,8 +59,8 @@ namespace WebApi.Controllers.Attach
                         FileSize = int.Parse(provider.FormData["size"]),
                         FileType = provider.FormData["type"],
                         Mode = 0,
-                        Inputer = CFContext.User.UserName,
-                        InputerID = CFContext.User.ID,
+                        Inputer = AppRuntime.Context.User.UserName,
+                        InputerID = AppRuntime.Context.User.ID,
                         InputTime = DateTime.Now
                     };
                 }).ToArray();

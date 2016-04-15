@@ -1,5 +1,5 @@
-﻿define(['core.view', 'System/App/app.service.js', 'System/Group/group.service.js'],
-    function (core) {
+﻿define(['core.view', 'evt.action', 'System/App/app.service.js', 'System/Group/group.service.js'],
+    function (core, actionEvent) {
         'use strict'
 
         core.controller('AccountSliderCtrl',
@@ -21,6 +21,20 @@
                     page.confirm('确定要删除').pass(function () {
                         appService.fnCancelUserApp(id, app.ID).success(function () { $scope.Apps.remove(app) }).error(function () { page.errorNotice('应用取消失败！') })
                     })
+                },
+                $scope.fnLogout = function (isValid) {
+                    isValid ? fnLogout('注销', 'fnLogout') : fnLogout('启用', 'fnSetEnable')
+                }
+
+                function fnLogout(type, fn) {
+                    page.confirm('确定要' + type + '该用户？').ok(function () {
+                        authAccountService[fn]($scope.Info.Account.ID).success(function () {
+                            page.successNotice('已完成' + type + '操作。');
+                            page.emit(actionEvent.OnSearch)();
+                        }).error(function (e) {
+                            page.errorNotice('操作无法完成，因为' + e.Message);
+                        });
+                    });
                 }
             })
 

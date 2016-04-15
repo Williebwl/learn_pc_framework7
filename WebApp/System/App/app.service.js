@@ -3,17 +3,18 @@
         'use strict'
 
         function appService() {
+            var $api = this;
             this.fnGet = function (id) {
-                return this.get('Get/' + id)
+                return $api.get('Get/' + id);
             },
-           this.fnGetAll = function () {
-               return this.get('GetAll')
+           this.fnGetAll = function (data) {
+               return $api.get('GetAll', { params: data });
            },
            this.fnSetStatus = function (id, status) {
-               return this.put('SetStatus/' + id + '/' + status)
+               return $api.put('SetStatus/' + id + '?status=' + status)
            },
            this.fnGetAppAccess = function (id) {
-               return this.get('GetAppAccess/' + (id || 0))
+               return $api.get('GetAppAccess/' + (id || 0))
            },
            this.fnGetIcons = function () {
                return [{ name: '任务', icon: 'fa fa-paper-plane', background: 'background-a' },
@@ -29,13 +30,13 @@
                return [{ v: 0, n: '默认模板' }, { v: 1, n: '自定义模板' }, { v: 2, n: '外部主页' }];
            },
            this.fnGetEditInfo = function (id) {
-               return this.get('GetEditInfo/' + id)
+               return $api.get('GetEditInfo/' + id)
            },
            this.fnGetByUser = function (userid) {
-               return this.get('GetByUser/' + (userid || ''))
+               return $api.get('GetByUser/' + (userid || ''))
            },
            this.fnCancelUserApp = function (userid, appid) {
-               return this.put('CancelUserApp/' + (appid || 0), null, { params: { userId: userid } })
+               return $api.put('CancelUserApp/' + (appid || 0), null, { params: { userId: userid } })
            }
         }
 

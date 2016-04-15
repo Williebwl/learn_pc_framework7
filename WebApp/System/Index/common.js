@@ -24,9 +24,12 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui', 'Assets/J
             setLetterHeight();
         })
 
+        // 点击按钮失去焦点
+        $(document).on("click","button.btn",function(){
+            $(this).blur();
+        })
 
-
-        $(document).on("click", '[data-toggle="tooltip modal"]', function () {
+        $(document).on("click", '[data-toggle="tooltip modal"],.left-nav .btn', function () {
             if ($(window).width() <= 800 && $(window).width() > 481) {
                 setLayout(false, -130, 70, -200, 0, 0, -200);
                 $(this).parents(".left-nav").removeClass('zIndex');
@@ -93,18 +96,18 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui', 'Assets/J
 
         // 搜索
         $.fn.extend({
-            showSearch: function() {
+            showSearch: function () {
                 var w = this.data("outerWidth") || this.data("outerWidth", this.outerWidth()).data("outerWidth");
-                $(".contentpanel").stop().animate({'margin-left':w},200);
+                $(".contentpanel").stop().animate({ 'margin-left': w }, 200);
                 this.attr("data-animate", "flipInY");
                 if ($(window).width() > 1024) {
                     setLayout(false, -130, 70, 200, 400, 0, 0);
                 }
                 return this;
             },
-            hideSearch: function() {
+            hideSearch: function () {
                 this.attr("data-animate", "flipOutY");
-                $(".contentpanel").stop().animate({'margin-left':0},200)
+                $(".contentpanel").stop().animate({ 'margin-left': 0 }, 200)
                 if ($(window).width() > 1024) {
                     setLayout(true, 70, 270, 200, 400, 0, 0);
                 } else if ($(window).width() <= 1024 && $(window).width() > 800) {
@@ -178,7 +181,7 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui', 'Assets/J
             e.stopPropagation();
         })
         $(document).on("click", function (e) {
-            $("[data-prop-direction]").each(function () {
+            $("[data-prop-direction]:not('[data-slider=static]')").each(function () {
                 $(this).hideProp();
             });
         })
@@ -211,21 +214,21 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui', 'Assets/J
 
 
         /** 表单向导 start**/
-        $(document).on("click", ".wizard .wizard-header li", function () {
+        $(document)/*.on("click", ".wizard .wizard-header li", function () {
             var $self = $(this);
             showWizard($self.closest(".wizard"), $self.index())
-        }).on("click", ".wizard-footer .next", function (e) {
+        })*/.on("click", ".wizard-footer .next", function (e) {
             if (!coreState.FormState) return;
             var $self = $(this).closest(".wizard");
             showWizard($self, $self.find(".wizard-pane.active").index() + 1)
-        }).on("click", ".wizard-footer .previous:not(.disabled)", function (e) {
+        }).on("click", ".wizard-footer .previous:not(.hide)", function (e) {
             var $self = $(this).closest(".wizard");
             showWizard($self, $self.find(".wizard-pane.active").index() - 1)
         })
 
         function showWizard(obj, i) {
-            i > 0 ? obj.find(".previous").removeClass("disabled") :
-                obj.find(".previous").addClass("disabled")
+            i > 0 ? obj.find(".previous").removeClass("hide") :
+                obj.find(".previous").addClass("hide")
             if (i == obj.find(".wizard-header li").length - 1) {
                 obj.find(".next").hide().siblings().removeClass("hide");
             } else {
@@ -238,6 +241,8 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui', 'Assets/J
 
         /** 选项卡 start**/
         $(document).on("click", ".tabs > .nav > li", function () {
+            if ($(this).attr('bi-tab-nav') != undefined) return;
+
             var $nav = $(this).addClass("active"),
                 $tabs = $nav.closest('.tabs'),
                 $pane = $tabs.children('.tab-content').children('.tab-pane:eq(' + $nav.index() + ')').addClass("active"),
@@ -251,7 +256,7 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui', 'Assets/J
         })
         /** 选项卡 end**/
         /** 隐藏浮动层 start**/
-        .on('click', function (e) {
+        $(document).on('click', function (e) {
             if (!$(e.target).closest(".dropdown-box").is('.dropdown-box') && e.target.parentNode) $('.dropdown-box').hide()
         })
         /** 隐藏浮动层 end**/
@@ -297,7 +302,11 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui', 'Assets/J
 
 
         /** 左边栏滚动条 **/
-        $(function () { CustomScrollbar.call($('.lef-mainnnav')) })
+        $(function () { CustomScrollbar.call($('.lef-mainnnav')); })
+
+        // setTimeout(function(){
+        //     CustomScrollbar.call($('.prop-slider-content'))
+        // },3000)
         /** 左边栏滚动条 **/
 
         /** tooltip **/
@@ -322,6 +331,7 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui', 'Assets/J
                 setNavHeight();
                 setMainHeight();
                 setLetterHeight();
+
             }
         };
 

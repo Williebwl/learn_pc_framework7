@@ -1,37 +1,40 @@
 ﻿define('formValidate', ['page-Route', 'evt.page', 'core.Service'], function (app, pageEvent) {
     'use strict';
 
-    var biFormValidateDirective =
-        function (coreService) {
-            var biFormValidateDirectiveLink = function (scope, $element, attr, ctrl) {
-                var formValidate = {
-                    mark: $.trim(attr.biFormValidate) || $.trim(attr.mark) || ctrl.$name,
-                    form: $element.attr('novalidate', ''), $form: ctrl, tag: [],
-                    $scope: scope
-                }
+    var biFormValidateDirective = function ($q, coreService) {
+        var biFormValidateDirectiveLink = function (scope, $element, attr, ctrl) {
+            var formValidate = {
+                mark: $.trim(attr.biFormValidate) || $.trim(attr.mark) || ctrl.$name,
+                form: $element.attr('novalidate', ''), $form: ctrl, tag: [],
+                $scope: scope
+            }
 
-                if (!formValidate.mark || !formValidate.form.is('form') || !formValidate.$form) return;
+            if (!formValidate.mark || !formValidate.form.is('form') || !formValidate.$form) return;
 
-                coreService.fnGetformValidInfo(formValidate.mark)
-                           .success(function (vm) {
-                               if (!vm || !$.isPlainObject(vm) || $.isEmptyObject(vm)) return;
-                               biFormValidate.bindVM((formValidate.VMInfo = vm) && formValidate);
-                           }).error(function () {
-                               console.log("【" + formValidate.mark + "】验证信息获取失败！")
-                           });
+            coreService.fnGetformValidInfo(formValidate.mark)
+                       .success(function (vm) {
+                           if (!vm || !$.isPlainObject(vm) || $.isEmptyObject(vm)) return;
+                           biFormValidate.bindVM((formValidate.VMInfo = vm) && formValidate);
+                       }).error(function () {
+                           console.log("【" + formValidate.mark + "】验证信息获取失败！")
+                       });
 
-                scope.$on(pageEvent.OnFormReset, function (s, e) { biFormValidate.$formValidateRest(formValidate) })
+            scope.$on(pageEvent.OnFormReset, function (s, e) {
+                biFormValidate.$formValidateRest(formValidate)
+            })
 
-                scope.$on(pageEvent.OnFormValidate, function (s, e) { e.IsValid && (!e.mark || e.mark === formValidate.mark || Array.isArray(e.mark) && $.inArray(formValidate.mark, e.mark) >= 0) && biFormValidate.$formValidate(formValidate, e) })
-            };
-
-            return {
-                restrict: 'AC',
-                priority: 9,
-                require: '?form',
-                link: biFormValidateDirectiveLink
-            };
+            scope.$on(pageEvent.OnFormValidate, function (s, e) {
+                e.IsValid && (!e.mark || e.mark === formValidate.mark || Array.isArray(e.mark) && $.inArray(formValidate.mark, e.mark) >= 0) && biFormValidate.$formValidate(formValidate, e, $q)
+            })
         };
+
+        return {
+            restrict: 'AC',
+            priority: 9,
+            require: '?form',
+            link: biFormValidateDirectiveLink
+        };
+    };
 
     app.directive('biFormValidate', biFormValidateDirective);
 
@@ -95,10 +98,11 @@
         },
         validates: {
             required: function ($input, key, set, ctrl) {
+                var isSelect = $input.is('select')
 
                 $input.prop('required', true)
 
-                return ctrl.$validators.required = function (modelValue, viewValue) { return validate.call($input, key, set, !ctrl.$isEmpty(viewValue)) }
+                return ctrl.$validators.required = function (modelValue, viewValue) { isSelect && modelValue === '?' && modelValue === viewValue && (modelValue = viewValue = ''); return validate.call($input, key, set, !ctrl.$isEmpty(viewValue)) }
             },
             regularexpression: function () {
                 this.pattern.apply(this, (arguments[1] = 'pattern') && arguments)
@@ -122,7 +126,7 @@
                 this.pattern.apply(this, (arguments[1] = 'visiblechar') && (arguments[2].pattern = /^[\u0020-\u007e]+$/) && arguments)
             },
             pattern: function ($input, key, set, ctrl) {
-                var regex = (regex = set.pattern || set.value || set) && angular.isString(regex) && regex.length > 0 && new RegExp(regex)||set.pattern, regexp;
+                var regex = (regex = set.pattern || set.value || set) && angular.isString(regex) && regex.length > 0 && new RegExp(regex) || set.pattern, regexp;
 
                 if (!regex && !regex.test) return;
 
@@ -201,13 +205,14 @@
             if (!$input.is('.form-control')) $input.addClass('form-control');
             if ((this.fnRequired && !$input.val()) && !this.$ctrl.$valid) $input.parent().addClass('has-error');
         },
-        $formValidate: function (fv, e) {
+        $formValidate: function (fv, e, $q) {
             e.IsValid = fv.$form.$valid;
             var msg = "";
             fv.tag.forEach(function ($input) {
+                var val = $input.val(); //(val = $input.val(), $input.is('select') && val === '?' && val === $('option:first', $input).val() && (val = ''), val);
                 if (!$input.is('.form-control')) $input.addClass('form-control');
                 for (var key in $input.Validates) {
-                    var func = $input.Validates[key], val = $input.val();
+                    var func = $input.Validates[key];
                     $.isFunction(func) && func(val, val)
                 }
 
@@ -215,8 +220,8 @@
                     e.IsValid = 0, msg += "·" + $input.errorMsg[key] + "<br />";
                 }
             })
-            if (msg)
-                e.errorNotice(msg);
+
+            e.promise = $q(function (a, b) { msg ? (e.errorNotice(msg), b(e)) : a(e) })
         },
         formDefSeting: { $valid: false, $invalid: false, $pristine: true, $dirty: false },
         $formValidateRest: function (fv) {

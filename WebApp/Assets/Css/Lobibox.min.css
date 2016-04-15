@@ -811,8 +811,9 @@ fieldset[disabled] .lobibox .lobibox-btn.lobibox-btn-default:hover {
 }
 
 .lobibox-notify-wrapper.center{
-    left: 0;
-    right: 0;
+    width: 400px;
+    left: 50%;
+    margin-left: -200px;
 }
 .lobibox-notify-wrapper.center .lobibox-notify{
     margin:5px auto;

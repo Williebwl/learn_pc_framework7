@@ -18,7 +18,7 @@ namespace WebApi.Controllers.Auth
         /// <summary>
         /// 用户名
         /// </summary>
-        [StringLength(50, MinimumLength = 4), Required, Display(Name = "用户名"), Identifier]
+        [StringLength(50, MinimumLength = 3), Required, Display(Name = "用户名"), Identifier]
         public string UserName { get; set; }
 
         /// <summary>
@@ -136,6 +136,9 @@ namespace WebApi.Controllers.Auth
         public string SystemCode { get; set; }
 
         #endregion
+
+        [Required, Display(Name = "部门")]
+        public string Dept { get; set; }
     }
 
 }

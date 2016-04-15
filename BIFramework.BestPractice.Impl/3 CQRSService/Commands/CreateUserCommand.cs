@@ -11,7 +11,7 @@ namespace BIStudio.Framework.BestPractice.Impl
     /// <summary>
     /// 请求创建用户
     /// </summary>
-    public class CreateUserCommand : ApplicationCommand
+    public class CreateUserCommand : Command
     {
         public CreateUserCommand()
         {

@@ -1,0 +1,52 @@
+﻿<div ng-controller="DeptPositionTabCtrl">
+    <div class="toolbar clearfix">
+        <div class="pull-left col-sm-4">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="职位名称 | 职位代码" ng-change="fnInstantSearch()" ng-model="Params.Key">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-gray" ng-click="fnSearch()"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+        <span class="pull-left">全部职位(<strong class="danger" ng-bind="PageInfo.TotalItems"></strong>)</span>
+        <div class="pull-right">
+            <a href="javascript:;" ng-click="fnAdd()">[新增职位]</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover" bi-checkbox="CheckConf">
+            <thead>
+                <tr>
+                    <th width="5%" class="alignCenter"><input type="checkbox"></th>
+                    <th width="40%">职位名称</th>
+                    <th width="40%">上级职位</th>
+                    <th width="15%">状态</th>
+                </tr>
+            </thead>
+            <tbody class="sortable-table tbody-hover">
+                <tr ng-repeat="position in PageInfo.Items">
+                    <td class="alignCenter"><input type="checkbox" ng-value="position.Position.ID"></td>
+                    <td>
+                        {{position.Position.PositionName}}<span ng-if="position.Position.PositionCode">（{{position.Position.PositionCode}}）</span>
+                        <div class="icon-group">
+                            <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" title="编辑" ng-click="ShowDialog('edit',position.Position)"></a>
+                            <a href="javascript:;" class="icon-items fa fa-lock" data-toggle="tooltip" title="停用" ng-if="position.Position.IsValid" ng-click="fnDisable(position.Position.ID)"></a>
+                            <a href="javascript:;" class="icon-items fa fa-trash-o" data-toggle="tooltip" title="删除" ng-if="!position.Position.IsValid" ng-click="fnDelete(position.Position.ID)"></a>
+                        </div>
+                    </td>
+                    <td>
+                        {{position.PositionName}}<span ng-if="position.PositionCode">（{{position.PositionCode}}）</span>
+                    </td>
+                    <td class="alignCenter">
+                        <span ng-if="position.Position.IsValid">正常</span>
+                        <span class="danger" ng-if="!position.Position.IsValid">已停用</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div bi-Pagination conf="PageConfig"></div>
+    </div>
+    <div bi-dialog src="System/Dept/position.edit.html" id="add" size="sm" title="新增职位" />
+    <div bi-dialog src="System/Dept/position.edit.html" id="edit" size="sm" title="编辑职位" />
+</div>

@@ -29,6 +29,9 @@
         },
         this.fnUnlock = function (ids) {
             return $api.put('Unlock?ids=' + ids)
+        },
+        this.fnGetDeptUser = function (q) {
+            return $api.get('GetDeptUser', { params: q })
         }
     }
 

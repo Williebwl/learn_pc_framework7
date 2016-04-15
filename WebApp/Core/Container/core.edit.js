@@ -1,7 +1,7 @@
 ﻿/******************************************
 ********     编辑页面核心组件      ********
 *******************************************/
-define('core.edit', ['core.page', 'evt.page', 'formValidate', 'ext'], function (page, pageEvent) {
+define('core.edit', ['core.view', 'evt.page', 'formValidate', 'ext'], function (page, pageEvent) {
     'use strict'
 
     function EditPage($view, $service, $scope, injection) {
@@ -9,39 +9,25 @@ define('core.edit', ['core.page', 'evt.page', 'formValidate', 'ext'], function (
 
         this.Type = 'core.edit'
 
-        var $self = this, id;
+        var $self = this;
+
+        //保存前调用
+        this.fnSaveing = page.noop,
+
+        //获取数据标示
+        this.fnGetID = function (editInfo) {
+            return editInfo && (editInfo.ID || editInfo.id)
+        },
 
         this.Super = function ($view, $service, $scope, injection) {
+            var $current = this;
 
-            //保存前调用
-            $self.fnSaveing = $self.fnViewRest = page.noop,
-            //在上级页面中注册ShowDialog方法
-            $scope.ShowDialog(function (editInfo) { editInfo || (editInfo = {}), $self.fnBindPage($self.fnLoadPage(editInfo) || editInfo) }),
-            //页面加载
-            $self.fnLoadPage = page.noop,
-            //绑定页面数据
-            $self.fnBindPage = function (editInfo) {
-                $self.$valid = !1,//是否验证通过
-                $self.fnSetEditInfo(editInfo),//设置编辑信息
-                $self.fnViewRest(),//重置视图
-            $self.fnFormReset(),//表单重置
-            $self.fnLoadAttach($view.editInfo.ID)//加载附件资源
-            },
             //设置页面数据
-            $self.fnSetEditInfo = function (editInfo) {
-                $self.$editInfo = editInfo = editInfo || {},
-                $view.editInfo = $self.editInfo = ($view.IsEdit = $self.IsEdit = !!(id = editInfo.ID)) ? page.extend({}, editInfo) : editInfo
-            },
+            this.fnSetViewInfo = fnSetViewInfo,
+
             //保存
-            $view.fnSave = function () {
-                $self.fnFormValidate() || $self.$q.all($self.Promises)
-                    .then(function () {
-                        $self.fnSaveing($self.editInfo) !== false &&
-                        $view.$element.find(".has-error").removeClass("has-error") &&
-                        ($self.IsEdit ? $service.fnPut(id, $self.PostInfo || $view.editInfo) : $service.fnPost($self.PostInfo || $view.editInfo))
-                        .success($self.fnSaveSuccess.bind($self)).error($self.fnSaveError.bind($self))
-                    }, $self.fnSaveError.bind($self))
-            },
+            $view.fnSave = this.fnSave = fnSave.bind(this),
+
             //保存成功时调用
             $self.fnSaveSuccess = function (d) {
                 d ? ($self.$editInfo.ID = $view.editInfo.ID = d.ID || d) && $self.fnSaveOther.apply(this, arguments) : this.fnSaveError.apply(this, arguments)
@@ -54,24 +40,16 @@ define('core.edit', ['core.page', 'evt.page', 'formValidate', 'ext'], function (
                 $scope.$emit(this.IsEdit ? pageEvent.OnFormPutFailed : pageEvent.OnFormPostFailed, back);
                 $scope.$emit(pageEvent.OnFormSubmitFailed, back);
 
-                var msg = "";
-                e.Message.split('\r\n').map(function (item) {
+                var msg = e.Message.split('\r\n').map(function (item) {
                     var result = item.match(/^\[(\w+)\](.+)$/);
-                    if (result) {
-                        $view.$element.find(":input[name='" + result[1] + "']").parent().addClass("has-error");
-                        msg += '·' + result[2] + '<br />';
-                    }
-                    else
-                        msg += '·' + item + '<br />';
+                    return '·' + (result ? ($view.$element.find(":input[name='" + result[1] + "']").parent().addClass("has-error"), result[2]) : item)
                 });
-                if (msg)
-                    $self.errorNotice(msg);
-                else
-                    $self.errorNotice('操作无法完成，因为' + msg);
+
+                $self.errorNotice((msg.length > 1 ? '' : '操作无法完成，因为') + msg.join('<br/>'));
             },
             //保存关联信息（附件等）
             $self.fnSaveOther = function (d) {
-                this.fnSaveAttach(d, ($self.IsEdit ? $self.SaveUpdateRefresh : $self.SaveAddRefresh).bind($self), $self.fnSaveError.bind($self))
+                this.fnSaveAttach(d).success(($self.IsEdit ? $self.SaveUpdateRefresh : $self.SaveAddRefresh).bind($self)).error($self.fnSaveError.bind($self))
             },
             //添加成功
             $self.SaveAddRefresh = function (d) {
@@ -88,13 +66,32 @@ define('core.edit', ['core.page', 'evt.page', 'formValidate', 'ext'], function (
                 if (d) {
                     var back = { Source: $self.$editInfo, View: $self.editInfo, PostInfo: $self.PostInfo };
                     this.successNotice('已完成保存操作。'),
-            $scope.$emit(pageEvent.OnFormPut, back),
-            $scope.$emit(pageEvent.OnFormSubmited, back),
+                    $scope.$emit(pageEvent.OnFormPut, back),
+                    $scope.$emit(pageEvent.OnFormSubmited, back),
                     $scope.CloseDialog(back)
                 } else this.fnSaveError.apply(this, arguments)
             }
         }
     }
 
+
+
     return page.ext(EditPage);
+
+    function fnSetViewInfo(editInfo) {
+        this.$view.editInfo = this.editInfo = (this.$view.IsEdit = this.IsEdit = !!(editInfo.ID = this.fnGetID(this.$editInfo = editInfo = editInfo || {}))) ? page.extend({}, editInfo) : editInfo
+    }
+
+    function fnSave() {
+        this.$q.when(this.fnFormValidate(), function () {
+            this.$q.all(this.Promises).then(function () {
+                this.$q.when(this.fnSaveing(this.editInfo), function (r) {
+                    r !== false && this.$scope.$element.find(".has-error").removeClass("has-error") &&
+                    (this.IsEdit ? this.$service.fnPut(this.editInfo.ID, this.PostInfo || this.editInfo) : this.$service.fnPost(this.PostInfo || this.editInfo))
+                    .success(this.fnSaveSuccess.bind(this))
+                    .error(this.fnSaveError.bind(this))
+                }.bind(this))
+            }.bind(this), this.fnSaveError.bind(this))
+        }.bind(this))
+    }
 })

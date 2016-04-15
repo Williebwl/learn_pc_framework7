@@ -17,7 +17,7 @@
 
 .select2-container .select2-selection--single .select2-selection__rendered {
     display: block;
-    padding-left: 11px;
+    padding-left: 6px;
     padding-right: 20px;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -172,6 +172,7 @@
     color: #444;
     line-height: 30px;
     height: 30px;
+    font-size: 13px;
 }
 
 .select2-container--default .select2-selection--single .select2-selection__clear {

@@ -4,7 +4,8 @@
     'Core/Directive/ng.biinclude.js',
     'Core/Directive/ng.route.js',
     'Core/Directive/ng.from.js',
-    'Core/Directive/ng.attach.js'],
+    'Core/Directive/ng.attach.js',
+    'Core/Directive/ng.tabs.js'],
     function (app) {
         'use strict'
 

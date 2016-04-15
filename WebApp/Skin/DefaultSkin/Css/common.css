@@ -179,18 +179,18 @@
 }
  
 .proptable .propTitle {
-    font: 16px/16px bold "微软雅黑";
+    font: 16px/16px bold "Microsoft YaHei";
     margin: 30px 0 10px 30px;
 }
  
 .proptable .propNote {
-    font: 14px/14px "微软雅黑";
+    font: 14px/14px "Microsoft YaHei";
     margin: 10px 0 0 30px;
 }
  
 .proptable .propData {
     margin: 0 30px;
-    font: 14px/30px "微软雅黑";
+    font: 14px/30px "Microsoft YaHei";
 }
  
 .proptable .propClose {
@@ -258,7 +258,7 @@
 .sign-btn a {
     margin: 0 10px;
     color: #fff;
-    font: 16px/40px normal "微软雅黑";
+    font: 16px/40px normal "Microsoft YaHei";
 }
  
 .sign-chart,
@@ -374,7 +374,7 @@ ul {
  
 html,
 body {
-    font: 14px/22px '微软雅黑', Helvetica, sans-serif;
+    font: 14px/22px 'Microsoft YaHei', Helvetica, sans-serif, cursive;
     background-color: #fafafa;
     height: 100%;
     overflow: hidden;
@@ -384,7 +384,7 @@ body {
 input,
 select,
 textarea {
-    font-family: '微软雅黑', Helvetica, sans-serif;
+    font: 14px/22px 'Microsoft YaHei', Helvetica, sans-serif, cursive;
     color: #636e7b;
 }
  
@@ -401,7 +401,7 @@ h3,
 h4,
 h5,
 h6 {
-    font-family: '微软雅黑', Helvetica, sans-serif;
+    font: 14px/22px 'Microsoft YaHei', Helvetica, sans-serif, cursive;
 }
  
 button:focus,
@@ -692,8 +692,9 @@ th:focus {
     margin-right: 3px;
 }
  
-.breadcrumb-wrapper span {
+.breadcrumb-wrapper > span {
     color: #333;
+    font-family:  "Microsoft JhengHei";
 }
  
 .breadcrumb-wrapper {
@@ -706,7 +707,7 @@ th:focus {
 }
  
 .open-subtitle {
-    font-size: 14px;
+    font-size: 15px;
     line-height: 2em;
     border-bottom: 1px solid #ddd;
     margin: 0 15px 10px;
@@ -884,7 +885,7 @@ th:focus {
 .band-list li > span {
     float: left;
     display: block;
-    width: 110px;
+    width: 102px;
     overflow: hidden;
     text-overflow: ellipsis;
     height: 30px;
@@ -895,10 +896,13 @@ th:focus {
     font-style: normal;
     font-weight: normal;
     margin: 0 3px;
+    font-family: 'Microsoft YaHei', Helvetica, sans-serif, cursive;
 }
  
 .band-list li > div {
     float: right;
+    font-family: 'Microsoft YaHei',"Microsoft JhengHei";
+    font-style: normal;
 }
  
 .band-list li.active * {
@@ -1055,8 +1059,6 @@ th:focus {
 }
  
 .contentpanel {
-    position: relative;
-    z-index: 1;
     padding: 10px;
     overflow-x: hidden;
     overflow-y: auto;
@@ -1450,7 +1452,7 @@ th:focus {
  
 .prop-slider {
     position: absolute;
-    z-index: 555;
+    z-index: 11;
     overflow-x: hidden;
     overflow-y: auto;
     background: #fff;
@@ -1523,7 +1525,67 @@ th:focus {
     float: left;
 }
 .prop-slider-header .close{
-    margin: 6px 10px;
+    margin: 6px 6px;
+}
+.prop-slider-header .minus{
+    -webkit-appearance: none;
+    padding: 0;
+    cursor: pointer;
+    background: 0 0;
+    border: 0;
+    float: right;
+    font-size: 14px;
+    margin: 10px 6px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    filter: alpha(opacity=20);
+    opacity: .2;
+}
+.prop-slider-header .minus:hover{
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    filter: alpha(opacity=50);
+    opacity: .5;
+}
+.prop-slider.minus {
+    padding: 10px 0; 
+    width: 30px;
+    height: auto;
+    background-color: #488BE9;
+    color: #fff;
+    z-index: 111;
+}
+.prop-slider.minus .prop-slider-header{
+    height: auto;
+    text-align: center;
+    border: none;
+}
+.prop-slider.minus .prop-slider-title{
+    margin-left: 0;
+    word-break: break-all;
+}
+.prop-slider.minus .prop-slider-header h2{
+    line-height: 20px;
+    height: 100px;
+    overflow: hidden;
+}
+.prop-slider.minus .prop-slider-header button{
+    margin: 0;
+    width: 30px;
+    height: 24px;
+}
+.prop-slider.minus .prop-slider-header button.minus{
+    font-size: 24px;
+}
+.prop-slider.minus .close{
+    margin:0!important;
+}
+.prop-slider.minus .prop-slider-content,
+.prop-slider.minus .prop-slider-footer{
+    display: none;
 }
 .personal-info{
     padding: 20px;
@@ -1564,7 +1626,7 @@ th:focus {
     padding: 10px;
 }
 .personal-tabs{
-    margin-left: 15px;
+    margin-left: 10px;
 }
 .personal-tabs .tab-content ul{
     margin-bottom: 10px;
@@ -1583,22 +1645,37 @@ th:focus {
 }
 
 .personal-tabs .tab-content{
-    position: relative;
+    /* position: relative; */
+    padding: 0 10px;
     width: 100%;
 }
 .personal-tabs .tab-content .tab-pane{
     width: 100%;
-    bottom: 0;
-    top: 0;
-    overflow: auto;
-    min-height: 200px;
-    position: absolute;
+    /* bottom: 0; */
+    /* top: 0; */
+    /* position: absolute; */
 }
- 
+.users-list{
+    margin-left: 10px;
+}
+.users-list li{
+    line-height: 30px;
+    margin: 5px 0;
+}
+.users-list li span{
+    margin-left: 5px;
+    cursor: pointer;
+    display: none;
+    color: #488BE9;
+}
+.users-list li:hover span{
+    display: inline;
+}
+
 /*模态框*/
  
 .custom-modal {
-    /*display: none;*/
+    display: none;
     position: fixed;
     overflow: hidden;
     left: 0;
@@ -2103,6 +2180,10 @@ tr .radio label, tr .checkbox label{
     transition: all 1s;
     color: #9F9F9F;
 }
+td .checkbox i,
+td .radio i{
+    top: 0;
+}
  
 .checkbox-small i {
     font-size: 14px;
@@ -2277,6 +2358,8 @@ tr .radio label, tr .checkbox label{
     border-right: 0;
     height: 40px;
     position: relative;
+    font-size: 15px;
+    font-family: "Microsoft YaHei," "Microsoft JhengHei";
 }
 .convenient-btns .btn:first-child{
     border-left: none;
@@ -2343,6 +2426,7 @@ tr .radio label, tr .checkbox label{
     transition: all 0.2s ease-out 0s;
     padding: 4px 10px;
     color: #666;
+    font-family: 'Microsoft Yahei';
 }
 
 .create-dropdown li a:hover{
@@ -2782,10 +2866,10 @@ tr .radio label, tr .checkbox label{
  
 .dropdown-list .dropdown-list-title{
     margin-top: 10px;
-    font-family: inherit;
+    font-family: "Microsoft JhengHei";
     font-weight: bold;
     color: #666;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 30px;
     border-bottom: 1px solid #eee;
 }
@@ -2819,7 +2903,7 @@ tr .radio label, tr .checkbox label{
 }
  
 .wizard-header {
-    margin-bottom: 25px;
+    margin-bottom: 5px;
 }
  
 .nav.nav-circle > li:focus,
@@ -2965,7 +3049,7 @@ fieldset[disabled] .btn {
 }
  
 .block-h {
-    font: 600 14px/36px "微软雅黑";
+    font: 600 14px/36px "Microsoft YaHei";
     text-indent: 10px;
 }
  
@@ -3070,13 +3154,13 @@ fieldset[disabled] .btn {
 }
  
 .thumbnail h1 {
-    font: bold 14px/30px "微软雅黑"
+    font: bold 14px/30px "Microsoft YaHei"
 }
  
 .thumbnail p {
     height: 66px;
     margin-bottom: 5px;
-    font: 12px/22px "微软雅黑";
+    font: 12px/22px "Microsoft YaHei";
 }
  
  
@@ -3479,10 +3563,10 @@ fieldset[disabled] .btn {
 }*/
  
 .toolbar-title {
-    font-family: inherit;
+    font-family: "Microsoft JhengHei";
     font-weight: bold;
     color: #666;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 30px;
 }
  
@@ -3853,4 +3937,9 @@ body.fullwidth-nav #content {
 .form-group:not([class*=col]){
     padding-left: 5px;
     padding-right: 5px
+}
+
+.has-error .select2-container {
+    border: 1px solid #a94442;
+    border-radius: 3px;
 }

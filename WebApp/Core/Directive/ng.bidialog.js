@@ -60,7 +60,7 @@
                                  var thisChangeId = ++changeCounter;
 
                                  if (src) {
-                                     $templateRequest(src, true).then(function (response) {
+                                     $templateRequest(require.toUrl(src), true).then(function (response) {
                                          if (thisChangeId !== changeCounter) return;
 
                                          $dialog[key] = function (arg) {
@@ -129,7 +129,7 @@
                       scope.$digest()
                   }
 
-                  scope.ShowDialog = function (fn) { return angular.isFunction(fn) && showQueue.push(fn), scope },
+                  scope.ShowView = function (fn) { return angular.isFunction(fn) && showQueue.push(fn), scope },
 
                   scope.CloseView = function (fn) { return angular.isFunction(fn) && closeQueue.push(fn), scope },
 
@@ -139,26 +139,24 @@
 
                   function getModalTemplate() {
                       var controller = ctrl.template.match(/ng-controller="([^"]+)"/i);
-                      var header = ctrl.template.match(/<header[^>]*>([\s\S]*?)<\/header>/i);
-                      var footer = ctrl.template.match(/<footer[^>]*>([\s\S]*?)<\/footer>/i);
+                      var header = ($attr.header || "true") == "true";
+                      var footer = ($attr.footer || "true") == "true";
 
-                      return "<div class='modal-dialog " + size + "'>\
-                                      <div class='modal-content' " + (controller ? controller[0] : "") + ">\
-                                          <div class='modal-header'>" +
-                                          (header ? header[1] : "\
-                                              <button aria-hidden='true' data-dismiss='modal' class='close' type='button'>&times;</button>\
-                                              <h4 class='modal-title'>" + ($attr.title || '') + "</h4>") +
-                                      "</div>\
-                                          <div class='modal-body'>" +
-                                          ctrl.template.replace(controller ? controller[0] : "", "").replace(header ? header[1] : "", "").replace(footer ? footer[1] : "", "") +
-                                      "</div>\
-                                          <div class='modal-footer'>" +
-                                          (footer ? footer[1] : "\
-                                              <button type='button' class='btn  btn-default' ng-click='fnSave()'>保存</button> \
-                                              <button type='button' class='btn  btn-white' data-dismiss='modal' data-close-self ng-click=''>取消</button>") +
-                                      "</div>\
-                                     </div>\
-                                 </div>"
+                      return "<div class='modal-dialog " + size + "' tabindex=\"-1\">\
+                                <div class='modal-content' " + (controller ? controller[0] : "") + ">\
+                                    " + (header ? ("<div class='modal-header'>\
+                                        <button aria-hidden='true' data-dismiss='modal' class='close' type='button'>&times;</button>\
+                                        <h4 class='modal-title'>" + ($attr.title || '') + "</h4>\
+                                    </div>") : "") + "\
+                                        <div class='modal-body'>" +
+                                        ctrl.template.replace(controller ? controller[0] : "", "") +
+                                   "</div>\
+                                   " + (footer ? ("<div class='modal-footer'>\
+                                        <button type='button' class='btn  btn-default' ng-click='fnSave()'>保存</button> \
+                                        <button type='button' class='btn  btn-white' data-dismiss='modal' data-close-self ng-click=''>取消</button>\
+                                    </div>") : "") + "\
+                                </div>\
+                              </div>"
                   }
 
                   function getSearchTemplate() {

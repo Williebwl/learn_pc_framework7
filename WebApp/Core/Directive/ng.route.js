@@ -1,5 +1,5 @@
 ﻿define(['page', 'evt.route'], function (app, routeEvent) {
-    'use strict'
+    'use strict';
 
 
     biNavFactory.$inject = ['$route', '$anchorScroll', '$animate'];

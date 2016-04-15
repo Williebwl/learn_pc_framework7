@@ -1,4 +1,9 @@
-﻿define('evt.page', function () {
+﻿/**
+ dd
+
+**/
+
+define('evt.page', function () {
     'use strict';
     return {
         //在页面初始化时发生
@@ -12,7 +17,6 @@
 
         //在页面卸载完成时发生
         OnDisposed: "$CloseViewSuccess",
-
 
         //请求验证表单内容时发生
         OnFormValidate: "$VMValidate",
@@ -31,6 +35,12 @@
 
         //在表单PUT操作失败时发生
         OnFormPutFailed: "$PutError",
+
+        //在表单DELETE操作成功时发生
+        OnFormDeleted: "$DeleteSuccess",
+
+        //在表单DELETE操作失败时发生
+        OnFormDeleteFailed: "$DeleteError",
 
         //在表单提交操作成功时发生
         OnFormSubmited: "$EditSuccess",

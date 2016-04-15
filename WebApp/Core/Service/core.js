@@ -25,7 +25,8 @@
                 do {
                     suber.prototype.hasOwnProperty('Super') && queue.push(suber.prototype)
                 } while (suber = suber.super)
-                while (suber = queue.pop()) suber.Super.apply(suber, arg)
+                bindPage.apply(this, arg)
+                while (suber = queue.pop()) suber.$page = suber.$this = suber.$self = suber.$current = this, suber.Super.apply(this, arg)
                 return this
             }
         }) && $.extend(Core, {
@@ -61,6 +62,7 @@
             noop: angular.noop,
             toJson: angular.toJson,
             extend: angular.extend,
+            bindThis: bindThis,
             app: app,
             $injector: app.$injector || $(document.documentElement).data('$injector'),
             annotate: annotate
@@ -92,5 +94,26 @@
             }
 
             return $inject;
+        }
+
+        function bindPage($view, $service, $scope) {
+            this.$view = $view,
+              this.$service = bindService.call({ $service: $service }, $service),
+              this.$scope = $scope
+        }
+
+        function bindService($service, thisArg) {
+            thisArg = thisArg || $service
+            return Object.keys($service).forEach(function (key) {
+                var fn = $service[key]; angular.isFunction(fn) && (this[key] = fn.bind(thisArg))
+            }, this),
+            this
+        }
+
+        function bindThis(source, thisArg) {
+            thisArg = thisArg || source
+            return Object.keys(source).forEach(function (key) {
+                var fn = source[key]; angular.isFunction(fn) && (source[key] = fn.bind(thisArg))
+            }), source
         }
     })

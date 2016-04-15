@@ -15,9 +15,9 @@ namespace WebApi
     {
         protected void Application_Start()
         {
-            CFConfig.Default
-                .RegisterContainer()
-                .RegisterDataMapping()
+            AppRuntime.Module
+                .RegisterModule()
+                .RegisterORMapping()
                 .RegisterEFRepository()
                 .RegisterMessageDispatcher();
 

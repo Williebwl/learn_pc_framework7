@@ -22,5 +22,7 @@ namespace WebApi.Controllers.Auth
         public string Mobile { get; set; }
 
         public string Email { get; set; }
+
+        public long? GroupID { get; set; }
     }
 }

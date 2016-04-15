@@ -7,19 +7,22 @@ define('core.toolbar', ['core.page', 'evt.action'], function (page, actionEvent)
     function ToolbarPage($view, $service, $scope, injection) {
         if (!this || this.constructor === Window) return new ToolbarPage().super(arguments);
 
+        var $self = this;
+
         this.Type = 'core.toolbar'
 
         this.Super = function ($view, $service, $scope, injection) {
-            var $self = this;
+            var $current = this;
 
             //调用父级搜索事件
             $view.fnSearch = function () {
-                $self.base.emit(actionEvent.OnSearch)($view.Params);
+                $current.fnBindEmit(actionEvent.OnSearch)($view.Params);
             }
 
             //重置表单并调用父级搜索事件
             $view.fnReset = function () {
                 $view.form.$setPristine();
+                $('select', $scope.$element).data('Reset').fnReset()
                 Object.getOwnPropertyNames($view.Params).forEach(function (paramName) {
                     $view.Params[paramName] = null;
                 });

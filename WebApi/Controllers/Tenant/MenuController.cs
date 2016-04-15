@@ -13,7 +13,7 @@ namespace WebApi.Controllers.Tenant
     /// <summary>
     /// 菜单
     /// </summary>
-    public class MenuController : ApplicationService<MenuVM, PagedQuery, SYSMenu>
+    public class MenuController : AppService<MenuVM, PagedQuery, SYSMenu>
     {
         protected IMenuService _moduleBO;
 

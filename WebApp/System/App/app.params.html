@@ -4,7 +4,6 @@
             <h3 class="toolbar-title"><i class="fa fa-chevron-down"></i> 基本信息</h3>
         </div>
         <div class="pull-right">
-            <!-- <a class="fa fa-pencil" href="" data-toggle="tooltip" data-placement="bottom" title="编辑"></a> -->
             <button class="btn btn-icon" data-toggle="tooltip" title="编辑" ng-disabled="!Info.AppTypeID" ng-click="fnEdit()"><i class="fa fa-pencil"></i></button>
         </div>
     </div>
@@ -63,5 +62,5 @@
         </table>
     </div>
 
-    <div bi-dialog src="System/App/app.edit.html" size="lg" />
+    <div bi-dialog src="System/App/App.edit.html" size="lg" title="编辑应用信息" footer="false" />
 </div>

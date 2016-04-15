@@ -13,13 +13,12 @@
     </div>
 
     <div class="form-group">
-        <label class="control-label" for="dept">
+        <label class="control-label required-label" for="dept">
             部门：
         </label>
-        <select class="form-control" style="width:100%;" id="dept" name="dept" ng-model="Depted" multiple="multiple" ng-options="dept.DeptName for dept in Depts"></select>
+        <select class="form-control" style="width:100%;" id="dept" name="Dept" ng-model="Depted" multiple="multiple" ng-options="dept.DeptName for dept in Depts"></select>
     </div>
-
-    <div class="form-group">
+    <div class="form-group" ng-show="Depted.length">
         <label class="control-label">
             部门职位：
         </label>
@@ -37,7 +36,7 @@
                     <td class="alignCenter" ng-bind="$index+1"></td>
                     <td class="alignLeft" ng-bind="dept.DeptName"></td>
                     <td class="alignLeft">
-                        <select class="form-control" style="width:100%;" ng-model="dept.Position" ng-options="position.TagName for position in Positions" filter></select>
+                        <select class="form-control" style="width:100%;" ng-model="dept.Position" ng-options="position.PositionName+(position.PositionCode&&('('+position.PositionCode+')')) for position in dept.Positions" filter></select>
                     </td>
                     <td class="alignCenter"><input type="radio" name="isPartTime" ng-model="editInfo.MainSuties" ng-value="dept" /></td>
                 </tr>
@@ -45,13 +44,8 @@
         </table>
     </div>
 
-    <div class="form-group col-xs-6">
+    <div class="form-group col-xs-12">
         <label class="control-label" for="Mobile">手机号：</label>
         <input type="text" id="Mobile" name="Mobile" class="form-control" ng-model="editInfo.Mobile">
-    </div>
-
-    <div class="form-group col-xs-6">
-        <label class="control-label" for="Email">邮箱：</label>
-        <input type="text" id="Email" name="Email" class="form-control" ng-model="editInfo.Email">
     </div>
 </form>

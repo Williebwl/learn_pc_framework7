@@ -1,7 +1,7 @@
 ﻿/**********************************************
 ********     页面内容区域核心组件      ********
 ***********************************************/
-define('core.container', ['core.page', 'evt.page', 'evt.action', 'ext'], function (page, pageEvent, actionEvent) {
+define('core.container', ['core.view', 'evt.page', 'evt.action', 'ext'], function (page, pageEvent, actionEvent) {
     'use strict'
 
     function Page($view, $service, $scope, injection) {
@@ -9,11 +9,9 @@ define('core.container', ['core.page', 'evt.page', 'evt.action', 'ext'], functio
 
         this.Type = 'core.container';
 
-        this.ShowDialog = page.noop;
-
+        
         this.Super = function ($view, $service, $scope, injection) {
-            var $self = this;
-            $scope.$parent.ShowDialog = function () { $self.ShowDialog.apply(this, arguments) }, fnQuery.apply(this, arguments), fnEdit.apply(this, arguments)
+            fnQuery.apply(this, arguments), fnEdit.apply(this, arguments)
         }
     }
 
@@ -32,7 +30,7 @@ define('core.container', ['core.page', 'evt.page', 'evt.action', 'ext'], functio
                     var active = { laze: laze, active: angular.isNumber(ii) && ii || laze.last };
 
                     //调用Service.fnGetAll方法查询数据
-                    $service.fnGetPaged($self.fnGetPagedParams.call(params, pageConfig, refreshSearchParams))
+                    $self.$service.fnGetPaged($self.fnGetPagedParams.call(params, pageConfig, refreshSearchParams))
                             .success($self.fnGetSearchSuccess.bind(active))
                             .error($self.fnGetSearchError.bind(active))
                 }
@@ -95,6 +93,8 @@ define('core.container', ['core.page', 'evt.page', 'evt.action', 'ext'], functio
         },
         //搜索
         $scope.$on(actionEvent.OnSearch, function (s, e) {
+            if ($scope.isDisplay === !1 || s.defaultPrevented) return;
+
             refreshSearchParams[e.origin] = e.data;
 
             var _lastSearchId = null;
@@ -123,13 +123,28 @@ define('core.container', ['core.page', 'evt.page', 'evt.action', 'ext'], functio
         }
 
         $view.CheckConf = {};
+        $view.View = {};
 
         //删除
         $view.fnDelete = function (data) {
-            if (data)
-                $view.fnConfirmAction('删除', $service.fnDelete, [data]);
-            else
-                $view.fnBulkAction('删除', $service.fnDelete);
+            if (data) {
+                $view.fnConfirmAction('删除', $service.fnDelete, [data], function (success) {
+                    $scope.$emit(pageEvent.OnFormDeleted, [data]);
+                    $scope.$emit(pageEvent.OnFormSubmited, [data]);
+                }, function (error) {
+                    $scope.$emit(pageEvent.OnFormDeleteFailed, [data]);
+                    $scope.$emit(pageEvent.OnFormSubmitFailed, [data]);
+                });
+            }
+            else {
+                $view.fnBulkAction('删除', $service.fnDelete, function (success, data) {
+                    $scope.$emit(pageEvent.OnFormDeleted, data);
+                    $scope.$emit(pageEvent.OnFormSubmited, data);
+                }, function (error) {
+                    $scope.$emit(pageEvent.OnFormDeleteFailed, data);
+                    $scope.$emit(pageEvent.OnFormSubmitFailed, data);
+                });
+            }
         }
 
         //对选中的项目执行批量操作
@@ -144,11 +159,11 @@ define('core.container', ['core.page', 'evt.page', 'evt.action', 'ext'], functio
                     .success(function (e) {
                         $self.successNotice('已完成' + name + '操作。');
                         $scope.fnSearch();
-                        if (success) success(e);
+                        if (success) success(e, $scope.CheckConf.ids);
                     })
                     .error(function (e) {
                         $self.errorNotice('操作无法完成，因为' + e.Message);
-                        if (error) error(e);
+                        if (error) error(e, $scope.CheckConf.ids);
                     });
             });
         }
@@ -156,7 +171,7 @@ define('core.container', ['core.page', 'evt.page', 'evt.action', 'ext'], functio
         //对选中的项目执行排序操作
         $view.fnSequence = function () {
             if (!$view.View.CanSort) {
-                $self.alert('请选择需要' + name + '的项目！');
+                $self.alert('请选择需要排序的项目！');
                 return;
             }
 

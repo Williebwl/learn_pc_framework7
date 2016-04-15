@@ -14,7 +14,7 @@ namespace BIStudio.Framework.BestPractice.Impl
     /// </summary>
     public class CreateUserCommandHandler : ICommandHandler<CreateUserCommand>
     {
-        public void Handle(CreateUserCommand evt)
+        public void Handle(IMessageProcessContext ctx, CreateUserCommand evt)
         {
             using (var unitOfWork = BoundedContext.Create())
             {
@@ -28,6 +28,5 @@ namespace BIStudio.Framework.BestPractice.Impl
                 entity.ApplyEvent(new UserCreatedEvent());
             }
         }
-
     }
 }

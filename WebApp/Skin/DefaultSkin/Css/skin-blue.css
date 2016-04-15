@@ -127,11 +127,17 @@ table.table-default thead tr > td{
 .table-bordered-default{
   border-left: 4px solid #488BE9;
 }
-.nav-tabs-default.nav-pills >li.active,
-.nav-tabs-default.nav-pills >li:focus,
-.nav-tabs-default.nav-pills >li:hover{
+.nav-tabs-default.nav-pills >li.active{
   background-color: #488BE9;
   color: #fff;
+}
+.nav-tabs-default.nav-pills >li.active:focus,
+.nav-tabs-default.nav-pills >li.active:hover{
+  background-color: #488BE9; 
+}
+.nav-tabs-default.nav-pills >li:focus,
+.nav-tabs-default.nav-pills >li:hover{
+  background-color: #E4EFFF;
 }
 .nav-tabs-default{
   border-bottom: 1px solid #488BE9;
@@ -139,10 +145,16 @@ table.table-default thead tr > td{
   margin-right: -10px; 
   padding-left: 10px;
 }
-.nav-pills > li.active, 
+.nav-pills > li.active{
+    color: #fff;
+    background-color: #488BE9;
+}
+.nav-pills > li:focus, 
+.nav-pills > li:hover{
+    background-color: #E4EFFF
+}
 .nav-pills > li.active:focus, 
 .nav-pills > li.active:hover{
-    color: #fff;
     background-color: #488BE9
 }
 .nav-justified-bordered li.active{

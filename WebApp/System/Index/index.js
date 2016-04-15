@@ -19,28 +19,22 @@ define(['page', 'preloader', 'lobibox', 'evt.message', 'evt.route', 'System/Inde
         app.controller('indexCtrl', indexCtrl)
 
 
+        function userAreaCtrl($scope, indexService) {
+            indexService.fnGetCurrentUser().success(function (d) {
+                $scope.UserName = d.UserName
+            }),
+            $scope.fnLogout = function () {
+                sessionStorage.referrer = location.href,
+                delete sessionStorage.Token,
+                location.href = "login.html"
+            }
+        }
 
+        app.controller('userAreaCtrl', userAreaCtrl)
 
 
 
         var mode = ["info", "warning", "error", "success"];
-
-        //app.controller('NoticeCtrl',
-        //    function ($scope, $rootScope, $timeout) {
-        //        $scope.Notices = [];
-
-        //        function $editNotice(e, arg) {
-        //            arg.class = mode[arg.mode] || 'info',
-
-        //            $scope.Notices.push(arg),
-
-        //            $timeout(function () { $scope.Notices.remove(arg); }, 2000),
-
-        //            angular.isFunction(arg.callback) && arg.callback()
-        //        }
-
-        //        $rootScope.$on(messageEvent.OnNotice, $editNotice);
-        //    });
 
         app.run(function ($rootScope, $animate) {
             function $editNotice(e, d) {

@@ -1,29 +1,29 @@
-﻿<div class="modal-content" ng-controller="GroupEditCtrl">
-    <div class="modal-header">
-        <button class="close" type="button" data-close-self>&times;</button>
-        <h4>添加角色</h4>
+﻿<form ng-controller="GroupEditCtrl" class="form-horizontal" name="Group" bi-Form-Validate="GroupVM">
+    <div class="form-group col-xs-6">
+        <label class="control-label" for="GroupName">
+            角色名称：
+        </label>
+        <input type="text" id="GroupName" name="GroupName" class="form-control" ng-model="editInfo.GroupName" ng-change="fnCheck(1)">
     </div>
-    <div class="modal-body">
-        <div class="wizard">
-            <ul class="wizard-header nav nav-justified nav-circle">
-                <li class="active"><span>基本信息</span><em>1</em></li>
-                <li><span>参数设置</span><em>2</em></li>
-                <li><span>应用设置</span><em>3</em></li>
-            </ul>
-            <div class="wizard-content">
-                <div class="wizard-pane active"></div>
-                <div class="wizard-pane"></div>
-                <div class="wizard-pane"></div>
-            </div>
-            <div class="wizard-footer">
-                <div class="pull-left">
-                    <button type="button" class="btn btn-white previous disabled">上一步</button>
-                </div>
-                <div class="pull-right">
-                    <button type="button" class="btn btn-default next" ng-click="fnNext()">下一步</button>
-                    <button type="button" class="btn btn-default hide" ng-click="fnSave()">提交</button>
-                </div>
-            </div>
-        </div>
+    <div class="form-group col-xs-6">
+        <label class="control-label" for="GroupCode">
+            角色代码：
+        </label>
+        <input type="text" id="GroupCode" name="GroupCode" readonly="readonly" class="form-control" ng-model="editInfo.GroupCode" ng-change="fnCheck()">
     </div>
-</div>
+    <!--<div class="form-group col-xs-6">
+        <label class="control-label" for="GroupTypeID">
+            角色分组：
+        </label>
+        <select id="GroupTypeID" name="GroupTypeID" class="form-control" ng-model="editInfo.GroupTypeID" ng-options="m.Value as m.Description for m in GroupTypes">
+        </select>
+    </div>
+    <div class="form-group col-xs-6">
+        <label class="control-label">排序号：</label>
+        <input type="text" class="form-control" ng-model="editInfo.Sequence">
+    </div>-->
+    <div class="form-group col-xs-12">
+        <label class="control-label">备注：</label>
+        <textarea class="form-control" ng-model="editInfo.Remark"></textarea>
+    </div>
+</form>

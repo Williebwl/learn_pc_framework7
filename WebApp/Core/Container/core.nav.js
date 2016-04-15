@@ -12,18 +12,12 @@ define('core.nav', ['core.page', 'evt.action'], function (page, actionEvent) {
         var $self = this;
 
         this.Super = function ($view, $service, $scope, injection) {
-            //搜索对象
-            $view.Search = {
-                //当前操作对象
-                LastActive: null,
-                Active: null,
-                NavName: null
-            },
-            $view.fnSelected = function (active, navName) {
-                this.LastActive = this.Active, this.Active = active, this.NavName = navName;
-                $view.$parent.fnChanged(this);
-                $self.$rootScope.$broadcast(actionEvent.OnSearch, { origin: $self.Type, data: this });
-            }.bind($view.Search)
+            var $current = this;
+
+            $view.fnSelect = function (data, title) {
+                $current.$rootScope.$broadcast(actionEvent.OnSelect, { origin: $current.Type, data: data }, title);
+                $current.$rootScope.$broadcast(actionEvent.OnSearch, { origin: $current.Type, data: data });
+            }
         }
     }
 

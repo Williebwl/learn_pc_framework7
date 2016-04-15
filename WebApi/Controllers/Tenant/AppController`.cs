@@ -6,10 +6,11 @@ using BIStudio.Framework.Institution;
 using BIStudio.Framework.Tenant;
 using BIStudio.Framework.UI;
 using WebApi.Controllers.Institution;
+using BIStudio.Framework.Data;
 
 namespace WebApi.Controllers.Tenant
 {
-    public partial class AppController : ApplicationService
+    public partial class AppController : AppService
     {
         protected IRepository<SYSApp> _appBO;
         protected IRepository<SYSMenu> _menuBO;
@@ -17,7 +18,7 @@ namespace WebApi.Controllers.Tenant
         protected IRepository<SYSGroup> _groupBO;
         protected IRepository<SYSGroupUser> _groupUserBO;
 
-        protected IAppService _appService;
+        protected IAppMgrService _appService;
 
         #region 查询
 
@@ -30,11 +31,13 @@ namespace WebApi.Controllers.Tenant
             return q.Single().Map<SYSApp, AppVM>();
         }
 
-        protected virtual IList<AppVM> GetInfos()
+        protected virtual IList<AppVM> GetInfos(Query query)
         {
-            var q = from d in _appBO.Entities
-                    orderby d.AppTypeID, d.Sequence
+            IQueryable<SYSApp> q = from d in _appBO.Entities
+                    orderby !d.IsBuiltIn, d.AppTypeID, d.Sequence
                     select d;
+
+            q = q.WhereIf(query?.Key, item => item.AppName.Contains(query.Key) || item.AppCode.Contains(query.Key));
 
             return q.Map<SYSApp, AppVM>().ToArray();
         }
@@ -90,7 +93,7 @@ namespace WebApi.Controllers.Tenant
 
         protected virtual long SaveVM(AppEditVM vm)
         {
-            var dto = vm.Map<AppEditVM, SYSAppRegistDTO>();
+            var dto = vm.Map<AppEditVM, SYSAppRegistRequest>();
 
             return _appService.SaveApp(dto) ? dto.App.ID.Value : 0;
         }

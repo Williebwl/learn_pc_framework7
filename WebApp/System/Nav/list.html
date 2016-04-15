@@ -3,7 +3,7 @@
     <div class="nav-list">
         <ul>
             <li ng-repeat="menu in module.Children">
-                <a href="{{'#'+menu.PageRoute}}" ng-click="fnSelected(status)" ng-bind="menu.MenuName"></a>
+                <a href="{{'#'+menu.PageRoute}}" ng-click="fnSelect(status,menu.MenuName)" ng-bind="menu.MenuName"></a>
             </li>
         </ul>
     </div>

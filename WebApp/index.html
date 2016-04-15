@@ -29,15 +29,15 @@
     <aside id="left-aside">
         <section class="fold-menu">
             <div class="index-logo"><a href="/" class="animated flip">OA</a></div>
-            <div class="user-portrait">
+            <div class="user-portrait" ng-controller="userAreaCtrl">
                 <img src="Skin/DefaultSkin/images/loggeduser.png" alt="" data-toggle="dropdown">
                 <a href="#" class="user-message"><i class="fa fa-envelope"></i></a>
-                <div data-toggle="dropdown">管理员</div>
+                <div data-toggle="dropdown" ng-bind="UserName"></div>
                 <ul class="dropdown-menu">
                     <li><a href="">我的主页</a></li>
                     <li><a href="">个人设置</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="">退出登录</a></li>
+                    <li><a href="javascript:;" ng-click="fnLogout()">退出登录</a></li>
                 </ul>
             </div>
             <div class="lef-mainnnav fold-mainnnav">

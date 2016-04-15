@@ -4,14 +4,17 @@
 
         core.controller('AppContainerParamsCtrl', function ($scope, appService, menuService) {
             var page = core($scope, menuService)
+            
+            page.fnSetViewInfo = function (e) {
+                $scope.Info = e.data;
+            }
+            $scope.ShowView(function (e) {
+                var appInfo = e.data
 
-            page.ShowDialog = function (info) {
-                var appInfo = info
-
-                appService.fnGet(info.ID)
-                            .success(function (d) { $scope.AppInfo = info = d })
-                            .error(function () { $scope.AppInfo = info = {} }),
-                menuService.fnGetInfoByAppId(info.ID)
+                appService.fnGet(appInfo.ID)
+                            .success(function (d) { $scope.AppInfo = appInfo = d })
+                            .error(function () { $scope.AppInfo = appInfo = {} }),
+                menuService.fnGetInfoByAppId(appInfo.ID)
                             .success(function (d) {
                                 $scope.MeunInfo = d[0] || {},
                                 $scope.View.Items = $scope.MeunInfos = d
@@ -26,8 +29,6 @@
                 $scope.$on(pageEvent.OnFormPut, function (s, e) {
                     core.extend(e.Source, e.View.App)
                 })
-            }
-
+            });
         })
-
-    })
+    });

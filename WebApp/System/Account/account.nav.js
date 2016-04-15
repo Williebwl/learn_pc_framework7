@@ -6,7 +6,7 @@ function (core, pageEvent) {
         core($scope, authAccountService);
 
         $scope.Status = authAccountService.fnGetStatus(),
-        $scope.fnSelected($scope.Status[0], $scope.Status[0].Name),
-        $scope.$on(pageEvent.OnFormPosted, function () { this.fnSelected(this.Search.Active, this.Search.Active.Name) }.bind($scope))
+        $scope.fnSelect($scope.Status[0], $scope.Status[0].Name),
+        $scope.$on(pageEvent.OnFormPosted, function () { this.fnSelect(this.Search.Active, this.Search.Active.Name) }.bind($scope))
     })
 })

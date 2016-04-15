@@ -47,6 +47,8 @@
                     this.init = function (conf) {
                         conf.ids = ids, conf.$cbxs = $cbxs, conf.$cbxAll = $cbxAll
                     }
+
+                    $scope.$parent.$watch('PageInfo', function (n, o) { n !== o && ($cbxs.length = ids.length = 0, fnSetAll(!1)) })
                 },
                 scope: {
                     conf: '='
@@ -117,6 +119,8 @@
                     function init() {
                         elm.css('width', '100%').select2(conf)
                     }
+
+                    elm.data('Reset', { fnReset: function (val) { elm.val(val || '').select2(conf) } })
                 }
             }
         }

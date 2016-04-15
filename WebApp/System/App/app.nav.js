@@ -4,19 +4,28 @@ function (core, pageEvent) {
 
     core.controller('AppNavCtrl', function ($scope, $rootScope, appService) {
         var page = core($scope, appService);
-        appService.fnGetAll().success(function (d) { $scope.apps = d, $scope.fnSelected(d[0],d[0].AppName) }),
+        appService.fnGetAll().success(function (d) {
+            $scope.apps = d, $scope.fnSelect(d[0], d[0].AppName)
+        });
+        $scope.fnKeySearch = function () {
+            appService.fnGetAll({Key:$scope.Key}).success(function (d) {
+                $scope.apps = d, $scope.fnSelect(d[0], d[0].AppName)
+            });
+        };
         $scope.fnAdd = function () {
             $scope.ShowDialog()
-        },
+        };
         $scope.fnEdit = function (app) {
             $scope.ShowDialog(app)
         },
         $scope.fnDel = function (e, app) {
-            page.confirm('确定要禁用该应用？').ok(function (e) {
-                if (!e.s) return;
-
-                var s = app.IsValid ? 0 : 1;
-                appService.fnSetStatus(app.ID, s, function (d) { d ? app.IsValid = s : error; }, error)
+            page.confirm('确定要' + (app.IsValid?'禁用':'启用') + '该应用？').ok(function (e) {
+                var s = app.IsValid ? false : true;
+                appService.fnSetStatus(app.ID, s).success(function () {
+                    app.IsValid = s;
+                }).error(function () {
+                    page.errorNotice('应用禁用失败！');
+                });
             });
         },
         $scope.$on(pageEvent.OnFormPosted, function (s, e) {
@@ -32,7 +41,5 @@ function (core, pageEvent) {
         $scope.$on(pageEvent.OnFormPut, function (s, e) {
             core.extend(e.Source, e.View.App)
         })
-
-        function error() { page.errorNotice('应用禁用失败！'); }
     })
 })

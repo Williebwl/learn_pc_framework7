@@ -1,6 +1,6 @@
 ﻿<div ng-controller="GroupNavCtrl">
     <div class="convenient-btns ng-scope">
-        <button class="btn btn-white" data-toggle="modal" ng-click="ShowDialog()">
+        <button class="btn btn-white" data-toggle="modal" ng-click="ShowDialog('add')">
             <i class="fa fa-plus-square"></i><span>创建新角色</span>
         </button>
     </div>
@@ -8,19 +8,20 @@
     <h2 class="open-subtitle">角色列表</h2>
     <div class="band-list">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="角色名称|代码">
+            <input type="text" class="form-control" placeholder="角色名称|代码" ng-model="Key" ng-change="fnKeySearch()">
         </div>
         <ul>
-            <li ng-repeat="group in Groups" ng-click="fnSelected(group)" ng-class="{active:group.ID===Search.Active.ID}">
+            <li ng-repeat="group in Groups" ng-click="fnSelect(group,group.GroupName)" ng-class="{active:group.ID===Search.Active.ID}">
                 <span>{{group.GroupName}}(<em class="dangger" ng-bind="group.UserCount"></em>)</span>
-                <div class="band-sys" ng-hide="app.GroupTypeID" ng-bind="'['+group.GroupType+']'">[系统]</div>
-                <div class="icon-group" ng-show="app.GroupTypeID">
-                    <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="编辑"></a>
-                    <a href="javascript:;" class="icon-items fa fa-close" data-toggle="tooltip" data-placement="bottom" title="删除"></a>
+                <div class="band-sys" ng-show="group.IsBuiltin">[内置]</div>
+                <div class="icon-group" ng-hide="group.IsBuiltin">
+                    <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="编辑" ng-click="$event.stopPropagation();ShowDialog('edit', group)"></a>
+                    <a href="javascript:;" class="icon-items fa fa-close" data-toggle="tooltip" data-placement="bottom" title="删除" ng-click="$event.stopPropagation();fnDelete(group.ID)"></a>
                 </div>
             </li>
         </ul>
     </div>
 
-    <div bi-dialog src="System/Group/Group.edit.html" size="md" />
+    <div bi-dialog src="System/Group/Group.edit.html" id="add" size="md" title="创建新角色" />
+    <div bi-dialog src="System/Group/Group.edit.html" id="edit" size="md" title="编辑角色信息" />
 </div>
