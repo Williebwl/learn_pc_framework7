@@ -14,9 +14,10 @@ using BIStudio.Framework.Institution;
 
 namespace BIFramework.Test.System
 {
+   
     [TestClass]
     public class PrivilegeTest
-    {
+    {      /*
         private TestContext testContextInstance;
 
         private long systemId = 1;
@@ -299,6 +300,6 @@ namespace BIFramework.Test.System
             //{
             //    Assert.Fail();
             //}
-        }
-    }
+        } */
+}
 }

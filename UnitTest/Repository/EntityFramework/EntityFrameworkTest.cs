@@ -15,12 +15,13 @@ using System.Data;
 
 namespace BIFramework.Test
 {
+    
     /// <summary>
     ///     UnitTest1 的摘要说明
     /// </summary>
     [TestClass]
     public class DapperTest
-    {
+    {    /*
         [TestMethod]
         public void EntityFrameworkData()
         {
@@ -123,5 +124,6 @@ namespace BIFramework.Test
             //测试事务
             Assert.AreEqual(new TCTestEntityFrameworkBO().GetAll().Count(), 0);
         }
-    }
+        */
+}
 }

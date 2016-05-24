@@ -12,7 +12,7 @@ namespace BIFramework.Test
     /// </summary>
     [TestClass]
     public class LogTest
-    {
+    {    /*
         [TestMethod]
         public void LocalLogTest()
         {
@@ -35,6 +35,6 @@ namespace BIFramework.Test
                 item.EntityID = 0;
             });
             Assert.IsNotNull(items);
-        }
+        }  */
     }
 }

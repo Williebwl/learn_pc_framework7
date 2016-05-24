@@ -1,6 +1,7 @@
 ﻿using System;
 using BIStudio.Framework.Cache;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using BIStudio.Framework;
 
 namespace BIFramework.Test
 {
@@ -12,9 +13,9 @@ namespace BIFramework.Test
         {
             string moduleName = "BIFramework.Local";
             string key = "testKey";
-            CacheService.Default.Clear(moduleName);
-            CacheItem item = CacheService.Default.GetOrAdd("testKey",
-                () => new CacheItem { Id = 0, Name = "测试", CreateTime = DateTime.Now }, module: moduleName);
+            //CacheService.Default.Clear(moduleName);
+            CacheItem item = CacheService.Default.AddOrGetExisting("testKey",
+                () => new CacheItem { Id = 0, Name = "测试", CreateTime = DateTime.Now }, regionName: moduleName);
             CacheService.Default.Remove(moduleName, key);
             Assert.IsNotNull(item);
         }
@@ -24,9 +25,9 @@ namespace BIFramework.Test
         {
             string moduleName = "BIFramework.Remoting";
             string key = "testKey";
-            CacheService.Default.Clear(moduleName);
-            CacheItem item = CacheService.Default.GetOrAdd("testKey",
-                () => new CacheItem { Id = 0, Name = "测试", CreateTime = DateTime.Now }, module: moduleName);
+            //CacheService.Default.Clear(moduleName);
+            CacheItem item = CacheService.Default.AddOrGetExisting("testKey",
+                () => new CacheItem { Id = 0, Name = "测试", CreateTime = DateTime.Now }, regionName: moduleName);
             CacheService.Default.Remove(moduleName, key);
             Assert.IsNotNull(item);
         }
