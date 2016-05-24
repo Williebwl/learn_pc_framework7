@@ -22,28 +22,37 @@
     <link rel="stylesheet" href="Assets/Css/toggles.css">
     <link rel="stylesheet" href="Assets/Css/summernote.css">
 
-    <script data-baseurl="Assets/Js" src="Assets/Js/Lib/require.mini.js" defer='defer' async='async' data-main="Core/Pages/main"></script>
+    <script src="Assets/Js/Lib/require.mini.js" defer='defer' async='async' data-main="Core/Pages/main.js"></script>
+    <!--[if lt IE 9]>
+    <script type="text/javascript">
+        window.location.href="ieerror.html";
+    </script> 
+    <![endif]-->
 </head>
 <body class="fixed-nav" ng-controller="indexCtrl">
+    <!--挡板 start-->
+    <div id="preloader">
+        <div id="status"><i class="fa fa-spinner fa-spin"></i></div>
+    </div>
     <!-- 左侧 start -->
     <aside id="left-aside">
         <section class="fold-menu">
             <div class="index-logo"><a href="/" class="animated flip">OA</a></div>
-            <div class="user-portrait">
+            <div class="user-portrait" ng-controller="userAreaCtrl">
                 <img src="Skin/DefaultSkin/images/loggeduser.png" alt="" data-toggle="dropdown">
                 <a href="#" class="user-message"><i class="fa fa-envelope"></i></a>
-                <div data-toggle="dropdown">管理员</div>
+                <div data-toggle="dropdown" ng-bind="UserName"></div>
                 <ul class="dropdown-menu">
                     <li><a href="">我的主页</a></li>
-                    <li><a href="">个人设置</a></li>
+                    <li><a href="#SYS">个人设置</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="">退出登录</a></li>
+                    <li><a href="javascript:;" ng-click="fnLogout()">退出登录</a></li>
                 </ul>
             </div>
             <div class="lef-mainnnav fold-mainnnav">
                 <ul class="mainnav">
                     <li ng-repeat="menu in Menus" ng-class="{active:(menu.PageRoute||menu.ID)==PageRoute}">
-                        <a href="{{'#'+(menu.PageRoute||menu.ID)+'?id='+menu.ID}}" data-nav="{{menu.ShortName||menu.MenuName}}">
+                        <a href="{{'#'+(menu.PageRoute||menu.ID)}}" data-nav="{{menu.ShortName||menu.MenuName}}">
                             <i ng-class="menu.Icon||'fa fa-paper-plane'"></i>
                             <span ng-bind="menu.ShortName||menu.MenuName"></span><b class="fa fa-plus"></b>
                         </a>
@@ -58,9 +67,9 @@
 
     <!-- 主体 start -->
     <section id="content">
-        <div id="notice" class="notice" ng-controller="NoticeCtrl">
+        <!--<div id="notice" class="notice" ng-controller="NoticeCtrl">
             <div><div ng-repeat="notice in Notices"><span ng-bind="notice.alert" ng-class="notice.class"></span></div></div>
-        </div>
+        </div>-->
         <div id="toolbar" class="toolbar" bi-toolbar></div>
         <div id="container" bi-container></div>
     </section>

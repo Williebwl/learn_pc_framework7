@@ -1,22 +1,18 @@
-﻿define(['core.container', 'System/Dept/dept.service.js', 'System/Account/account.service.js'],
-function (core) {
+﻿define(['core.container', 'evt.action', 'System/Dept/dept.service.js'], function (core, actionEvent) {
     'use strict'
 
-    core.controller('DeptContainerCtrl',
-        function ($scope, authAccountService, institutionDeptService) {
-            var page = core($scope, authAccountService);
+    core.controller('DeptContainerCtrl', function ($q, $scope, institutionDeptService) {
+        $scope.$on(actionEvent.OnSearch, function (s, e) {
+            var id = e.data && e.data.id;
+            id && institutionDeptService.fnGet(id).success(function (d) {
+                $scope.Info = d;
+                $scope.ShowTab({ origin: e.origin, data: d });
+            }).error(error) || error()
 
-            page.GetSearchParams = function (pageConfig, params) {
-                params && fnbindInfo($scope, params.data.Active, institutionDeptService),
-                core.extend(this, { DeptID: params && params.data.Active.id })
+            function error() {
+                $scope.Info = { ID: id };
+                $scope.ShowTab({ origin: e.origin, data: { ID: id } })
             }
-
-
         })
-
-    function fnbindInfo($scope, active, institutionDeptService) {
-        institutionDeptService.fnGet(active.id)
-                              .success(function (d) { $scope.Info = d })
-                              .error(function () { $scope.Info = {} })
-    }
+    })
 })

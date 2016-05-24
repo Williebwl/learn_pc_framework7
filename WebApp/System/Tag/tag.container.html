@@ -1,3 +1,22 @@
-﻿<div ng-controller="TagContainerCtrl">
-
+<div ng-controller="TagContainerCtrl" class="contentpanel">
+    <div class="maintop">
+        <div class="maintop-title clearfix">
+            <h2>{{Info.AppName||''}}<span ng-if="Info.AppCode">（<span ng-bind="Info.AppCode"></span>）</span>
+            <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="帮助"></i></h2>
+        </div>
+        <p>{{Info.Remark}}</p>
+    </div>
+    <div class="tabs" id="tb" bi-tabs>
+        <ul class="nav nav-pills nav-tabs-primary">
+            <li for="cloud">标签</li>
+            <li for="category">类目</li>
+            <li for="dict">词汇</li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane" src="System/Tag/cloud.html" id="cloud" />
+            <div class="tab-pane" src="System/Tag/category.html" id="category" />
+            <div class="tab-pane" src="System/Tag/dict.html" id="dict" />
+        </div>
+    </div>
 </div>
+

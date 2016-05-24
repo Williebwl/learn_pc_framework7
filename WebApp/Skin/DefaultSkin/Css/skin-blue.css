@@ -5,7 +5,7 @@
 /*深色 #2772ee*/
 /*浅淡色 #F1F7FF*/
 a{
-	color: #4483EB; 
+    color: #4483EB; 
 }
 .fold-menu{
     background: #4483EB;
@@ -31,7 +31,6 @@ a{
 .btn.btn-default{
   background-color: #488BE9;
   border-color: #3379ED;
-  padding: 5px 15px;
   color: #fff;
 }
 @media screen and (max-width: 800px){
@@ -50,7 +49,7 @@ a{
    box-shadow: none;
 }
 .contact-user h1{
-    color: #4483EB;	
+    color: #4483EB;    
 }
 .letter-list li.active{
     background: #4483EB;
@@ -63,8 +62,8 @@ a{
     color: #fff;
 }
 .nav-list li.active a{
-	background: #4483EB;
-	color: #fff;
+    background: #4483EB;
+    color: #fff;
 }
 .nav-list li:not(.active):hover a{
   background: #F1F7FF;
@@ -85,7 +84,7 @@ table.table-default thead tr > td{
    color: #fff;
 }
 .prop-form-info div h1{
-	color: #4483EB;
+    color: #4483EB;
 }
 .block-list li:hover {
     background: #4483EB;
@@ -95,7 +94,7 @@ table.table-default thead tr > td{
    color: #488BE9;
 }
 .progress-bar-default{
-	background-color: #488BE9;
+    background-color: #488BE9;
 }
 .icon-group-bordered .icon-items:hover{
     background-color: #4483EB;
@@ -128,11 +127,17 @@ table.table-default thead tr > td{
 .table-bordered-default{
   border-left: 4px solid #488BE9;
 }
-.nav-tabs-default.nav-pills >li.active,
-.nav-tabs-default.nav-pills >li:focus,
-.nav-tabs-default.nav-pills >li:hover{
+.nav-tabs-default.nav-pills >li.active{
   background-color: #488BE9;
   color: #fff;
+}
+.nav-tabs-default.nav-pills >li.active:focus,
+.nav-tabs-default.nav-pills >li.active:hover{
+  background-color: #488BE9; 
+}
+.nav-tabs-default.nav-pills >li:focus,
+.nav-tabs-default.nav-pills >li:hover{
+  background-color: #E4EFFF;
 }
 .nav-tabs-default{
   border-bottom: 1px solid #488BE9;
@@ -140,10 +145,16 @@ table.table-default thead tr > td{
   margin-right: -10px; 
   padding-left: 10px;
 }
-.nav-pills > li.active, 
+.nav-pills > li.active{
+    color: #fff;
+    background-color: #488BE9;
+}
+.nav-pills > li:focus, 
+.nav-pills > li:hover{
+    background-color: #E4EFFF
+}
 .nav-pills > li.active:focus, 
 .nav-pills > li.active:hover{
-    color: #fff;
     background-color: #488BE9
 }
 .nav-justified-bordered li.active{
@@ -205,35 +216,26 @@ table.table-default thead tr > td{
 .fixed-nav .fold-mainnnav .mainnav > li:not(.active):hover > a{
     background: #2772ee;
 }
+.header-nav .fold-mainnnav .mainnav > li:not(.active):hover > a{
+    background: #2772ee;
+}
 .streamline-list.sl-default:after,
 .sl-default.streamline-list .sl-icon{
     border-color: #488BE9;
     color: #488BE9;
 }
 .query-radio a.active,
-.query-radio a:hover{
+.query-radio a:hover,
+.query-radio li.item.active > span,
+.query-radio li.item:hover > span{
     background: #488BE9;
     color: #fff;
 }
 .query-radio .query-more i{
     color: #488BE9;
 }
-.query-radio a.active,
-.query-radio a:hover{
-    background: #488BE9;
-    color: #fff;
-}
-.query-radio .query-more i{
-    color: #488BE9;
-}
-.query-checkbox a.active{
-    background: #488BE9;
-    color: #fff;
-}
-.query-checkbox .query-more i{
-    color: #488BE9;
-}
-.query-checkbox a.active{
+.query-checkbox a.active,
+.query-checkbox li.item.active > span{
     background: #488BE9;
     color: #fff;
 }
@@ -243,4 +245,42 @@ table.table-default thead tr > td{
 .query-select{
     color: #fff;
     background: #488BE9;
+}
+.personal-tabs .tab-content li span{
+  color: #488BE9;
+}
+.toggle-menu i:hover {
+    background: #488BE9;
+    color: #fff;
+}
+.prop-slider.minus {
+    background-color: #488BE9;
+    color: #fff;
+}
+.users-list li span{
+    color: #488BE9;
+}
+.personal-info-text h2{
+    color: #488BE9;
+}
+.personal-info-text ul li em{
+    color: #488BE9;
+}
+.noline-tree .ngtree li span.button.ico_open,
+.noline-tree .ngtree li span.button.ico_close,
+.noline-tree .ngtree li span.button.ico_docu{
+    color: #7CABEC;
+}
+.ngtree .treeNodeExt:hover > ul > li:hover {
+    background: #488BE9;
+    color: #fff;
+}
+.select-default + .select2-container .select2-selection__rendered{
+  color: #488BE9!important;
+}
+.select-default + .select2-container .select2-selection--single .select2-selection__arrow b{
+  border-color: #488BE9 transparent transparent transparent;
+}
+.select-default + .select2-container .select2-selection--single{
+      border: 1px solid #488BE9;
 }

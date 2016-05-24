@@ -8,39 +8,39 @@
 
   日期：2015-08-20
 */
-define('biTree', ['page', 'jquery', 'ztree.core', 'ztree.excheck', 'css!Skin/DefaultSkin/css/metroStyle.css'],
-    function (app, $) {
-        'use strict';
+//define('biTree', ['page', 'jquery', 'ztree.core', 'ztree.excheck', 'css!Skin/DefaultSkin/css/metroStyle.css'],
+//    function (app, $) {
+//        'use strict';
 
-        var defConf = { view: { showIcon: false } };
+//        var defConf = { view: { showIcon: false } };
 
-        var ngTreeDirective = function () {
-            return {
-                scope: {
-                    conf: '='
-                },
-                link: function (scope, $element, $attr) {
-                    var conf = scope.conf || {}, seting;
+//        var ngTreeDirective = function () {
+//            return {
+//                scope: {
+//                    conf: '='
+//                },
+//                link: function (scope, $element, $attr) {
+//                    var conf = scope.conf || {}, seting;
 
-                    if (seting = conf.seting) { for (var i in defConf) if (seting[i] === undefined) seting[i] = defConf[i]; }
-                    else seting = defConf;
+//                    if (seting = conf.seting) { for (var i in defConf) if (seting[i] === undefined) seting[i] = defConf[i]; }
+//                    else seting = defConf;
 
-                    $element.empty();
+//                    $element.empty();
 
-                    function Init() {
-                        conf.tree = $.fn.zTree.init($('<ul class="ztree"></ul>').appendTo($element), seting, conf.data);
-                    }
-                    scope.$watch(function () {
-                        return conf.data && conf.data.length ? conf.data.length : 0;
-                    }, Init);
-                }
-            };
-        };
+//                    function Init() {
+//                        conf.tree = $.fn.zTree.init($('<ul class="ztree"></ul>').appendTo($element), seting, conf.data);
+//                    }
+//                    scope.$watch(function () {
+//                        return conf.data && conf.data.length ? conf.data.length : 0;
+//                    }, Init);
+//                }
+//            };
+//        };
 
-        /*
+//        /*
           
-        */
-        app.directive('biTree', ngTreeDirective);
+//        */
+//        app.directive('biTree', ngTreeDirective);
 
-        return app;
-    });
+//        return app;
+//    });

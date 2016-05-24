@@ -1,27 +1,49 @@
-﻿define('core', ['page-Route', 'ext'],
-    function (app, ext) {
+﻿define('core', ['page-Route', 'core.event', 'ext'],
+    function (app, coreEvent, ext) {
         'use strict'
 
-        var Super,
-            FN_ARGS = /^[^\(]*\(\s*([^\)]*)\)/m,
+        var FN_ARGS = /^[^\(]*\(\s*([^\)]*)\)/m,
             FN_ARG_SPLIT = /,/,
             FN_ARG = /^\s*(_?)(\S+?)\1\s*$/,
             STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg;
 
-        function Core($view, $service, $scope) {
-            if (!this || this.constructor === Window) return new Core($view, $service, $scope);
+        function Core($scope, $service) {
+            if (!this || this.constructor === Window) return new Core($scope, $service);
+
+            /********************************* 自定义事件 开始 ***************************************/
+
+            this.on = coreEvent.addHandler,
+            this.off = coreEvent.removeHandler,
+            this.trigger = coreEvent.trigger
+
+            /********************************* 自定义事件 结束 ***************************************/
         }
 
         return $.extend(Core.fn = Core.prototype, {
             extend: Core.inherit = function (target, data) {
                 return $.extend(target.prototype || target, data || Core.fn), target;
             },
-            super: function ($view, $service, $scope, target) {
-                return (Super = (Super || this.constructor).Super) && Super && Super.call(this, $view, $service, $scope || $view.$id && $view || $service.$rootScope), Super === Core && (Super = 0), this
+            super: function () {
+                var suber = this.constructor,
+                    arg = Array.prototype.slice.call(arguments.length === 1 ? arguments[0] : arguments),
+                    queue = [];
+                this.base = this.constructor.prototype,
+                this.hasOwnProperty('Super') && queue.push(this)
+                do {
+                    suber.prototype.hasOwnProperty('Super') && queue.push(suber.prototype)
+                } while (suber = suber.super)
+                bindPage.apply(this, arg)
+                while (suber = queue.pop()) suber.$page = suber.$this = suber.$self = suber.$current = this, suber.Super.apply(this, arg)
+                return this
             }
         }) && $.extend(Core, {
             ext: function (target, data) {
-                return (target.Super = this), $.extend(Core.inherit(target).fn = target.prototype, data), $.extend(target, Core);
+                $.extend(target, this),
+                target.prototype = new this(),
+                target.prototype.base = target.prototype,
+                target.super = this,
+                target.prototype.constructor = target
+                return (target.Super = this), $.extend(Core.inherit(target).fn = target.prototype, data), target;
             },
             controller: function (recipeName, factoryFunction) {
                 /// <summary>创建控制器</summary>
@@ -48,6 +70,7 @@
             noop: angular.noop,
             toJson: angular.toJson,
             extend: angular.extend,
+            bindThis: bindThis,
             app: app,
             $injector: app.$injector || $(document.documentElement).data('$injector'),
             annotate: annotate
@@ -79,5 +102,25 @@
             }
 
             return $inject;
+        }
+
+        function bindPage($scope, $service) {
+            this.$scope = $scope,
+            this.$service = bindService.call({ $service: $service }, $service)
+        }
+
+        function bindService($service, thisArg) {
+            thisArg = thisArg || $service
+            return Object.keys($service).forEach(function (key) {
+                var fn = $service[key]; angular.isFunction(fn) && (this[key] = fn.bind(thisArg))
+            }, this),
+            this
+        }
+
+        function bindThis(source, thisArg) {
+            thisArg = thisArg || source
+            return Object.keys(source).forEach(function (key) {
+                var fn = source[key]; angular.isFunction(fn) && (source[key] = fn.bind(thisArg))
+            }), source
         }
     })

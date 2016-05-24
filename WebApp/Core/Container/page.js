@@ -7,11 +7,11 @@
 
   日期：2015-08-20
 */
-define('page', ['angular'],
-    function (angular) {
+define('page', ['angular', 'core.http'],
+    function (angular,api) {
         'use strict'
         /*
           创建并返回angular名称为page的module，该module不依赖其它module
         */
-        return angular.module('page', []);
+        return angular.module('page', ['biHttp']);
     });

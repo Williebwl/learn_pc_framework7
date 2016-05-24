@@ -1,209 +1,252 @@
-﻿define('formValidate', ['page-Route', 'core.Service'],
-    function (app) {
-        'use strict';
+﻿define('formValidate',
+      ['page-Route', 'evt.page', 'core.Service'],
+      function (app, pageEvent) {
+          'use strict';
 
-        var biFormValidateDirective =
-            function (coreService) {
-                var biFormValidateDirectiveLink = function (scope, $element, attr, ctrl) {
-                    var formValidate = {
-                        mark: $.trim(attr.biFormValidate) || $.trim(attr.mark) || ctrl.$name,
-                        form: $element.attr('novalidate', ''), $form: ctrl, tag: [],
-                        $scope: scope
-                    }
+          var noop = angular.noop, isFn = angular.isFunction;
 
-                    if (!formValidate.mark || !formValidate.form.is('form') || !formValidate.$form) return;
+          app.directive('biFormValidate', biFormValidateDirective)
 
-                    coreService.fnGetformValidInfo(formValidate.mark)
-                               .success(function (vm) {
-                                   if (!vm || !$.isPlainObject(vm) || $.isEmptyObject(vm)) return; biFormValidate.bindVM((formValidate.VMInfo = vm) && formValidate);
-                               }).error(function () { console.log("【" + formValidate.mark + "】验证信息获取失败！") });
+          biFormValidateDirective.$inject = ['$q', 'coreService']
+          function biFormValidateDirective($q, coreService) {
 
-                    scope.$on('$ViewRest', function (s, e) { biFormValidate.$formValidateRest(formValidate) })
+              biFormValidateController.$inject = ['$scope']
+              function biFormValidateController($scope) {
+                  var self = this,
+                      promises = $q(function (a) { self.fnInit = a }),
+                      validateQueue = [],
+                      restQueue = [];
 
-                    scope.$on('$VMValidate', function (s, e) { e.IsValid && (!e.mark || e.mark === formValidate.mark || Array.isArray(e.mark) && $.inArray(formValidate.mark, e.mark) >= 0) && biFormValidate.$formValidate(formValidate, e) })
-                };
+                  this.fnBind = function (fn) {
+                      return isFn(fn) && promises.then(function () { fn.call(self, self.VMS) }), this
+                  }
 
-                return {
-                    restrict: 'AC',
-                    priority: 9,
-                    require: '?form',
-                    link: biFormValidateDirectiveLink
-                };
-            };
+                  this.fnValidate = function (fn) {
+                      return isFn(fn) && validateQueue.push(fn), this
+                  }
 
-        app.directive('biFormValidate', biFormValidateDirective);
+                  this.fnFormValidateRest = function (fn) {
+                      return isFn(fn) && restQueue.push(fn), this
+                  }
 
-        function inputType($input, key) {
-            return $input.attr('type', key);
-        };
+                  $scope.$on(pageEvent.OnFormValidate, function (s, e) {
+                      e.IsValid && (!e.mark || e.mark === formValidate.mark || Array.isArray(e.mark) && $.inArray(formValidate.mark, e.mark) >= 0) && fnValidate(e)
+                  })
 
-        function validate(key, set, isValid) {
-            //if (this.$ctrl.$pristine) return;
+                  $scope.$on(pageEvent.OnFormReset, function (s, e) {
+                      var def = { $valid: false, $invalid: false, $pristine: true, $dirty: false };
+                      $.extend(self.form, def),
+                      $scope.$valid = false;
+                      fnApplyQueue(restQueue, def)
+                  })
 
-            var k = key + isValid;
+                  function fnValidate(e) {
+                      var msg = [];
+                      fnApplyQueue(validateQueue, msg)
+                      e.promise = $q(function (a, b) { msg.length ? (e.errorNotice('·' + msg.join('<br />·')), b(e)) : a(e) })
+                  }
+              }
 
-            if (this.lastValid != k) {
-                isValid ? delete this.errorMsg[key] : this.errorMsg[key] = set.msg || set;
-                this.lastValid = k;
-                $.isEmptyObject(this.errorMsg) ? this.parent().removeClass('has-error') : this.parent().addClass('has-error');
-            }
+              return {
+                  restrict: 'AC',
+                  priority: 100,
+                  require: { form: 'form', formValidate: 'biFormValidate' },
+                  controller: biFormValidateController,
+                  compile: function compile(tElement, tAttrs) {
+                      if (!tElement.is('form')) return;
+                      return tElement.attr('novalidate', '').find(':input[name]:not([name=""],[bi-validate])').attr('bi-validate', ''), { pre: preLink, post: postLink }
+                  }
+              }
 
-            return isValid;
-        }
+              function preLink(scope, $element, attr, ctrl) {
+                  ctrl.formValidate.mark = $.trim(attr.biFormValidate) || $.trim(attr.mark) || attr.name,
+                  ctrl.formValidate.form = ctrl.form
+              }
 
-        var biFormValidate = {
-            bindVM: function (fv) {
-                var vms = fv.VMInfo;
-                fv.form.on('focusout', ':input', { formValidate: fv }, this.$formOut);
+              function postLink(scope, $element, attr, ctrl) {
+                  var promises = coreService.fnGetformValidInfo(ctrl.formValidate.mark)
+                                            .success(function (vms) { ctrl.formValidate.VMS = vms })
+                                            .error(function () { console.log("【" + ctrl.formValidate.mark + "】验证信息获取失败！") })
 
-                for (var vm in vms) this.bindVMFields(vms[vm], (fv.vm = vm) && fv);
+                  scope.$on(pageEvent.OnInit, function () { $q.when(promises).then(ctrl.formValidate.fnInit) })
+              }
+          }
 
-                delete fv.vm, 'fd' in fv && delete fv.fd;
-            },
-            bindVMFields: function (vm, fv) {
-                if (!vm || !fv) return;
-                for (var fd in vm) this.bindVMField(vm[fd], (fv.fd = fd) && fv)
-            },
-            bindVMField: function (vs, fv) {
-                if (!vs || !fv) return;
+          function fnApplyQueue(queue, arg) { queue.forEach(function (fn) { return fn.call(this, arg) }) }
 
-                var mark = fv.vm + '_' + fv.fd, $input = $('#' + fv.fd + ',#' + mark, fv.form);
+          app.directive('biValidate', biValidateDirective)
 
-                if (!$input.is(':input')) $input = $(':input[name=\'' + fv.fd + '\'],:input[name=\'' + mark + '\']', fv.form);
+          biValidateDirective.$inject = ['$parse']
+          function biValidateDirective($parse) {
+              function fnBind(validate, ngModel, $element) {
+                  if (!validate) return;
 
-                if (!$input.length) return;
+                  Object.getOwnPropertyNames(validate).forEach(function (key) {
+                      var fn = biFormValidates[key];
+                      isFn(fn) ? fn.call(ngModel.$validators, key, validate[key], ngModel.$errorMsg, $element, ngModel) : console.warn('暂不支持【' + key + '】类型的验证.');
+                  })
+              }
 
-                $input.$ctrl = $input.get(0).$ctrl = fv.$ctrl = fv.$form[fv.fd] || fv.$form[mark],
-                $input.$formValidate = $input.get(0).$formValidate = fv.$ctrl.$formValidate = fv,
+              return {
+                  restrict: 'AC',
+                  priority: 100,
+                  require: { formValidate: '^biFormValidate', ngModel: '?ngModel' },
+                  link: { pre: preLink, post: postLink }
+              }
 
-                $input.$ctrl.$input = $input, $input.errorMsg = {}, $input.Validates = {}
+              function preLink(scope, $element, attr, ctrl) {
+                  if (!ctrl.ngModel) return;
 
-                this.bindVMFieldValidate($input.$VMValidate = $input.get(0).$VMValidate = vs, $input),
+                  ctrl.ngModel.$errorMsg = {}
+              }
 
-                fv.tag.push($input)
-            },
-            bindVMFieldValidate: function (vs, $input) {
-                for (var key in vs) {
-                    var keys = key.toLowerCase();
-                    if (keys in this.validates && !(keys in $input.$ctrl.$validators)) $input.Validates[keys] = this.validates[keys]($input, keys, vs[key], $input.$ctrl, $input.$formValidate)
-                    else console.warn('暂不支持【' + key + '】类型的验证.');
-                }
-            },
-            validates: {
-                required: function ($input, key, set, ctrl) {
+              function postLink(scope, $element, attr, ctrl) {
+                  if (!ctrl.ngModel) return;
 
-                    $input.prop('required', true)
+                  var getter = fnValidateGetter(ctrl.formValidate.mark, attr.name),
+                      fn = scope.$eval(attr.biValidate);
 
-                    return ctrl.$validators.required = function (modelValue, viewValue) { return validate.call($input, key, set, !ctrl.$isEmpty(viewValue)) }
-                },
-                regularexpression: function () {
-                    this.pattern.apply(this, (arguments[1] = 'pattern') && arguments)
-                },
-                emailaddress: function ($input, key, set, ctrl) {
-                    this.pattern.apply(this, (arguments[1] = 'emailaddress') && (arguments[2].pattern = '/^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/') && arguments)
-                },
-                phone: function () {
-                    this.pattern.apply(this, (arguments[1] = 'phone') && (arguments[2].pattern = '/^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/') && arguments)
-                },
-                pattern: function ($input, key, set, ctrl) {
-                    var regex = (regex = set.pattern || set.value || set) && angular.isString(regex) && regex.length > 0 && new RegExp(regex), regexp;
+                  ctrl.formValidate.fnBind(function (vms) { fnBind(getter(vms), ctrl.ngModel, $element) })
 
-                    if (!regex && !regex.test) return;
+                  if (isFn(fn)) fn.call(ctrl.ngModel.$validators, ctrl.ngModel.$errorMsg, $element, ctrl.ngModel);
 
-                    regexp = regex || undefined;
+                  ctrl.formValidate.fnValidate(function (msg) {
+                      ctrl.ngModel.$validate()
 
-                    ctrl.$validators.pattern = function (modelValue, viewValue) {
-                        return validate.call($input, key, set, ctrl.$isEmpty(viewValue) || angular.isUndefined(regexp) || regexp.test(viewValue));
-                    };
+                      Object.getOwnPropertyNames(ctrl.ngModel.$errorMsg).forEach(function (key) { msg.push(ctrl.ngModel.$errorMsg[key]) })
+                  })
 
-                    return $input.attr('pattern', regexp);
-                },
-                stringlength: function () {
-                    this.minlength.apply(this, (arguments[1] = 'minlength') && arguments), this.maxlength.apply(this, (arguments[1] = 'maxlength') && arguments)
-                },
-                maxlength: function ($input, key, set, ctrl) {
-                    var maxlength = parseInt(set.length || set.maximumlength || set, 10);
+                  ctrl.formValidate.fnFormValidateRest(function (def) { $element.parent().removeClass('has-error'); $.extend(ctrl.ngModel, def) })
+              }
 
-                    if (isNaN(maxlength)) return;
+              function fnValidateGetter(mark, name) {
+                  mark = Array.isArray(mark) ? mark : mark.split(',')
+                  return function (vms) {
+                      var validate;
+                      for (var i = 0, l = mark.length; i < l; i++) {
+                          if (validate = $parse(mark[i] + '.' + name)(vms)) return validate;
+                      }
+                  }
+              }
+          }
 
-                    $input.attr('maxlength', maxlength);
+          var biFormValidates = {
+              required: function (key, validate, $error, $element, ngModel) {
+                  var isSelect = $element.prop('required', true).is('select');
 
-                    return ctrl.$validators.maxlength = function (modelValue, viewValue) { return validate.call($input, key, set, maxlength < 0 || ctrl.$isEmpty(viewValue) || viewValue.length <= maxlength) }
-                },
-                minlength: function ($input, key, set, ctrl) {
-                    var minlength = parseInt(set.length || set.minimumlength || set, 10);
+                  this.required = function (modelValue, viewValue) {
+                      return fnValidate(key, $element, isSelect && !$element.data('canValid') || !ngModel.$isEmpty(viewValue), $error, validate);
+                  }
+              },
+              regularexpression: function (key, validate, $error, $element, ngModel) {
+                  biFormValidates.pattern.apply(this, arguments)
+              },
+              emailaddress: function (key, validate, $error, $element, ngModel) {
+                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/) && arguments)
+              },
+              phone: function (key, validate, $error, $element, ngModel) {
+                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^[\d-]+$/) && arguments)
+              },
+              telphone: function (key, validate, $error, $element, ngModel) {
+                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^(\d{3,4}-)?\d{6,8}$/) && arguments)
+              },
+              mobilephone: function (key, validate, $error, $element, ngModel) {
+                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^1\d{10}$/) && arguments)
+              },
+              identifier: function (key, validate, $error, $element, ngModel) {
+                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^[a-zA-Z][a-zA-Z0-9_]*$/) && arguments)
+              },
+              visiblechar: function (key, validate, $error, $element, ngModel) {
+                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^[\u0020-\u007e]+$/) && arguments)
+              },
+              pattern: function (key, validate, $error, $element, ngModel) {
+                  var regex = (regex = validate.pattern || validate.value || validate) && angular.isString(regex) && regex.length > 0 && new RegExp(regex) || validate.pattern, regexp;
 
-                    if (isNaN(minlength)) return;
+                  if (!regex && !regex.test) return;
 
-                    $input.attr('minlength', minlength);
+                  regexp = regex || undefined;
 
-                    return ctrl.$validators.minlength = function (modelValue, viewValue) { return validate.call($input, key, set, ctrl.$isEmpty(viewValue) || viewValue.length >= minlength) }
-                },
-                range: function () {
-                    this.min.apply(this, (arguments[1] = 'min') && arguments), this.max.apply(this, (arguments[1] = 'max') && arguments)
-                },
-                max: function ($input, key, set, ctrl) {
-                    var max = parseFloat(set.maximum || set, 10);
+                  this.pattern = function (modelValue, viewValue) {
+                      return fnValidate(key, $element, ngModel.$isEmpty(viewValue) || angular.isUndefined(regexp) || regexp.test(viewValue), $error, validate)
+                  }
 
-                    if (isNaN(max)) return;
+                  $element.attr('pattern', regexp);
+              },
+              stringlength: function (key, validate, $error, $element, ngModel) {
+                  biFormValidates.minlength.apply(this, (arguments[0] = 'minlength') && arguments), biFormValidates.maxlength.apply(this, (arguments[0] = 'maxlength') && arguments)
+              },
+              maxlength: function (key, validate, $error, $element, ngModel) {
+                  var maxlength = parseInt(validate.length || validate.maximumlength || validate, 10);
 
-                    $input.attr('max', max);
+                  if (isNaN(maxlength)) return;
 
-                    return ctrl.$validators.max = function (value) { return validate.call($input, key, set, ctrl.$isEmpty(value) || angular.isUndefined(max) || value <= max) }
-                },
-                min: function ($input, key, set, ctrl) {
-                    var min = parseFloat(set.minimum || set, 10);
+                  $element.attr('maxlength', maxlength);
 
-                    if (isNaN(min)) return;
+                  this.maxlength = function (modelValue, viewValue) {
+                      return fnValidate(key, $element, maxlength < 0 || ngModel.$isEmpty(viewValue) || viewValue.length <= maxlength, $error, validate);
+                  }
+              },
+              minlength: function (key, validate, $error, $element, ngModel) {
+                  var minlength = parseInt(validate.length || validate.minimumlength || validate, 10);
 
-                    $input.attr('min', min);
+                  if (isNaN(minlength)) return;
 
-                    return ctrl.$validators.min = function (value) { return validate.call($input, key, set, ctrl.$isEmpty(value) || angular.isUndefined(min) || value >= min) }
-                },
-                display: function ($input, key, set, ctrl) {
-                    $input.display = set
-                },
-                number: inputType,
-                email: inputType,
-                date: inputType,
-                'datetime-local': inputType,
-                time: inputType,
-                checkbox: inputType,
-                week: inputType,
-                month: inputType,
-                url: inputType,
-                radio: inputType
-            },
-            $formIn: function (e) {
-                //console.log(e)
-            },
-            $formOut: function (e) {
-                if (!this.$ctrl) return;
+                  $element.attr('minlength', minlength);
 
-                var $input = $(this);
+                  this.minlength = function (modelValue, viewValue) {
+                      return fnValidate(key, $element, ngModel.$isEmpty(viewValue) || viewValue.length >= minlength, $error, validate);
+                  }
+              },
+              range: function (key, validate, $error, $element, ngModel) {
+                  this.min.apply(this, (arguments[0] = 'min') && arguments), this.max.apply(this, (arguments[0] = 'max') && arguments)
+              },
+              max: function (key, validate, $error, $element, ngModel) {
+                  var max = parseFloat(validate.maximum || validate, 10);
 
-                if (!$input.is('.form-control')) $input.addClass('form-control');
-                if ((this.fnRequired && !$input.val()) && !this.$ctrl.$valid) $input.parent().addClass('has-error');
-            },
-            $formValidate: function (fv, e) {
-                e.IsValid = fv.$form.$valid,
-                fv.tag.forEach(function ($input) {
-                    if (!$input.is('.form-control')) $input.addClass('form-control');
-                    for (var key in $input.Validates) {
-                        var func = $input.Validates[key], val = $input.val();
-                        $.isFunction(func) && func(val, val)
-                    }
+                  if (isNaN(max)) return;
 
-                    for (var key in $input.errorMsg) {
-                        e.IsValid = 0, e.errorNotice($input.errorMsg[key])
-                    }
-                })
-            },
-            formDefSeting: { $valid: false, $invalid: false, $pristine: true, $dirty: false },
-            $formValidateRest: function (fv) {
-                $.extend(fv.$form, this.formDefSeting);
-                fv.$scope.$valid = false;
-                fv.tag.forEach(function ($input) { $input.parent().removeClass('has-error'); $.extend($input.$ctrl, biFormValidate.formDefSeting); });
-            }
-        };
-    });
+                  $element.attr('max', max);
+
+                  this.max = function (value) {
+                      return fnValidate(key, $element, ngModel.$isEmpty(value) || angular.isUndefined(max) || value <= max, $error, validate);
+                  }
+              },
+              min: function (key, validate, $error, $element, ngModel) {
+                  var min = parseFloat(validate.minimum || validate, 10);
+
+                  if (isNaN(min)) return;
+
+                  $element.attr('min', min);
+
+                  this.min = function (value) {
+                      return fnValidate(key, $element, ngModel.$isEmpty(value) || angular.isUndefined(min) || value >= min, $error, validate);
+                  }
+              },
+              display: noop,
+              number: fnInputType,
+              email: fnInputType,
+              date: fnInputType,
+              'datetime-local': fnInputType,
+              time: fnInputType,
+              checkbox: fnInputType,
+              week: fnInputType,
+              month: fnInputType,
+              url: fnInputType,
+              radio: fnInputType
+          }
+
+          function fnValidate(key, $input, isValid, $errorMsg, msg) {
+              var k = key + isValid;
+
+              if ($input.lastValid != k) {
+                  $input.lastValid = k;
+                  isValid ? ($input.parent().removeClass('has-error'), delete $errorMsg[key]) : ($input.parent().addClass('has-error'), $errorMsg[key] = msg.msg || msg);
+              }
+
+              return isValid
+          }
+
+          function fnInputType(key, validate, $error, $element) {
+              return $element.attr('type', key);
+          };
+      });

@@ -1,17 +1,15 @@
-﻿
-define(['core.Service'],
-    function (core) {
-        'use strict'
+﻿define(['core.Service'], function (core) {
+    'use strict'
 
-        function tagService() {
-            this.fnGetTagByTagClass = function (tagClass) {
-                return this.get('GetTagByTagClass', { params: { tagClass: tagClass } })
-            }
+    function tagService() {
+        this.fnGetTagByTagClass = function (tagClass) {
+            return this.get('GetTagByTagClass', { params: { tagClass: tagClass } })
         }
+    }
 
-        function tagClassService() {
+    function tagClassService() {
 
-        }
+    }
 
-        return core.service('tag', tagService, 'Tag/Tag').service('tagGroup', 'Tag/tagGroup').service('tagClass', tagClassService, 'Tag/TagClass')
-    });
+    return core.service('tagClass', tagClassService, 'Tag/TagClass').service('tag', tagService, 'Tag/Tag');
+});

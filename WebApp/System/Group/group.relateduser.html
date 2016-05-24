@@ -1,3 +1,15 @@
-﻿<div ng-controller="GroupRelatedUserCtrl">
-
-</div>
+﻿<form ng-controller="GroupRelatedUserCtrl" class="form-horizontal" name="GrantGroupUser" bi-Form-Validate="GrantGroupUserVM">
+    <div class="form-group col-xs-12">
+        <label class="control-label">
+            角色名称：
+        </label>
+        {{editInfo.GroupName}}（{{editInfo.GroupCode}}）
+    </div>
+    <div class="form-group col-xs-12">
+        <label class="control-label" for="UserIDs">
+            用户：
+        </label>
+        <select class="form-control" id="UserIDs" name="UserIDs" ng-model="Users" multiple="multiple" filter
+                ng-options="user.UserName group by user.DeptName for user in AllUsers"></select>
+    </div>
+</form>

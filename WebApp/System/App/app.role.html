@@ -1,30 +1,33 @@
-﻿<p class="subinfo">该角色共拥有<span class="dangger">1</span>个角色<a href="">[添加角色]</a></p>
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th width="5%">序号</th>
-                <th width="15%">角色名称</th>
-                <th width="25%">角色代码</th>
-                <th width="15%">描述</th>
-                <th width="20%">角色用户</th>
-                <th width="20%">操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1</td>
-                <td>通讯录管理员</td>
-                <td>ContactManager</td>
-                <td>--</td>
-                <td>张三；李四</td>
-                <td class="alignCenter">
-                    <div class="icon-group">
-                        <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="编辑"></a>
-                        <a href="javascript:;" class="icon-items fa fa-trash" data-toggle="tooltip" data-placement="bottom" title="删除"></a>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+﻿<div ng-controller="AppContainerRoleCtrl">
+    <p class="subinfo">该应用共拥有<span class="dangger">{{PageInfo ? PageInfo.TotalItems : 0}}</span>个角色<a href="javascript:;" ng-click="ShowDialog('add', Info)">[添加角色]</a></p>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th width="5%">序号</th>
+                    <th width="25%">角色名称</th>
+                    <th width="25%">角色代码</th>
+                    <th width="45%">描述</th>
+                </tr>
+            </thead>
+            <tbody class="sortable-table tbody-hover">
+                <tr ng-repeat="group in PageInfo.Items">
+                    <td ng-bind="$index+1"></td>
+                    <td class="alignLeft">
+                        <span>{{group.GroupName}}</span>
+                        <div class="icon-group">
+                            <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="编辑" ng-hide="group.IsBuiltin" ng-click="$event.stopPropagation();ShowDialog('edit', group)"></a>
+                            <a href="javascript:;" class="icon-items fa fa-trash" data-toggle="tooltip" data-placement="bottom" title="删除" ng-hide="group.IsBuiltin" ng-click="$event.stopPropagation();fnDelete(group.ID)"></a>
+                        </div>
+                    </td>
+                    <td class="alignLeft">{{group.GroupCode}}</td>
+                    <td class="alignLeft">{{group.Remark}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <div bi-Pagination conf="PageConfig"></div>
+    </div>
+
+    <div bi-dialog src="System/Group/Group.edit.html" id="add" size="md" title="创建新角色" />
+    <div bi-dialog src="System/Group/Group.edit.html" id="edit" size="md" title="编辑角色信息" />
 </div>

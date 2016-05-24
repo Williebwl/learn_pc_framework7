@@ -1,37 +1,53 @@
-define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui'],
+define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui', 'Assets/Js/Plugins/select2.min.js', 'css!Assets/Css/select2.css'],
     function ($, bootstrap, coreState) {
         'use strict'
 
         // 左侧滚动条
-        function setNavHeight(){
+        function setNavHeight() {
             $(".lef-mainnnav").css("height", $(window).height() - $(".index-logo").outerHeight(true) - $(".user-portrait").outerHeight(true) - $(".lef-footer").outerHeight(true))
         }
+
         // 主体区域
-        function setMainHeight(){
-            $(".contentpanel").outerHeight($(window).height() - $(".header-bar").outerHeight() -$(".fixed-footer").height() )
+        function setMainHeight() {
+            $(".contentpanel").outerHeight($(window).height() - $(".header-bar").outerHeight() - $(".fixed-footer").height())
         }
         // 字母表
-        function setLetterHeight(){
-            var perH = Math.floor(( $(window).height() - $(".header-bar").outerHeight() ) / $(".letter-list li").length)
-            $(".letter-list ul li").css({"height":perH,'lineHeight':perH+'px'})
+        function setLetterHeight() {
+            var perH = Math.floor(($(window).height() - $(".header-bar").outerHeight()) / $(".letter-list li").length)
+            $(".letter-list ul li").css({ "height": perH, 'lineHeight': perH + 'px' })
         }
 
-            // 适应窗口
-        $(window).resize(function(){
+        // 适应窗口
+        $(window).resize(function () {
             setNavHeight();
             setMainHeight();
             setLetterHeight();
         })
 
-        setNavHeight();
-        setMainHeight();
-        setLetterHeight();
+        // 监听浏览器地址变化
+        window.onhashchange = function(){
+            $(".modal-backdrop.fade.in").remove();
+        }
 
-        $(document).on("click",'[data-toggle="tooltip modal"]',function(){
-            if ($(window).width() <= 800 && $(window).width() > 481){            
-                setLayout(false, -130, 70, -200, 0, 0, -200); 
+        // 点击按钮失去焦点
+        $(document).on("click","button.btn:not()",function(){
+            $(this).blur();
+        })
+
+        // 按钮C创建 空格取消
+        $(document).on("keydown",function (event) {
+            if(event.keyCode === 67 && !$(".modal-backdrop.in").length){
+                $('[data-quickcreate]:first').trigger("click");
+            }else if(event.keyCode === 32){
+                $('[data-dismiss="modal"]').trigger("click");
+            }
+        });
+
+        $(document).on("click", '[data-toggle="tooltip modal"],.left-nav .btn', function () {
+            if ($(window).width() <= 800 && $(window).width() > 481) {
+                setLayout(false, -130, 70, -200, 0, 0, -200);
                 $(this).parents(".left-nav").removeClass('zIndex');
-            }else if($(window).width() <= 480){         
+            } else if ($(window).width() <= 480) {
                 setLayout(false, -200, 0, -200, 0, -70, -200);
                 $(".left-nav").removeClass('zIndex');
             }
@@ -54,9 +70,9 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui'],
             $(".fullwidth-nav .fold-menu").stop().animate({ 'left': fullaside }, 200);
         }
         $(window).resize(function () {
-            if ($(window).width() > 1200) {
+            if ($(window).width() > 1024) {
                 setLayout(true, 70, 270, 200, 400, 0, 0);
-            } else if ($(window).width() <= 1200 && $(window).width() > 800) {
+            } else if ($(window).width() <= 1024 && $(window).width() > 800) {
                 setLayout(false, -130, 70, 0, 200, 0, 0);
             } else if ($(window).width() <= 800 && $(window).width() > 481) {
                 setLayout(false, -130, 70, -200, 0, 0, -200);
@@ -84,31 +100,149 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui'],
             }
         }).on("click", function (e) {
             if ($(window).width() <= 800 && $(window).width() > 481 && $(e.target).closest(".left-nav").length == 0 && $(e.target).closest(".fold-menu").length == 0) {
-                setLayout(false, -130, 70, -200, 0, 0, -200); 
-                $(".left-nav").removeClass('zIndex');               
+                setLayout(false, -130, 70, -200, 0, 0, -200);
+                $(".left-nav").removeClass('zIndex');
             } else if ($(window).width() <= 480 && $(e.target).closest(".left-nav").length == 0 && $(e.target).closest(".fold-menu").length == 0) {
                 setLayout(false, -200, 0, -200, 0, -70, -200);
                 $(".left-nav").removeClass('zIndex');
             }
         })
 
+        // 搜索
+        $.fn.extend({
+            showSearch: function () {
+                var w = this.data("outerWidth") || this.data("outerWidth", this.outerWidth()).data("outerWidth");
+                $(".contentpanel").stop().animate({ 'margin-left': w }, 200);
+                this.attr("data-animate", "flipInY");
+                if ($(window).width() > 1024) {
+                    setLayout(false, -130, 70, 200, 400, 0, 0);
+                }
+                return this;
+            },
+            hideSearch: function () {
+                this.attr("data-animate", "flipOutY");
+                $(".contentpanel").stop().animate({ 'margin-left': 0 }, 200)
+                if ($(window).width() > 1024) {
+                    setLayout(true, 70, 270, 200, 400, 0, 0);
+                } else if ($(window).width() <= 1024 && $(window).width() > 800) {
+                    setLayout(false, -130, 70, 0, 200, 0, 0);
+                } else if ($(window).width() <= 800 && $(window).width() > 481) {
+                    setLayout(false, -130, 70, -200, 0, 0, -200);
+                } else if ($(window).width() <= 480) {
+                    setLayout(false, -200, 0, -200, 0, -70, -200);
+                }
+                return this;
+            },
+            toggleSearch: function () {
+                var $ele = $(this.attr("data-search"))
+                if ($ele.is(":visible")) {
+                    $ele.hideSearch();
+                    this.find("i").removeClass("fa-search-minus").addClass("fa-search-plus");
+                } else {
+                    $ele.showSearch();
+                    this.find("i").addClass("fa-search-minus").removeClass("fa-search-plus");
+                }
+            }
+        });
+
+        $(document).on("click", "[data-search-close]", function () {
+            $("[data-search='#" + $('.search-panel').attr("id") + "']").toggleSearch();
+        })
+
+        // 树菜单经过事件
+        $(document).on("mouseenter", ".editTree .bbit-tree-node-el:visible", function () {
+            $('.tree-icons', this).length || $('.bbit-tree-node-anchor', this).append('<div class="tree-icons"><i class="fa fa-edit"></i><i class="fa fa-trash"></i></div>');
+        }).on("mouseleave", ".editTree .bbit-tree-node-el:visible", function () { $('.tree-icons', this).remove(); })
+
+        // 弹出滑动层
+        $.fn.extend({
+            showProp: function () {
+                var dir = this.attr("data-prop-direction");
+                switch (dir) {
+                    case "left":
+                        this.stop().animate({ "left": 0 }, 200);
+                        break;
+                    case "right":
+                        this.stop().animate({ "right": 0 }, 200);
+                        break;
+                    case "top":
+                        this.stop().animate({ "top": 0 }, 200);
+                        break;
+                    case "bottom":
+                        this.stop().animate({ "bottom": 0 }, 200);
+                        break;
+                };
+                return this;
+            },
+            hideProp: function () {
+                var dir = this.attr("data-prop-direction");
+                if (this.css(dir) == '0px') {
+                    var effect = {};
+                    effect[dir] = '-100%';
+                    this.stop().animate(effect, 200);
+                }
+                return this;
+            }
+        });
+
+        $(document).on('click', '[data-prop-class]', function () {
+            $($(this).attr('data-prop-class')).showProp()
+        })
+
+        // 点击空白关闭滑动层
+        var props = $("[data-prop-direction]");
+        $(document).on("click", "[data-prop-direction],.modal-backdrop,.modal,[data-prop-class],[data-toggle*='tooltip modal']", function (e) {
+            e.stopPropagation();
+        })
+        $(document).on("click", function (e) {
+            $("[data-prop-direction]:not('[data-slider=static]')").each(function () {
+                $(this).hideProp();
+            });
+        })
+
+        // 关闭滑动层
+        $(document).on("click", "[data-close-slider = self ]", function () {  //关闭当前滑动层
+            $(this).parents(".prop-slider").hideProp();
+        }).on("click", "[data-close-slider = all]", function () {   //关闭所有滑动层
+            $("[data-prop-direction]").each(function () {
+                $(this).hideProp();
+            })
+        })
+
+        // 拖拽排序
+        $(".sortable-table").sortable({
+            cursor: "move",
+            axis: "y"
+        }).on("sortstart", function (event, ui) {
+            var _this = $(this);
+            ui.item.attr('sorted', 'sorted')
+            ui.item.find('td').each(function (i) {
+                $(this).outerWidth(_this.find('tr:first td').eq(i).outerWidth())
+            });
+        }).disableSelection();
+
+        // 下拉选择
+        $(".select-autocomplete").select2({
+            placeholder: $(this).attr("data-placeholder")
+        });
+
 
         /** 表单向导 start**/
-        $(document).on("click", ".wizard .wizard-header li", function () {
+        $(document)/*.on("click", ".wizard .wizard-header li", function () {
             var $self = $(this);
             showWizard($self.closest(".wizard"), $self.index())
-        }).on("click", ".wizard-footer .next", function (e) {
+        })*/.on("click", ".wizard-footer .next", function (e) {
             if (!coreState.FormState) return;
             var $self = $(this).closest(".wizard");
             showWizard($self, $self.find(".wizard-pane.active").index() + 1)
-        }).on("click", ".wizard-footer .previous:not(.disabled)", function (e) {
+        }).on("click", ".wizard-footer .previous:not(.hide)", function (e) {
             var $self = $(this).closest(".wizard");
             showWizard($self, $self.find(".wizard-pane.active").index() - 1)
         })
 
         function showWizard(obj, i) {
-            i > 0 ? obj.find(".previous").removeClass("disabled") :
-                obj.find(".previous").addClass("disabled")
+            i > 0 ? obj.find(".previous").removeClass("hide") :
+                obj.find(".previous").addClass("hide")
             if (i == obj.find(".wizard-header li").length - 1) {
                 obj.find(".next").hide().siblings().removeClass("hide");
             } else {
@@ -121,21 +255,49 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui'],
 
         /** 选项卡 start**/
         $(document).on("click", ".tabs > .nav > li", function () {
+            if ($(this).attr('bi-tab-nav') != undefined) return;
+
             var $nav = $(this).addClass("active"),
                 $tabs = $nav.closest('.tabs'),
                 $pane = $tabs.children('.tab-content').children('.tab-pane:eq(' + $nav.index() + ')').addClass("active"),
                 last = $tabs.data('last');
 
-            last && (last.$nav.removeClass("active"), last.$pane.removeClass("active")) || ($nav.siblings("li.active:first").removeClass("active"), $pane.siblings(".tab-pane.active:first").removeClass("active")),
+            last && (last.$nav.removeClass("active"),
+            last.$pane.removeClass("active")) || ($nav.siblings("li.active:first").removeClass("active"),
+            $pane.siblings(".tab-pane.active:first").removeClass("active")),
 
             $tabs.data('last', { $nav: $nav, $pane: $pane })
         })
         /** 选项卡 end**/
         /** 隐藏浮动层 start**/
-        .on('click', function (e) {
+        $(document).on('click', function (e) {
             if (!$(e.target).closest(".dropdown-box").is('.dropdown-box') && e.target.parentNode) $('.dropdown-box').hide()
         })
         /** 隐藏浮动层 end**/
+        // 自定义模态
+        $(document).on("click", "[data-modal]", function (e) {
+            e.stopPropagation();
+            var ele = $($(this).attr("data-modal"));
+            ele.show();
+        })
+        .on("click", "[data-close-self]", function () {
+            $(this).parents(".custom-modal,.dropdown-box").hide();
+        })
+        .on("click", "[data-blank-off]", function (e) {
+            if ($(e.target).closest('.custom-modal-panel').length == 0) {
+                $(this).hide();
+            }
+        })
+
+        // 树菜单展开菜单位置
+        $(document).on("mouseover",'.treeNodeExt > b',function(e){
+            var h = $(this).siblings("ul").height(),
+                wh = $(window).height(),t,l;
+            l = $(e.target).offset().left;
+            t = $(e.target).offset().top + h > wh ? $(e.target).offset().top+$(e.target).height()-h : $(e.target).offset().top;
+            $(this).siblings("ul").css({"top":t,"left":l});
+        })
+
 
         /** 导航 start**/
         $(document).on('click', '.header-bar > .toggle-menu', function () {
@@ -162,27 +324,17 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui'],
         function small() { }
         /** 导航 end**/
 
-        /** 滑动层 **/
-        $(document).on('click', '[data-prop-class]', function () {
-            var target = (target = $(this).attr('data-prop-class')) && $(target);
-            target && target.each(function () {
-                var $target = $(this), css = {}, align = $target.attr('data-prop-direction') || 'left';
-                $target.stop().animate((css[align] = 0) || css, 200).data('prop-Val', $target.css(align))
-            })
-        }).on('click', '[data-close-slider]', function (e) {
-            var target = $((target = $(this).attr('data-close-slider')) == 'self' ? this : target).closest('.prop-slider'), align = target.attr('data-prop-direction') || 'left', css = {};
-            css[align] = target.data('prop-Val'),
-            target.stop().animate(css, 200)
-        });
-        /** 滑动层 **/
-
 
         /** 左边栏滚动条 **/
-        $(function () { CustomScrollbar.call($('aside > section > .lef-mainnnav')) })
+        $(function () { CustomScrollbar.call($('.lef-mainnnav')); })
+
+        // setTimeout(function(){
+        //     CustomScrollbar.call($('.prop-slider-content'))
+        // },3000)
         /** 左边栏滚动条 **/
 
         /** tooltip **/
-        $(document).on('mouseover', '[data-toggle="tooltip"]', function () { $(this).removeAttr('data-toggle').tooltip().triggerHandler('mouseover') })
+        $(document).on('mouseover', '[data-toggle*="tooltip"]', function () { $(this).removeAttr('data-toggle').tooltip().triggerHandler('mouseover') })
         /** tooltip **/
 
         return {
@@ -193,12 +345,17 @@ define(['jquery', 'bootstrap', 'core.state', 'scrollbar', 'jquery-ui'],
                 /** 导航区滚动条 **/
                 CustomScrollbar.call($('.subcontent', e.$element))
                 /** 导航区滚动条 **/
+                CustomScrollbar.call($('.open-navigation,.search_panel'));
             },
             ContainerLoaded: function (s, e) {
 
             },
             ContentLoaded: function (s, e) {
                 //$('[data-toggle="popover"]', e.$element).popover()
+                setNavHeight();
+                setMainHeight();
+                setLetterHeight();
+                // 树菜单滚动
             }
         };
 

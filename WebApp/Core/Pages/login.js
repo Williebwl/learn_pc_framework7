@@ -8,6 +8,8 @@
 (function (window, require) {
     'use strict';
 
+    window.login = !0,
+
     //设置require配置信息
     require.config({
         //所有模块的查找根路径。
@@ -25,7 +27,7 @@
         //指定要加载的一个依赖数组。
         deps: ['jquery', 'canvasbg', 'Core/Component/CanvasBg/canvasbg.js', 'angular', 'bootstrap'],
         //RequireJS获取资源时附加在URL后面的额外的query参数。
-        urlArgs: 'v=20160224',
+        //urlArgs: 'v=20160329',
         //为那些没有使用define()来声明依赖关系、设置模块的"浏览器全局变量注入"型脚本做依赖和导出配置。
         shim: {
             'jquery': { exports: 'jQuery' },//设置jQuery以让require能够检测jquery模块是否正常加载
@@ -35,7 +37,7 @@
         }
     });
 
-}(window, require));
+}(window, require, fnAutoLogin()));
 
 /*
   加载Login/login、angular模块并初始化页面
@@ -51,3 +53,9 @@ require(['page', 'Login/login'],
         // 手动注册并初始化页面
         angular.bootstrap(document.getElementById('login'), [app.name]);
     });
+
+function fnAutoLogin() {
+    if (window.sessionStorage.Token || window.localStorage.Token) {
+        window.location.href = window.sessionStorage.referrer !== location.href && window.sessionStorage.referrer || 'index.html'
+    }
+}

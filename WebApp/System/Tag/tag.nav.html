@@ -1,3 +1,12 @@
-﻿<div ng-controller="TagNavCtrl">
-    <input  ng-model="Text" />
+<div ng-controller="TagNavCtrl">
+    <h2 class="open-subtitle">按应用列表</h2>
+    <div class="band-list">
+        <input type="text" class="form-control" placeholder="应用名称|代码" ng-model="Key" ng-change="fnKeySearch()">
+        <ul>
+            <li ng-repeat="app in apps" ng-class="{active:app.ID==Search.Active.ID,disabled:!app.IsValid}" ng-click="fnSelect(app, app.AppName)">
+                <span>{{app.AppName}} <span ng-if="app.AppCode">(<em class="sword" ng-bind="app.AppCode"></em>)</span></span>
+                <div class="band-sys" ng-show="app.IsBuiltIn">[内置]</div>
+            </li>
+        </ul>
+    </div>
 </div>

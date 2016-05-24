@@ -1,13 +1,15 @@
 ﻿<div ng-controller="DeptNavCtrl">
-    <div class="toggle-menu">
-        <i class="fa fa-caret-left"></i>
-        <i class="fa fa-caret-right"></i>
+    <div class="convenient-btns ng-scope">
+        <button class="btn btn-white" ng-click="ShowDialog('add')" data-quickcreate>
+            <i class="fa fa-plus-square"></i><span>创建新部门</span>
+        </button>
     </div>
-    <div class="breadcrumb-wrapper">
-        <a href="">部门</a>/<span>软件开发部</span>
+
+    <h2 class="open-subtitle">部门列表</h2>
+    <div class="tree-list">
+        <div class="subTreeContent noline-tree" bi-tree data="deptTree" nodeclick="checkDept" nodetemplate="nodeTemplate" noline="1"></div>
     </div>
-    <div class="open-navigation scroller">
-        <h2 class="open-subtitle">部门列表</h2>
-        <div class="subTreeContent tree-list" bi-smart-tree="TreeConf"></div>
-    </div>
+
+    <div bi-dialog src="System/Dept/Dept.edit.html" id="add" size="md" title="创建新部门" />
+    <div bi-dialog src="System/Dept/Dept.edit.html" id="edit" size="md" title="编辑部门" />
 </div>

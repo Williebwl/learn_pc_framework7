@@ -773,7 +773,7 @@
             msg: "",
             img: null,
             closable: !0,
-            delay: 5e3,
+            delay: 3e3,
             delayIndicator: !0,
             closeOnClick: !0,
             width: 400,

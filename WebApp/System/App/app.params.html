@@ -1,68 +1,73 @@
-﻿<div class="toolbar clearfix toolbar-border-b">
-    <div class="pull-left">
-        <h3 class="toolbar-title"><i class="fa fa-hand-o-right"></i>基本信息</h3>
+﻿<div ng-controller="AppContainerParamsCtrl">
+    <p ng-if-start="!Menu">&nbsp;</p>
+    <p ng-if-end="!Menu" class="alignCenter" ng-hide="config.Groups.length">当前应用没有可配置菜单</p>
+    <div ng-if-start="Menu" class="toolbar clearfix toolbar-border-b">
+        <div class="pull-left">
+            <h3 class="toolbar-title"><i class="fa fa-chevron-down"></i> 应用信息</h3>
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-icon" data-toggle="tooltip" title="编辑" ng-hide="Info.IsBuiltIn" ng-click="ShowDialog('app',Info)"><i class="fa fa-pencil"></i></button>
+        </div>
     </div>
-    <div class="pull-right">
-        <!-- <a class="fa fa-pencil" href="" data-toggle="tooltip" data-placement="bottom" title="编辑"></a> -->
-        <button class="btn btn-icon" data-toggle="tooltip" title="编辑" ng-disabled="!Info.AppTypeID" ng-click="fnEdit()"><i class="fa fa-pencil"></i></button>
+
+    <div class="ul-responsive">
+        <ul>
+            <li>导航区域：<span ng-bind="Menu.NavUrl"></span></li>
+            <li>内容区域：<span ng-bind="Menu.ContainerUrl"></span></li>
+            <li>
+                角色权限：
+                <p ng-repeat="group in GroupInfo.AppGroups">
+                    <span ng-show="$index>0">、</span>
+                    <span>{{group.GroupName}}（{{group.GroupCode}}）</span>
+                </p>
+                <a href="javascript:;" ng-click="ShowDialog('group',Info)"><i class="fa fa-plus-circle" data-toggle="tooltip" title="授权" data-dropdown=".dropdown01"></i></a>
+            </li>
+        </ul>
     </div>
-</div>
 
-<div class="ul-responsive">
-    <ul>
-        <li>应用类型：<span ng-bind="AppInfo.AppType"></span></li>
-        <li>显示模式：<span ng-bind="MeunInfo.DisplayMode"></span></li>
-        <li class="col-sm-4">导航地址：<span ng-bind="MeunInfo.NavUrl"></span></li>
-        <li class="col-sm-4">内容区地址：<span ng-bind="MeunInfo.ContainerUrl"></span></li>
-        <li class="col-sm-4">工具条地址：<span ng-bind="MeunInfo.ToolBarUrl"></span></li>
-        <li>
-            应用授权：<p><span>全体人员（EVERYONY）</span>、<span>系统管理员（ADMIN）</span></p><i class="fa fa-plus-circle" data-toggle="tooltip" title="添加" data-dropdown=".dropdown01"></i>
-        </li>
-    </ul>
-</div>
+    <br>
 
-<br>
-
-<div class="toolbar clearfix toolbar-border-b">
-    <div class="pull-left">
-        <h3 class="toolbar-title"><i class="fa fa-hand-o-right"></i>应用菜单项</h3>
+    <div class="toolbar clearfix toolbar-border-b">
+        <div class="pull-left">
+            <h3 class="toolbar-title"><i class="fa fa-chevron-down"></i> 应用菜单</h3>
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-icon" data-toggle="tooltip" title="排序" ng-click="fnSequence(Menus,View.CanSort)"><i class="fa fa-list-ol"></i></button>
+            <button class="btn btn-icon" data-toggle="tooltip" title="添加" ng-click="ShowDialog('add',Info)"><i class="fa fa-plus-circle"></i></button>
+        </div>
     </div>
-    <div class="pull-right">
-        <button class="btn btn-icon" data-toggle="tooltip" title="排序" ng-click="fnSequence()"><i class="fa fa-list-ol"></i></button>
-        <button class="btn btn-icon" data-toggle="tooltip" title="添加"><i class="fa fa-plus-circle"></i></button>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th width="5%">序号</th>
+                    <th width="20%">功能名称</th>
+                    <th width="30%">导航区域</th>
+                    <th width="10%">排序</th>
+                    <th width="35%">访问权限</th>
+                </tr>
+            </thead>
+            <tbody class="tbody-hover">
+                <tr ng-repeat="menu in Menus">
+                    <td ng-bind="$index+1"></td>
+                    <td class="alignLeft">
+                        {{menu.MenuName}}
+                        <div class="icon-group">
+                            <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="编辑" ng-click="ShowDialog('edit',Info,menu)"></a>
+                            <a href="javascript:;" class="icon-items fa fa-trash" data-toggle="tooltip" data-placement="bottom" ng- title="删除" ng-click="fnDelete(menu.ID)"></a>
+                        </div>
+                    </td>
+                    <td ng-bind="menu.NavUrl" class="alignLeft"></td>
+                    <td><input type="number" ng-model="menu.Sequence" ng-change="menu.change=View.CanSort=1" /></td>
+                    <td>全体人员</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-</div>
 
-<div class="table-responsive">
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th width="5%">序号</th>
-                <th width="15%">菜单名称</th>
-                <th width="25%">菜单主页地址</th>
-                <th width="15%">子菜单</th>
-                <th width="10%">排序</th>
-                <th width="10%">菜单权限</th>
-                <th width="20%">操作</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-repeat="menu in MeunInfos">
-                <td ng-bind="$index+1"></td>
-                <td ng-bind="menu.MenuName" class="alignLeft"></td>
-                <td ng-bind="menu.ContainerUrl" class="alignLeft"></td>
-                <td ng-bind="menu.Layer?'是':'否'"></td>
-                <td><input type="number" ng-model="menu.Sequence" ng-change="menu.SChanged=View.CanSort=1" /></td>
-                <td>全体人员</td>
-                <td class="alignCenter">
-                    <div class="icon-group">
-                        <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="编辑"></a>
-                        <a href="javascript:;" class="icon-items fa fa-trash" data-toggle="tooltip" data-placement="bottom" ng- title="删除" ng-click="menu.Layer&&fnDelete($index,menu.ID)"></a>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <div bi-dialog src="System/App/app.relatedgroup.html" id="group" title="角色权限" size="md" />
+    <div bi-dialog src="System/App/App.edit.html" id="app" title="编辑应用信息" size="md" />
+    <div bi-dialog src="System/Menu/menu.edit.html" id="add" title="添加新菜单" size="md" />
+    <div ng-if-end="Menu" bi-dialog src="System/Menu/menu.edit.html" id="edit" title="编辑菜单" size="md" />
 </div>
-
-<div bi-dialog src="System/App/app.edit.html" class="modal fade bs-modal-sm" />

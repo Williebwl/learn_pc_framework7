@@ -1,1 +1,28 @@
-﻿应用配置
+﻿<form ng-controller="AppContainerDeployCtrl">
+    <div class="query-list" style="height:32px;" ng-show="index.Items.length">
+        <div class="query-radio query-flex">
+            <ul class="query-item-list">
+                <li ng-repeat="item in index.Items" ng-class="{item:true,active:config.AppCode==item.Value}">
+                    <span ng-click="ShowConfig(item.Value)">{{item.Description}}</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div ng-repeat="group in config.Groups">
+        <div class="toolbar clearfix toolbar-border-b">
+            <div class="pull-left">
+                <h3 class="toolbar-title"><i class="fa fa-chevron-down"></i> {{group.Description}}</h3>
+            </div>
+        </div>
+        <div ng-repeat="item in group.Items" class="form-group col-xs-12">
+            <label class="col-sm-2 control-label" for="{{group.Key}}_{{item.Key}}">{{item.Description}}：</label>
+            <div class="col-sm-10">
+                <input ng-if="item.Type!='textarea'" type="text" id="{{group.Key}}_{{item.Key}}" name="{{group.Key}}_{{item.Key}}" class="form-control" ng-model="item.Value">
+                <textarea ng-if="item.Type=='textarea'" id="{{group.Key}}_{{item.Key}}" name="{{group.Key}}_{{item.Key}}" class="form-control" ng-model="item.Value"></textarea>
+            </div>
+        </div>
+    </div>
+    <p>&nbsp;</p>
+    <p class="alignCenter" ng-show="config.Groups.length"><button class="btn btn-default" ng-click="fnSave()"><i class="fa fa-check-circle-o"></i><span>保存设置</span></button></p>
+    <p class="alignCenter" ng-hide="config.Groups.length">当前应用没有可配置选项</p>
+</form>

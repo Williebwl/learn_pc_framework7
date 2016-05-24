@@ -16,8 +16,12 @@ html, body {
 }
 
 body {
-    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#659EBB',endColorstr='#293A50')";
-    background: radial-gradient(#659EBB,#293A50);
+    /* background:linear-gradient(to right bottom,rgb(49, 198, 174) 0,rgb(110, 204, 255) 50%,rgb(35, 159, 228) 100%); */
+    -ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#219eb0',endColorstr='#3f679d')";
+    background: -webkit-radial-gradient(50% 16%, circle, #219eb0 32%, #3f679d 88%);
+    background: -ms-radial-gradient(50% 16%, circle, #219eb0 32%, #3f679d 88%);
+    background: -moz-radial-gradient(50% 16%, circle, #219eb0 32%, #3f679d 88%);
+    background: radial-gradient(50% 16%, circle, #219eb0 32%, #3f679d 88%);
 }
 
 form .mes {

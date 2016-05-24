@@ -12,9 +12,10 @@ define('paging', ['page', 'ext'],
         'use strict';
 
         /// <field type="json">分页默认配置信息</field>
-        var defConf = { pageSelect: 1, pageTurning: 1, CurrentPage: 1, TotalItems: 0, ItemsPerPage: 15, inputValue: 1, umpPageNum: 1, sFirst: "首页", sLast: "尾页", sNext: "下一页", sPrevious: "上一页" };
+        var defConf = { pageSelect: 1, pageTurning: 1, CurrentPage: 1, TotalItems: 0, ItemsPerPage: 15, inputValue: 1, umpPageNum: 1, sFirst: "首页", sLast: "尾页", sNext: "下一页", sPrevious: "上一页", auto: !1 };
 
-        var biPaginationTemplate = '<div class="table-paging clearfix">\
+        var biPaginationTemplate = '<div><div ng-if="!conf.TotalItems" style="background-color: #F4F4F4;text-align:center;padding:15px;">没有相关数据</div>\
+                                       <div  ng-if="conf.TotalItems" class="table-paging clearfix">\
                                         <div class="page-select pull-left" ng-if="conf.pageSelect">\
                                             <span>\
                                                 每页显示\
@@ -34,7 +35,7 @@ define('paging', ['page', 'ext'],
                                             <li ng-class="{disabled: conf.CurrentPage == conf.TotalPages}" ng-click="nextPage()"><a href="javascript:;" ng-bind="conf.sNext">下一页</a></li>\
                                             <li ng-class="{disabled: conf.CurrentPage == conf.TotalPages}" ng-click="changeCurrentPage(conf.TotalPages)"><a href="javascript:;" ng-bind="conf.sLast">尾页</a></li>\
                                         </ul>\
-                                    </div>';
+                                    </div></div>';
 
         //控制器
         var biPaginationCtrl = function ($scope) {
@@ -145,7 +146,7 @@ define('paging', ['page', 'ext'],
             }, function () {
                 scope.$parent.$broadcast((conf.id || '') + 'PagingChange', conf);
 
-                if (typeof conf.onChange === 'function') conf.onChange();
+                if (typeof conf.onChange === 'function' && (conf.auto || !(conf.auto = !0))) conf.onChange()
             });
         }
 

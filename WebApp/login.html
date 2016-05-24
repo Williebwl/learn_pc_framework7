@@ -37,6 +37,8 @@
                             <input type="password" name="pwd" placeholder="密码" ng-model="info.PWD" class="form-control" required>
                             <span class="mes ng-hide" ng-show="info.error&&(loginForm.pwd.$pristine||loginForm.pwd.$error.required)">*</span>
                         </div>
+                        <br>
+                        <div style="color:red;" ng-bind="info.errMsg"></div>
                     </div>
 
                     <div class="col-xs-5">
@@ -48,17 +50,18 @@
                             <li><span class="fa fa-check text-success pr5"></span> Unlimited Service Tickets</li>
                         </ul>
                     </div>
+
                 </div>
 
                 <div class="row sign-in">
                     <div class="checkbox checkbox-primary pull-left">
                         <label>
-                            <input type="checkbox" checked="checked">记住密码
+                            <input type="checkbox" name="RememberPWD" ng-model="info.RememberPWD">自动登录
                             <i class="fa fa-square-o"></i>
-                        </label>
+                        </label> 
                     </div>
                     <div class="pull-right">
-                        <input type="submit" class="btn btn-primary" value="登陆" />
+                        <input type="submit" class="btn btn-primary" value="登录" />
                     </div>
                 </div>
             </form>

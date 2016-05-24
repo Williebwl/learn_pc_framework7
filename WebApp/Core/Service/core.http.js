@@ -1,58 +1,62 @@
-﻿define('core.http',
-        function () {
-            'use strict';
+﻿define('core.http', ['angular'],
+    function (angular) {
+        'use strict'
 
-            var api = coreHttp.Api = 'http://localhost:2266/';
+        var api = location.host === 'localhost:6696' && '//localhost:2206/' || location.host === 'localhost:8000' && '//192.168.1.246:88/bis7/' || '';
 
-            function coreHttp($http) {
-                if (sessionStorage.Token) $http.defaults.headers.common.Authorization = sessionStorage.Token;
-                return {
-                    fnUnLogin: fnUnLogin,
-                    get: function (url, config) {
-                        /// <summary>get请求</summary>
-                        /// <param name="url" type="String">请求地址</param>
-                        /// <param name="config" type="json">angular $http 配置信息</param>
+        angular.module('biHttp', ['ng']).provider('$$http', function () {
 
-                        return $http.get(api + url, config).error(fnUnLogin);
-                    },
-                    post: function (url, data, config) {
-                        /// <summary>post请求</summary>
-                        /// <param name="url" type="String">请求地址</param>
-                        /// <param name="data" type="json">需要提交的数据</param>
-                        /// <param name="config" type="json">angular $http 配置信息</param>
-
-                        return $http.post(api + url, data, config).error(fnUnLogin);
-                    },
-                    put: function (url, data, config) {
-                        /// <summary>put请求</summary>
-                        /// <param name="url" type="String">请求地址</param>
-                        /// <param name="data" type="json">需要提交的数据</param>
-                        /// <param name="config" type="json">angular $http 配置信息</param>
-
-                        return $http.put(api + url, data, config).error(fnUnLogin);
-                    },
-                    delete: function (url, config) {
-                        /// <summary>delete请求</summary>
-                        /// <param name="url" type="String">请求地址</param>
-                        /// <param name="config" type="json">angular $http 配置信息</param>
-
-                        return $http.delete(api + url, config).error(fnUnLogin);
-                    }
+            this.$get = ['$http', function ($http) {
+                function $$http(requestConfig) {
+                    return $http.defaults.headers.common.Authorization = window.sessionStorage.Token || window.localStorage.Token, $http(requestConfig)
                 }
-            }
 
-            return coreHttp;
+                $$http.Api = api,
+                $$http.fnLogout = fnLogout,
+                createShortMethods('get', 'delete', 'head', 'jsonp'),
+                createShortMethodsWithData('post', 'put', 'patch')
 
-            function fnUnLogin(d, error) {
-                /// <summary>将未登录的用户转向到登录页面</summary>
-                /// <param name="arg" type="Array">请求响应参数集合</param>
-                /// <param name="error" type="Function">请求失败执行函数</param>
+                return $$http
 
-                if (location.pathname.toLowerCase() !== '/login.html' &&
-                    (error === 401 || error === -1)) {
-                    sessionStorage.referrer = location.href,
-                    location.href = "login.html"
-                    return;
+                function createShortMethods(names) {
+                    angular.forEach(arguments, function (name) {
+                        $$http[name] = function (url, config, ctrl) {
+                            return $$http(angular.extend({}, config || {}, {
+                                method: name,
+                                url: fnUrl(url, config, ctrl)
+                            })).error(fnError);
+                        };
+                    });
                 }
-            }
+
+                function createShortMethodsWithData(name) {
+                    angular.forEach(arguments, function (name) {
+                        $$http[name] = function (url, data, config, ctrl) {
+                            return $$http(angular.extend({}, config || {}, {
+                                method: name,
+                                url: fnUrl(url, config, ctrl),
+                                data: data
+                            })).error(fnError);
+                        };
+                    });
+                }
+            }]
         })
+
+        return api
+
+        function fnUrl(url, config, ctrl) {
+            return api + (ctrl || config && config.ctrl || '') + url
+        }
+
+        function fnError(d, error) {
+            if (!window.login && error === 401) fnLogout()
+        }
+
+        function fnLogout() {
+            window.sessionStorage.referrer = window.location.href,
+            delete window.sessionStorage.Token,
+            delete window.localStorage.Token,
+            window.location.href = "login.html"
+        }
+    })

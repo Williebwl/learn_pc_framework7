@@ -1,32 +1,36 @@
-﻿define(['core.nav', 'System/App/app.service.js'],
-function (core) {
+﻿define(['core.nav', 'evt.page', 'System/App/app.service.js'],
+function (core, pageEvent) {
     'use strict'
 
     core.controller('AppNavCtrl', function ($scope, $rootScope, appService) {
         var page = core($scope, appService);
-        appService.fnGetAll().success(function (d) { $scope.apps = d, $scope.fnActive(d[0]) }),
-        $scope.fnActive = function (app) {
-            if (this.View == app) return;
-
-            $rootScope.$broadcast('$$RefreshContainer', this.View = app)
-        }.bind($scope),
+        appService.fnGetAll().success(function (d) {
+            $scope.apps = d, $scope.fnSelect(d[0], d[0].AppName)
+        });
+        $scope.fnKeySearch = function () {
+            appService.fnGetAll({ Key: $scope.Key }).success(function (d) {
+                $scope.apps = d;
+                if (d.length > 0)
+                    $scope.fnSelect(d[0], d[0].AppName);
+            });
+        };
         $scope.fnAdd = function () {
-            $scope.ShowDialog()
-        },
+            $scope.ShowDialog('add')
+        };
         $scope.fnEdit = function (app) {
-            $scope.ShowDialog('modal', app)
+            $scope.ShowDialog('edit', app)
         },
         $scope.fnDel = function (e, app) {
-            e.stopPropagation();
-
-            page.confirm('确定要禁用该应用？', function (e) {
-                if (!e.s) return;
-
-                var s = app.IsValid ? 0 : 1;
-                appService.fnSetStatus(app.ID, s, function (d) { d ? app.IsValid = s : error; }, error)
-            })
+            page.confirm('确定要' + (app.IsValid?'禁用':'启用') + '该应用？').ok(function (e) {
+                var s = app.IsValid ? false : true;
+                appService.fnSetStatus(app.ID, s).success(function () {
+                    app.IsValid = s;
+                }).error(function () {
+                    page.errorNotice('应用禁用失败！');
+                });
+            });
         },
-        $scope.$on('$DataPostSuccess', function (s, e) {
+        $scope.$on(pageEvent.OnFormPosted, function (s, e) {
             $scope.apps.push({
                 ID: e.View.ID,
                 AppName: e.View.App.AppName,
@@ -36,10 +40,8 @@ function (core) {
                 IsValid: 1
             })
         }),
-        $scope.$on('$DataPutSuccess', function (s, e) {
+        $scope.$on(pageEvent.OnFormPut, function (s, e) {
             core.extend(e.Source, e.View.App)
         })
-
-        function error() { page.errorNotice('应用禁用失败！'); }
     })
 })

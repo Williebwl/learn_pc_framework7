@@ -1,3 +1,22 @@
-﻿<div ng-controller="DeptRelatedUserCtrl">
+﻿<form class="form-horizontal" ng-controller="DeptRelatedUserCtrl" name="PositionUser" bi-Form-Validate="PositionUser">
+    <div class="form-group col-sm-12">
+        <label class="control-label">部门：</label>
+        <span class="place-label" ng-bind="editInfo.DeptName+(editInfo.DeptCode&&('（'+editInfo.DeptCode+'）'))"></span>
+    </div>
+    <div class="form-group col-sm-12">
+        <label class="control-label required-label">用户名：</label>
+        <select class="form-control" id="User" name="UserName" style="width:100%;" ng-model="User" filter
+                ng-options="user.UserName group by user.DeptName for user in Users"></select>
+    </div>
+    <div class="form-group col-sm-12">
+        <label class="control-label required-label">职位：</label>
+        <select class="form-control" id="Position" name="PositionName" style="width:100%;" ng-model="Position" filter
+                ng-options="position.PositionName+(position.PositionCode&&('('+position.PositionCode+')')) for position in Positions"></select>
+    </div>
+    <div class="form-group col-sm-12">
+        <label class="control-label required-label">直属领导：</label>
+        <select class="form-control" id="Leader" name="LeaderName" style="width:100%;" ng-model="Leader" filter
+                ng-options="user.UserName group by user.DeptName for user in Users"></select>
 
-</div>
+    </div>
+</form>
