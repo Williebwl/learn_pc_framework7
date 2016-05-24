@@ -4,7 +4,7 @@
 define('core.import', ['core.view'], function (page) {
     'use strict'
 
-    function ImportPage($view, $service, $scope, injection) {
+    function ImportPage($scope, $service, injection) {
         if (!this || this.constructor === Window) return new ImportPage().super(arguments);
 
         this.Type = 'core.import'

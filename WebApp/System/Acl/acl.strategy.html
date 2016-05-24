@@ -1,0 +1,37 @@
+﻿<div ng-controller="AclContainerStrategyCtrl">
+    <p class="subinfo">该操作域共拥有<span class="dangger">{{PageInfo ? PageInfo.TotalItems : 0}}</span>个策略<a href="javascript:;" ng-click="ShowDialog('add', Info)">[添加策略]</a></p>
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th width="5%">序号</th>
+                    <th width="25%">策略名称</th>
+                    <th width="25%">策略代码</th>
+                    <th width="45%">访问权限</th>
+                </tr>
+            </thead>
+            <tbody class="sortable-table tbody-hover">
+                <tr ng-repeat="strategy in PageInfo.Items">
+                    <td ng-bind="$index+1"></td>
+                    <td class="alignLeft">
+                        <span>{{strategy.StrategyName}}</span>
+                        <div class="icon-group">
+                            <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="编辑" ng-click="$event.stopPropagation();ShowDialog('edit', strategy)"></a>
+                            <a href="javascript:;" class="icon-items fa fa-lock" data-toggle="tooltip" data-placement="bottom" title="权限" ng-click="$event.stopPropagation();ShowDialog('group',strategy)"></a>
+                            <a href="javascript:;" class="icon-items fa fa-trash" data-toggle="tooltip" data-placement="bottom" title="删除" ng-click="$event.stopPropagation();fnDelete(strategy.ID)"></a>
+                        </div>
+                    </td>
+                    <td class="alignLeft">{{strategy.StrategyCode}}</td>
+                    <td class="alignLeft">
+                        <p ng-repeat="group in strategy.StrategyGroups">{{group.GroupName}}（{{group.GroupCode}}）</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div bi-Pagination conf="PageConfig"></div>
+    </div>
+
+    <div bi-dialog src="System/Acl/acl.relatedstrategy.html" id="add" size="md" title="创建新操作策略" />
+    <div bi-dialog src="System/Acl/acl.relatedstrategy.html" id="edit" size="md" title="编辑操作策略信息" />
+    <div bi-dialog src="System/Acl/acl.groupstrategy.html" id="group" title="角色权限" size="md" />
+</div>

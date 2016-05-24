@@ -6,8 +6,7 @@
             function ($scope, $q, authAccountService, groupService, appService) {
                 var page = core($scope, authAccountService);
 
-                page.fnLoadPage = function (info, target) {
-                    $scope.target = target;
+                page.fnLoadPage = function (info) {
                     return $q.all([authAccountService.fnGetEdit(info.ID).success(function (d) { $scope.Info = d }),
                                    groupService.fnGetByUser(info.ID).success(function (d) { $scope.Groups = d }),
                                    appService.fnGetByUser(info.ID).success(function (d) { $scope.Apps = d })])
@@ -30,7 +29,7 @@
                     page.confirm('确定要' + type + '该用户？').ok(function () {
                         authAccountService[fn]($scope.Info.Account.ID).success(function () {
                             page.successNotice('已完成' + type + '操作。');
-                            page.emit(actionEvent.OnSearch)();
+                            page.fnEmit(actionEvent.OnSearch)
                         }).error(function (e) {
                             page.errorNotice('操作无法完成，因为' + e.Message);
                         });

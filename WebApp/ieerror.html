@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #ie-alert-overlay {
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            z-index: 9999;
+            background: antiquewhite;
+        }
+
+        * html #ie-alert-overlay {
+            position: absolute;
+            z-index: 9999;
+        }
+
+        #ie-alert-panel {
+            background: url("Assets/Images/iealertsprite.png") no-repeat -1px -109px;
+            margin: -240px 0px 0px -296px;
+            padding: 72px 0px 0px 72px;
+            left: 50%;
+            top: 50%;
+            width: 520px;
+            height: 331px;
+            color: rgb(51, 51, 51);
+            line-height: 1.5em;
+            font-family: "Microsoft JhengHei", "Microsoft YaHei", Arial, "Helvetica Neue", Helvetica, sans-serif;
+            font-weight: bold;
+            position: fixed;
+            z-index: 10000;
+            _position: absolute;
+        }
+
+            #ie-alert-panel p {
+                width: 486px;
+                text-align: justify;
+                font-size: 16px;
+                line-height: 1.68;
+            }
+
+            #ie-alert-panel img {
+                border: 0px currentColor;
+                border-image: none;
+            }
+
+            #ie-alert-panel span {
+                margin: 15px 0px 20px;
+                padding: 0px;
+                font-size: 24px;
+                display: block;
+            }
+
+            #ie-alert-panel ul {
+                list-style: none;
+                margin: 0px;
+                padding: 0px;
+            }
+
+            #ie-alert-panel li {
+                margin: 0px 22px 0px 0px;
+                float: left;
+            }
+
+                #ie-alert-panel li.last {
+                    margin-right: 0px;
+                }
+
+            #ie-alert-panel a {
+                display: inline-block;
+            }
+
+        .browser {
+            bottom: 50px;
+            position: absolute;
+        }
+
+        .chrome,
+        .firefox,
+        .ie9,
+        .opera,
+        .safari {
+            background: url("Assets/Images/iealertsprite.png") no-repeat;
+        }
+
+        .chrome {
+            background-position: 0px 0px;
+            margin: 0px 4px 0px 0px;
+            width: 73px;
+            height: 96px;
+        }
+
+        .firefox {
+            background-position: -292px 0px;
+            width: 73px;
+            height: 98px;
+        }
+
+        .ie9 {
+            background-position: -179px 0px;
+            width: 95px;
+            height: 98px;
+        }
+
+        .opera {
+            background-position: -90px 0px;
+            width: 73px;
+            height: 98px;
+        }
+
+        .safari {
+            background-position: -387px 0px;
+            margin: 0px 4px 0px 0px;
+            width: 73px;
+            height: 98px;
+        }
+    </style>
+</head>
+<body>
+    <div id="ie-alert-overlay">
+        <div id='ie-alert-panel'>
+            <span>你知道你的Internet Explorer过时了吗?</span>
+            <p>为了得到我们网站最好的体验效果,我们建议您升级到最新版本的Internet Explorer或选择另一个web浏览器.最流行的web浏览器在下面可以找到.</p>
+            <div class='browser'>
+                <ul>
+                    <li>
+                        <a class='chrome' href='https://www.google.com/chrome/' target='_blank'></a>
+                    </li>
+                    <li>
+                        <a class='firefox' href='http://www.mozilla.org/en-US/firefox/new/' target='_blank'></a>
+                    </li>
+                    <li>
+                        <a class='ie9' href='http://windows.microsoft.com/en-US/internet-explorer/downloads/ie/' target='_blank'></a>
+                    </li>
+                    <li>
+                        <a class='safari' href='http://www.apple.com/safari/download/' target='_blank'></a>
+                    </li>
+                    <li>
+                        <a class='opera' href='http://www.opera.com/download/' target='_blank'></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

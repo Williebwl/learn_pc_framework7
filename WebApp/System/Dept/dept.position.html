@@ -15,28 +15,28 @@
     </div>
 
     <div class="table-responsive">
-        <table class="table table-bordered table-hover" bi-checkbox="CheckConf">
+        <table class="table table-bordered table-hover">
             <thead>
                 <tr>
-                    <th width="5%" class="alignCenter"><input type="checkbox"></th>
+                    <th width="5%" class="alignCenter">序号</th>
                     <th width="40%">职位名称</th>
-                    <th width="40%">上级职位</th>
+                    <th width="40%">职位角色</th>
                     <th width="15%">状态</th>
                 </tr>
             </thead>
             <tbody class="sortable-table tbody-hover">
                 <tr ng-repeat="position in PageInfo.Items">
-                    <td class="alignCenter"><input type="checkbox" ng-value="position.Position.ID"></td>
+                    <td class="alignCenter" ng-bind="$index+1"></td>
                     <td>
                         {{position.Position.PositionName}}<span ng-if="position.Position.PositionCode">（{{position.Position.PositionCode}}）</span>
-                        <div class="icon-group">
-                            <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" title="编辑" ng-click="ShowDialog('edit',position.Position)"></a>
+                        <div class="icon-group" ng-if="position.Position.DeptID===Dept.DeptID">
+                            <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" title="编辑" ng-click="fnEdit(position.Position.ID)"></a>
                             <a href="javascript:;" class="icon-items fa fa-lock" data-toggle="tooltip" title="停用" ng-if="position.Position.IsValid" ng-click="fnDisable(position.Position.ID)"></a>
                             <a href="javascript:;" class="icon-items fa fa-trash-o" data-toggle="tooltip" title="删除" ng-if="!position.Position.IsValid" ng-click="fnDelete(position.Position.ID)"></a>
                         </div>
                     </td>
                     <td>
-                        {{position.PositionName}}<span ng-if="position.PositionCode">（{{position.PositionCode}}）</span>
+                        {{position.Groups}}
                     </td>
                     <td class="alignCenter">
                         <span ng-if="position.Position.IsValid">正常</span>

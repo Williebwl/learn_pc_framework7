@@ -1,0 +1,31 @@
+﻿<div ng-controller="AclGroupFilterCtrl" class="select-connect">
+    <div class="select-list">
+        <div class="select-list-top clearfix">
+            <div class="pull-left select-list-top-l">
+                <i class="fa fa-inbox"></i>
+                <span>全部角色</span>
+            </div>
+            <a href="javascript:;" class="pull-right select-list-all" ng-click="fnAddAllGroup()">[全选]</a>
+        </div>
+        <div class="select-list-content">
+            <ul id="select-list-a" class="selectconnect-item">
+                <li ng-repeat="group in editInfo.AllGroups" ng-click="fnAddGroup(group)"><i class="fa fa-gavel color-a"></i>{{group.GroupName}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="select-exchange"><i class="fa fa-exchange"></i></div>
+    <div class="select-list">
+        <div class="select-list-top clearfix">
+            <div class="pull-left select-list-top-l">
+                <i class="fa fa-inbox"></i>
+                <span>授权角色</span>
+            </div>
+            <a href="javascript:;" class="pull-right select-list-clear" ng-click="fnDelAllGroup()">[清空]</a>
+        </div>
+        <div class="select-list-content">
+            <ul id="select-list-b" class="selectconnect-item">
+                <li ng-repeat="group in editInfo.FilterGroups" ng-click="fnDelGroup(group)"><i class="fa fa-gavel color-a"></i>{{group.GroupName}}</li>
+            </ul>
+        </div>
+    </div>
+</div>

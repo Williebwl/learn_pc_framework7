@@ -1,0 +1,91 @@
+﻿<div ng-controller="LogSliderCtrl">
+    <div class="prop-slider w400 prop02" data-prop-direction="right">
+        <div class="prop-slider-header">
+            <h2 class="prop-slider-title">详细资料</h2>
+            <button class="close" data-close-slider="self" type="button">×</button>
+        </div>
+        <div class="prop-slider-content scroller scrollerbar-primary">
+            <div class="personal-info">
+                <div class="personal-info-t clearfix">
+                    <i class="personal-mark background-x" ng-class="fnGetLogLevel(Info.LogLevel).Icon" style="font-size:60px; background-color:transparent; color:#E037F0;"></i>
+                    <div class="contact-user">
+                        <h1 ng-bind="fnGetLogLevel(Info.LogLevel).Name"></h1>
+                        <h2><span>({{fnGetLogLevel(Info.LogLevel).Code}})</span></h2>
+                    </div>
+                </div>
+                <div class="personal-info-b">
+                    <ul>
+                        <li>
+                            <span>事件来源：</span>
+                            <span>{{Info.EntityModule}}</span>
+                        </li>
+                        <li>
+                            <span>记录时间：</span>
+                            <span>{{Info.CreateTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+                        </li>
+                        <li>
+                            <span>用户名称：</span>
+                            <span>{{Info.UserName}}</span>
+                        </li>
+                        <li>
+                            <span>用户标识：</span>
+                            <span>{{Info.UserID}}</span>
+                        </li>
+                        <li>
+                            <span>操作IP：</span>
+                            <span>{{Info.UserIP}}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tabs personal-tabs">
+                <ul class="nav nav-pills nav-tabs-default">
+                    <li class="active">操作</li>
+                    <li class="">事件</li>
+                    <li class="">数据</li>
+                </ul>
+                <div class="tab-content scroller scrollerbar-primary">
+                    <div class="tab-pane active">
+                        <ul>
+                            <li>
+                                操作信息：{{Info.OperateContent || '暂缺'}}
+                            </li>
+                            <li>
+                                操作摘要：{{Info.OperateSummary || '暂缺'}}
+                            </li>
+                            <li>
+                                操作详情：<pre style="white-space: pre-wrap; ">  {{getDetail(Info.OperateDetail) || '暂缺'}}</pre>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane">
+                        <ul>
+                            <li>
+                                事件信息：{{Info.EntityTitle || '暂缺'}}
+                            </li>
+                            <li>
+                                事件标识：{{Info.EntityID || '暂缺'}}
+                            </li>
+                            <li>
+                                事件类别：{{Info.EntityType || '暂缺'}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane">
+                        <ul>
+                            <li ng-repeat="(key,value) in Info.Additional">
+                                {{key}}：{{value}}
+                            </li>
+                            <li ng-if="isEmptyObject(Info.Additional)">暂缺</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="prop-slider-footer clearfix">
+            <div class="pull-right">
+                <button class="btn btn-white" ng-click="showDetail=!showDetail">{{showDetail?'隐藏详情':'显示详情'}}</button>
+            </div>
+        </div>
+    </div>
+</div>

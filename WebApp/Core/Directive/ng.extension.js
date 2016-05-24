@@ -5,7 +5,8 @@
     'Core/Directive/ng.route.js',
     'Core/Directive/ng.from.js',
     'Core/Directive/ng.attach.js',
-    'Core/Directive/ng.tabs.js'],
+    'Core/Directive/ng.tabs.js',
+    'Core/Directive/ng.tree.js'],
     function (app) {
         'use strict'
 

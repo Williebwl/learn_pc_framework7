@@ -1,9 +1,4 @@
-﻿/**
- dd
-
-**/
-
-define('evt.page', function () {
+﻿define('evt.page', function () {
     'use strict';
     return {
         //在页面初始化时发生

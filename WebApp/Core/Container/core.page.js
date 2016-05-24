@@ -5,7 +5,7 @@ define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 
     function (core, lobibox, coreState, pageEvent, actionEvent, messageEvent, userEvent, attachEvent) {
         'use strict'
 
-        function Page($view, $service, $scope, injection) {
+        function Page($scope, $service, injection) {
             if (!this || this.constructor === Window) return new Page().super(arguments);
 
             var $self = this;
@@ -32,19 +32,19 @@ define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 
                         ids: []
                     },
                     View: {
-                        CanSort: true
+                        CanSort: !1
                     }
                 }
             };
 
-            this.Super = function ($view, $service, $scope, injection) {
+            this.Super = function ($scope, $service, injection) {
                 var $current = this;
 
                 injection = core.extend({}, _injection, injection);
 
                 //设置私有属性
                 Object.getOwnPropertyNames(injection.privateProps).map(function (propName) {
-                    !$view.hasOwnProperty(propName) && (propName in $view) && ($view[propName] = injection.privateProps[propName]);
+                    !$scope.hasOwnProperty(propName) && ($scope[propName] = injection.privateProps[propName]);
                 });
 
                 //向子级容器发布事件
@@ -54,31 +54,29 @@ define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 
                 this.emit = fnEmit.bind(this),
 
                 //
+                this.fnBroadcast = fnCallBroadcast.bind(this),
+
+                //
+                this.fnEmit = fnCallEmit.bind(this),
+
+                //
                 this.fnBindBroadcast = fnBindBroadcast.bind(this),
 
                 //
                 this.fnBindEmit = fnBindEmit.bind(this),
 
-                //添加
-                this.fnAdd = $view.fnAdd = this.fnBindBroadcast(actionEvent.OnAdd);
-
-                //修改
-                this.fnUpdate = $view.fnUpdate = this.fnBindBroadcast(actionEvent.OnUpdate);
-
-                //删除
-                this.fnDelete = $view.fnDelete = this.fnBindBroadcast(actionEvent.OnDelete);
-
                 //搜索
-                this.fnSearch = $view.fnSearch = this.fnBindBroadcast(actionEvent.OnSearch);
+                this.fnSearch = $scope.fnSearch = this.fnBindBroadcast(actionEvent.OnSearch);
 
                 //搜索对象
-                $view.Search = {
+                $scope.Search = {
                     LastActive: null,
                     Active: null,
                     NavName: null
                 };
-                $view.$on(actionEvent.OnSelect, function ($s, active, navName) {
-                    $view.Search.Active = active.data, $view.Search.LastActive = $view.Search.Active, $view.Search.NavName = navName;
+
+                $scope.$on(actionEvent.OnSelect, function ($s, active, navName) {
+                    $scope.Search.Active = active.data, $scope.Search.LastActive = $scope.Search.Active, $scope.Search.NavName = navName;
                 });
 
                 //保存附件
@@ -96,29 +94,29 @@ define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 
                 //表单重置
                 this.fnFormReset = function () {
                     $scope.$broadcast(pageEvent.OnFormReset, {
-                        origin: $current.Type, data: $view.editInfo
+                        origin: $current.Type, data: $scope.editInfo
                     })
                 }
 
                 //用户信息变更
                 function refreshCurrentUser() {
                     $service.fnGetCurrentUser().success(function (d) {
-                        $view.$$CurrentUser = $current.CurrentUser = d
+                        $scope.$$CurrentUser = $current.CurrentUser = d
                     })
                 }
+
                 this.fnRefreshCurrentUser = function () {
                     $current.$rootScope.$broadcast(userEvent.OnChange)
                 },
+
                 $scope.$on(userEvent.OnChange, refreshCurrentUser)
 
-
-
                 //操作
-                this.fnAction = $view.fnAction = function (name, action, args, success, error) {
+                this.fnAction = $scope.fnAction = function (name, action, args, success, error) {
                     action.apply($service, args)
                         .success(function (e) {
                             $current.successNotice('已完成' + name + '操作。');
-                            $view.fnSearch();
+                            $scope.fnSearch();
                             if (success) success(e);
                         })
                         .error(function (e) {
@@ -127,66 +125,105 @@ define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 
                         });
                 }
 
-                this.fnConfirmAction = $view.fnConfirmAction = function (name, action, args, success, error) {
-                    $current.confirm('确定要' + name + '此项目吗？').ok(function () {
-                        action.apply($service, args)
-                            .success(function (e) {
-                                $current.successNotice('已完成' + name + '操作。');
-                                $view.fnSearch();
-                                if (success) success(e);
-                            })
-                            .error(function (e) {
-                                $current.errorNotice('操作无法完成，因为' + e.Message);
-                                if (error) error(e);
-                            });
-                    });
-                }
-
-                this.fnDelete = $view.fnDelete = function (data) {
-                    if (data) {
-                        $view.fnConfirmAction('删除', $service.fnDelete, [data], function (success) {
-                            $scope.$emit(pageEvent.OnFormDeleted, [data]);
-                            $scope.$emit(pageEvent.OnFormSubmited, [data]);
-                        }, function (error) {
-                            $scope.$emit(pageEvent.OnFormDeleteFailed, [data]);
-                            $scope.$emit(pageEvent.OnFormSubmitFailed, [data]);
-                        });
-                    }
-                }
-
-
+                $scope.fnConfirmAction = this.fnConfirmAction.bind(this),
+                $scope.fnDelete = this.fnDelete.bind(this)
             }
 
-            fnBindMsg.call(this)
+            fnBindMsg.call(this),
+            this.fnConfirmAction = fnConfirmAction,
+            this.fnDelete = function fnDelete(data) {
+                if (!data) return;
+
+                this.fnConfirmAction('删除', this.$service.fnDelete, [data])
+                    .success(function (success) {
+                        $scope.$emit(pageEvent.OnFormDeleted, [data]);
+                        $scope.$emit(pageEvent.OnFormSubmited, [data]);
+                    }).error(function (error) {
+                        $scope.$emit(pageEvent.OnFormDeleteFailed, [data]);
+                        $scope.$emit(pageEvent.OnFormSubmitFailed, [data]);
+                        $self.errorNotice('操作无法完成，因为' + error.Message);
+                    });
+
+            }
+        }
+
+        Page.Create = function ($scope, $service, injection) {
+            return new this().super(arguments)
+        }
+
+        function agentPage() { }
+
+        Page.CreateAgent = function ($scope, $service, injection) {
+            agentPage.prototype = new this();
+            agentPage.prototype.base = agentPage.prototype;
+            agentPage.prototype.constructor = agentPage
+
+            return new agentPage().super(arguments)
         }
 
         return core.ext(Page);
 
+        function fnConfirmAction(name, action, args) {
+            var promise = this.$q(function (a, b) {
+                this.confirm('确定要' + name + '此项目吗？')
+                        .ok(function () {
+                            action.apply(this.$service, isArg(args) ? args : [args]).success(function (r) { this.successNotice('已完成' + name + '操作。'), a(arguments) }.bind(this)).error(b)
+                        }.bind(this))
+            }.bind(this))
+            return promise.success = function (fn) {
+                return promise.then(function (arg) {
+                    fn.apply(this, isArg(arg) ? arg : arguments)
+                }), promise
+            }, promise.error = function (fn) {
+                return promise.then(null, function (arg) {
+                    fn.apply(this, isArg(arg) ? arg : arguments)
+                }), promise
+            }, promise
+        }
+
+        function isArg(arg) {
+            return arg && arg.hasOwnProperty('length') || Array.isArray(arg)
+        }
+
         function sliceArgs(args, startIndex, endIndex) {
-            return Array.prototype.slice.call(args, startIndex || 0, endIndex);
+            return Array.prototype.slice.call(args, startIndex || 0, endIndex)
         }
 
         /*****************  消息发送 Start  ********************/
 
-        function fnBroadcast() { this.$scope.$broadcast.apply(this.$scope, arguments) }
+        function fnBroadcast() {
+            this.$scope.$broadcast.apply(this.$scope, arguments)
+        }
 
-        function fnEmit() { this.$scope.$emit.apply(this.$scope, arguments) }
+        function fnEmit() {
+            this.$scope.$emit.apply(this.$scope, arguments)
+        }
+
+        function fnCallBroadcast(evtName) {
+            this.fnBindBroadcast(evtName).apply(this, sliceArgs(arguments, 1))
+        }
+
+        function fnCallEmit(evtName) {
+            this.fnBindEmit(evtName).apply(this, sliceArgs(arguments, 1))
+        }
 
         function fnBindBroadcast(evtName) {
             return function (data) {
                 var arg = sliceArgs(arguments);
-                !(data && data.origin) && (arg.unshift({ origin: this.Type, data: data || {} })),
-                arg.unshift(evtName),
-                this.broadcast.apply(this, arg)
+                !(data && data.origin) && (arg.unshift({
+                    origin: this.Type, data: data || {}
+                })),
+                arg.unshift(evtName), this.broadcast.apply(this, arg)
             }.bind(this)
         }
 
         function fnBindEmit(evtName) {
             return function (data) {
                 var arg = sliceArgs(arguments);
-                !(data && data.origin) && (arg.unshift({ origin: this.Type, data: data || {} })),
-                arg.unshift(evtName),
-                this.emit.apply(this, arg)
+                !(data && data.origin) && (arg.unshift({
+                    origin: this.Type, data: data || {}
+                })),
+                arg.unshift(evtName), this.emit.apply(this, arg)
             }.bind(this)
         }
 
@@ -197,12 +234,23 @@ define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 
         function fnBindAttach(evtName) {
             return function (id) {
                 var promise = this.$q(function (a, b) {
-                    var params = { ID: id, Promise: {}, sumNumber: 0, sucNumber: 0, errNumber: 0 };
+                    var params = {
+                        ID: id, Promise: {
+                        }, sumNumber: 0, sucNumber: 0, errNumber: 0
+                    };
                     this.broadcast(evtName, params),
                     this.$q.all(params.Promise).then(a.bind(this, params), b.bind(this))
                 }.bind(this))
-                return promise.success = function (fn) { return promise.then(function (arg) { fn.apply(this, Array.isArray(arg) ? arg : arguments) }), promise },
-                    promise.error = function (fn) { return promise.then(null, function (arg) { fn.apply(this, Array.isArray(arg) ? arg : arguments) }), promise }, promise
+                return promise.success = function (fn) {
+                    return promise.then(function (arg) {
+                        fn.apply(this, isArg(arg) ? arg : arguments)
+                    }), promise
+                },
+                promise.error = function (fn) {
+                    return promise.then(null, function (arg) {
+                        fn.apply(this, isArg(arg) ? arg : arguments)
+                    }), promise
+                }, promise
             }.bind(this)
         }
 
@@ -242,7 +290,11 @@ define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 
                     msg: msg, mode: mode || 0, success: a, error: b
                 })
             }.bind(this));
-            return promise.ok = promise.pass = function (fn) { return promise.then(function () { fn.apply(this, arguments) }), promise }, promise
+            return promise.ok = promise.pass = function (fn) {
+                return promise.then(function () {
+                    fn.apply(this, arguments)
+                }), promise
+            }, promise
         }
 
         function fnAlert(msg, type) {
@@ -252,7 +304,11 @@ define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 
                     callback: a
                 })
             }.bind(this));
-            return promise.ok = promise.pass = function (fn) { return promise.then(function (arg) { fn.apply(this, Array.isArray(arg) ? arg : arguments) }), promise }, promise
+            return promise.ok = promise.pass = function (fn) {
+                return promise.then(function (arg) {
+                    fn.apply(this, isArg(arg) ? arg : arguments)
+                }), promise
+            }, promise
         }
 
         function fnConfirm(msg, title) {
@@ -265,8 +321,15 @@ define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 
                     }
                 })
             }.bind(this));
-            return promise.ok = promise.pass = function (fn) { return promise.then(function (arg) { fn.apply(this, Array.isArray(arg) ? arg : arguments) }), promise },
-            promise.cancel = function (fn) { return promise.then(null, function (arg) { fn.apply(this, Array.isArray(arg) ? arg : arguments) }), promise }, promise
+            return promise.ok = promise.pass = function (fn) {
+                return promise.then(function (arg) {
+                    fn.apply(this, isArg(arg) ? arg : arguments)
+                }), promise
+            }, promise.cancel = function (fn) {
+                return promise.then(null, function (arg) {
+                    fn.apply(this, isArg(arg) ? arg : arguments)
+                }), promise
+            }, promise
         }
 
         function fnMessage(msg, mode, title, type) {
@@ -275,8 +338,15 @@ define('core.page', ['core', 'lobibox', 'core.state', 'evt.page', 'evt.action', 
                     msg: msg, mode: mode || 0, title: title || !0, success: a, error: b
                 })
             }.bind(this));
-            return promise.ok = promise.pass = function (fn) { return promise.then(function () { fn.apply(this, arguments) }) },
-             promise.cancel = function (fn) { return promise.then(null, function () { fn.apply(this, arguments) }), promise }, promise
+            return promise.ok = promise.pass = function (fn) {
+                return promise.then(function () {
+                    fn.apply(this, arguments)
+                })
+            }, promise.cancel = function (fn) {
+                return promise.then(null, function () {
+                    fn.apply(this, arguments)
+                }), promise
+            }, promise
         }
 
         /*****************  消息通知 End  **********************/

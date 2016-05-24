@@ -1,0 +1,54 @@
+﻿<div ng-controller="LogSearchCtrl">
+    <h2 class="open-subtitle">设置查询条件</h2>
+    <form class="form-horizontal" name="form">
+        <div class="form-group">
+            <label class="control-label">事件级别：</label>
+            <select class="form-control" ng-model="Params.LogLevel" ng-options="l.Value as l.Name for l in LogLevels">
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">开始时间：</label>
+            <input type="text" class="form-control" ng-model="Params.BeginUserTime" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">结束时间：</label>
+            <input type="text" class="form-control" ng-model="Params.EndUserTime" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">用户名称：</label>
+            <input type="text" class="form-control" ng-model="Params.UserName" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">操作IP：</label>
+            <input type="text" class="form-control" ng-model="Params.UserIP" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">操作信息：</label>
+            <input type="text" class="form-control" ng-model="Params.OperateContent" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">操作摘要：</label>
+            <input type="text" class="form-control" ng-model="Params.OperateSummary" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">操作详情：</label>
+            <input type="text" class="form-control" ng-model="Params.OperateDetail" />
+        </div>
+        <!--<div class="form-group">
+            <label class="control-label">事件信息：</label>
+            <input type="text" class="form-control" ng-model="Params.EntityTitle" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">事件标识：</label>
+            <input type="text" class="form-control" ng-model="Params.EntityID" />
+        </div>
+        <div class="form-group">
+            <label class="control-label">事件类别：</label>
+            <input type="text" class="form-control" ng-model="Params.EntityType" />
+        </div>-->
+        <div class="search-btn">
+            <button class="btn btn-green" ng-click="fnSearch()">查询</button>
+            <button class="btn btn-white" data-search-close ng-click="fnFormReset()">关闭</button>
+        </div>
+    </form>
+</div>

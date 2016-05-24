@@ -4,16 +4,21 @@
 
         core.controller('DeptPositionTabCtrl',
             function ($scope, positionService) {
-                var page = core($scope, positionService), dept;
+                var page = core($scope, positionService);
 
                 page.fnGetSearchParams = function (pageConfig, params) {
                     core.extend(this, params && params['core.container'])
                 }
 
-                $scope.ShowView(function (e) { dept = e.data, page.fnSearch({ DeptID: e.data && e.data.ID }) });
+                $scope.ShowView(function (e) { page.fnSearch($scope.Dept = { DeptID: e.data.ID, DeptName: e.data.DeptName, ShortName: e.data.ShortName, DeptCode: e.data.DeptCode }) });
 
                 $scope.fnAdd = function () {
-                    $scope.ShowDialog('add', { DeptID: dept && dept.ID, DeptName: dept && dept.DeptName, ShortName: dept && dept.ShortName, DeptCode: dept && dept.DeptCode })
+                    var dept = $scope.Dept;
+                    $scope.ShowDialog('add', { DeptCode: dept.DeptCode, DeptName: dept.DeptName, DeptID: dept.DeptID })
+                }
+                $scope.fnEdit = function (id) {
+                    var dept = $scope.Dept;
+                    $scope.ShowDialog('edit', { ID: id, DeptCode: dept.DeptCode, DeptName: dept.DeptName, DeptID: dept.DeptID })
                 }
                 $scope.fnDisable = function (id) {
                     page.confirm('确定要停用此项目？').pass(function () {

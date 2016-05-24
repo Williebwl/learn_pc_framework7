@@ -10,15 +10,15 @@
         </div>
         <span class="pull-left">全部成员(<strong class="danger" ng-bind="PageInfo.TotalItems"></strong>)</span>
         <div class="pull-right">
-            <a href="javascript:;" ng-click="fnRelateduser()">[分配用户]</a>
+            <a href="javascript:;" ng-click="fnRelateduser()">[添加兼职用户]</a>
         </div>
     </div>
 
     <div class="table-responsive">
-        <table class="table table-bordered" bi-checkbox="CheckConf">
+        <table class="table table-bordered  table-hover">
             <thead>
                 <tr>
-                    <th width="5%" class="alignCenter"><input type="checkbox"></th>
+                    <th width="5%" class="alignCenter">序号</th>
                     <th width="18%">姓名</th>
                     <th width="15%">用户名</th>
                     <th width="19%">邮箱</th>
@@ -27,24 +27,22 @@
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="user in PageInfo.Items" ng-click="fnShowSlider($event, user.Account,'dept')">
-                    <td class="alignCenter"><input type="checkbox" ng-value="user.Account.ID"></td>
+                <tr ng-repeat="user in PageInfo.Items" ng-click="fnShowSlider($event, user.Position)">
+                    <td class="alignCenter" ng-bind="$index+1"></td>
                     <td ng-bind="user.Account.RealName"></td>
                     <td ng-bind="user.LoginName"></td>
                     <td ng-bind="user.Account.Email"></td>
                     <td class="alignCenter">{{user.LastLoginTime | date:'yyyy-MM-dd HH:mm'}}</td>
                     <td>
-                        <div ng-repeat="position in user.Positions">
-                            {{position.DeptName}}
-                            <span ng-if="position.PositionName" ng-bind="'('+position.PositionName+')'"></span>
-                            <span class="danger" ng-if="!position.IsValid">已停用</span>
-                        </div>
+                        {{user.Position.DeptName}}
+                        <span ng-if="user.Position.PositionName" ng-bind="'('+user.Position.PositionName+')'"></span>
+                        <span class="danger" ng-if="!user.Position.IsValid">已停用</span>
                     </td>
                 </tr>
             </tbody>
         </table>
         <div bi-Pagination conf="PageConfig"></div>
     </div>
-    <div bi-dialog src="System/Dept/dept.relateduser.html" id="relatedUser" size="md" title="分配用户" />
-    <div bi-dialog src="System/Account/account.slider.html" id="slider" />
+    <div bi-dialog src="System/Dept/dept.relateduser.html" id="relatedUser" size="sm" title="分配用户" />
+    <div bi-dialog src="System/Dept/dept.userslider.html" id="slider" />
 </div>

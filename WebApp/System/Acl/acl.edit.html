@@ -1,0 +1,42 @@
+﻿<form ng-controller="AclEditCtrl" class="form-horizontal" bi-Form-Validate="OperationVM">
+    <div class="form-group col-xs-6">
+        <label class="control-label" for="OperationName">
+            操作域名称：
+        </label>
+        <input type="text" id="OperationName" name="OperationName" class="form-control" ng-model="editInfo.OperationName" ng-change="fnCheck(1)">
+    </div>
+    <div class="form-group col-xs-6">
+        <label class="control-label" for="OperationCode">
+            操作域代码：
+        </label>
+        <input type="text" id="OperationCode" name="OperationCode" ng-readonly="editInfo.ID" class="form-control" ng-model="editInfo.OperationCode" ng-change="fnCheck()">
+    </div>
+    <div class="form-group col-xs-6">
+        <label class="control-label" for="StartTime">
+            生效时间-开始：
+        </label>
+        <input type="text" id="StartTime" name="StartTime" class="form-control" ng-model="editInfo.StartTime">
+    </div>   
+    <div class="form-group col-xs-6">
+        <label class="control-label" for="EndTime">
+            生效时间-结束：
+        </label>
+        <input type="text" id="EndTime" name="StartTime" class="form-control" ng-model="editInfo.EndTime">
+    </div>   
+    <div class="form-group col-xs-6">
+        <label class="control-label" for="StartIP">
+            访问IP-开始：
+        </label>
+        <input type="text" id="StartIP" name="StartTime" class="form-control" ng-model="editInfo.StartIP" placeholder="000.000.000.000">
+    </div>   
+    <div class="form-group col-xs-6">
+        <label class="control-label" for="EndIP">
+            访问IP-结束：
+        </label>
+        <input type="text" id="EndTime" name="EndIP" class="form-control" ng-model="editInfo.EndIP" placeholder="255.255.255.255">
+    </div>   
+    <div class="form-group col-xs-12">
+        <label class="control-label">备注：</label>
+        <textarea class="form-control" ng-model="editInfo.Remark"></textarea>
+    </div>
+</form>

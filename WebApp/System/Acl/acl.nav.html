@@ -1,0 +1,36 @@
+﻿<div ng-controller="AclNavCtrl">
+    <div class="convenient-btns ng-scope">
+        <button class="btn btn-white" data-toggle="modal" ng-click="ShowDialog('add', App)">
+            <i class="fa fa-plus-square"></i><span>新建操作域</span>
+        </button>
+    </div>
+
+    <h2 class="open-subtitle">操作域列表</h2>
+    <div class="band-list">
+        <div class="input-group">
+            <div class="input-group-btn btn-group">
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <span data-value="{{App.AppCode}}" class="opotioned">{{App.AppName}}</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu dropdown-select">
+                    <li ng-repeat-start="app in Apps"><a href="javascript:;" ng-click="setApp(app)">{{app.AppName}} (<em style="font-size:12px; font-family:Arial;" ng-bind="app.AppCode"></em>)</a></li>
+                    <li ng-repeat-end ng-if="app.AppCode=='SYS'" class="divider"></li>
+                </ul>
+            </div>
+            <input type="text" class="form-control" placeholder="操作域名称|代码" ng-model="Key" ng-change="fnKeySearch()">
+        </div>
+        <ul>
+            <li ng-repeat="operation in Operations" ng-click="fnSelect(operation,operation.OperationName)" ng-class="{active:operation.ID===Search.Active.ID}">
+                <span>{{operation.OperationName}}</span>
+                <div class="icon-group">
+                    <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="编辑" ng-click="$event.stopPropagation();ShowDialog('edit', operation)"></a>
+                    <a href="javascript:;" class="icon-items fa fa-close" data-toggle="tooltip" data-placement="bottom" title="删除" ng-click="$event.stopPropagation();fnDelete(operation.ID)"></a>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div bi-dialog src="System/Acl/acl.edit.html" id="add" size="md" title="新建操作域" />
+    <div bi-dialog src="System/Acl/acl.edit.html" id="edit" size="md" title="编辑操作域信息" />
+</div>

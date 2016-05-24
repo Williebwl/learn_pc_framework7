@@ -73,8 +73,7 @@
         </div>
         <div class="prop-slider-footer clearfix">
             <div class="pull-right">
-                <button class="btn btn-white" data-toggle="modal" ng-if="target==='Account'&&Info.IsValid" ng-click="ShowDialog('edit',Info.Account)">修改</button>
-                <button class="btn btn-white" data-toggle="modal" ng-if="target==='dept'">停用</button>
+                <button class="btn btn-white" data-toggle="modal" ng-if="Info.IsValid" ng-click="ShowDialog('edit',Info.Account)">修改</button>
                 <div class="btn-group dropup">
                     <button class="btn btn-white dropdown-toggle" data-toggle="dropdown">更多</button>
                     <ul class="dropdown-menu dropdown-menu-right">

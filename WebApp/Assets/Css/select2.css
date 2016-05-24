@@ -86,7 +86,9 @@
     margin: 0;
     padding: 0;
 }
-
+.select2-results__option[id$='-?']{
+    display: none;
+}
 .select2-results__option {
     padding: 6px;
     user-select: none;

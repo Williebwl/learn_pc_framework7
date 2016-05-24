@@ -2,6 +2,7 @@
     'use strict';
 
     core.controller('GroupModuleContainerCtrl', function ($scope, groupService) {
+        var page = core($scope, groupService);
 
         $scope.ShowView(function (e) {
             groupService.fnGetAppAccess(e.data.ID)

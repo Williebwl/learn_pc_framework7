@@ -111,13 +111,13 @@
                 priority: 1,
                 link: function (scope, elm, attrs) {
                     var conf = scope.$eval(attrs.conf) || { minimumResultsForSearch: attrs.hasOwnProperty('filter') || Infinity }, time = $timeout(init, 300);
-
+                    elm.data('canValid', 0)
                     attrs.ngModel && scope.$watch(attrs.ngModel, function (current, old) {
                         current && current !== old && !(window.event && window.event.view) && init(time && ($timeout.cancel(time), time = 0))
                     })
 
                     function init() {
-                        elm.css('width', '100%').select2(conf)
+                        elm.css('width', '100%').select2(conf).data('canValid', 1)
                     }
 
                     elm.data('Reset', { fnReset: function (val) { elm.val(val || '').select2(conf) } })

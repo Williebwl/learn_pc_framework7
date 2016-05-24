@@ -4,7 +4,7 @@
 define('core.export', ['core.view'], function (page) {
     'use strict'
 
-    function ExportPage($view, $service, $scope, injection) {
+    function ExportPage($scope, $service, injection) {
         if (!this || this.constructor === Window) return new ExportPage().super(arguments);
 
         this.Type = 'core.export'

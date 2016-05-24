@@ -1,0 +1,53 @@
+﻿<form ng-controller="AppMenuEditCtrl as info" class="form-horizontal" name="Menu" bi-Form-Validate="MenuVM">
+    <div class="form-group col-sm-12">
+        <label class="control-label">所属应用：</label>
+        <span class="place-label" ng-bind="editInfo.AppName"></span>
+    </div>
+    <div class="form-group col-xs-6">
+        <label class="control-label required-label" for="MenuName">
+            菜单名称：
+        </label>
+        <input type="text" id="MenuName" name="MenuName" class="form-control" ng-model="editInfo.MenuName" ng-change="fnExistsDeptName()">
+    </div>
+    <div class="form-group col-xs-6">
+        <label class="control-label required-label" for="MenuCode">
+            菜单代码：
+        </label>
+        <input type="text" id="MenuCode" name="MenuCode" readonly="readonly" class="form-control" ng-model="editInfo.MenuCode" ng-change="fnCheck()">
+    </div>
+    <div class="form-group col-xs-12">
+        <label class="control-label required-label">
+            显示模式：
+        </label>
+        <div class="radio radio-inline radio-default">
+            <label ng-repeat="mode in WidgetModes">
+                <input type="radio" name="xsms" ng-model="info.WidgetMode" ng-value="mode">{{mode.name}}
+                <i class="fa fa-circle-o"></i>
+            </label>
+        </div>
+    </div>
+    <div class="form-group col-xs-12" ng-hide="info.WidgetMode.value>1">
+        <label class="control-label required-label" for="NavUrl">
+            导航区域：
+        </label>
+        <input type="text" id="NavUrl" name="NavUrl" class="form-control" ng-model="editInfo.NavUrl">
+    </div>
+    <div class="form-group col-xs-12">
+        <label class="control-label" for="ContainerUrl">
+            内容区域：
+        </label>
+        <input type="text" id="ContainerUrl" name="ContainerUrl" class="form-control" ng-model="editInfo.ContainerUrl">
+    </div>
+    <!--<div class="form-group col-xs-12">
+        <label class="control-label" for="Sequence">
+            排序：
+        </label>
+        <input type="text" id="Sequence" name="Sequence" class="form-control" ng-model="editInfo.Sequence">
+    </div>-->
+    <div class="form-group col-xs-12">
+        <label class="control-label" for="Remarks">
+            简要说明：
+        </label>
+        <textarea id="Remarks" name="Remarks" class="form-control" ng-model="editInfo.Remarks"></textarea>
+    </div>
+</form>

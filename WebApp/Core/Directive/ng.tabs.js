@@ -43,7 +43,7 @@
                         var time, $tabs = scope.hasOwnProperty('$tabs') && scope.$tabs || (scope.$tabs = {});
                         ctrl.length = length,
                         ctrl.def = attr.biTabs,
-                        time = $timeout(ctrl.fnInit, 600),
+                        time = $timeout(function () { fnShowTab({ origin: 'biTabs' }) }, 600),
                         $tabs[attr.id || (attr.id = number++)] = fnShowTab,
                         !scope.hasOwnProperty('ShowTab') && (scope.ShowTab = function (id, key) {
                             var fu = (fu = angular.isString(id) && $tabs[id]) && isFn(fu) ? fu : scope.FirstTab;
@@ -87,7 +87,7 @@
                 this.Scope.$broadcast(pageEvent.OnDisposed, this.key)
             }
 
-            function fnApplyQueue(queue, arg) { return queue.map(function (fuc) { $q.all(fuc.apply(this, arg)) }) }
+            function fnApplyQueue(queue, arg) { return Array.isArray(queue) && queue.map(function (fuc) { return $q.all(fuc.apply(this, arg)) }) }
 
             function fnInit(key) {
                 var current = this.currentTab;
@@ -173,8 +173,6 @@
                                 };
 
                                 tabLoad.then(function () {
-                                    tabPane.loaded = !0;
-
                                     var thisChangeId = ++changeCounter;
 
                                     if (src) {
@@ -182,6 +180,8 @@
                                             if (scope.$$destroyed) return;
 
                                             if (thisChangeId !== changeCounter) return;
+
+                                            tabPane.loaded = !0;
 
                                             var newScope = scope.$new();
 

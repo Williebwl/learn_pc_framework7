@@ -2,8 +2,8 @@
     <h2 class="open-subtitle">{{module.MenuName}}</h2>
     <div class="nav-list">
         <ul>
-            <li ng-repeat="menu in module.Children">
-                <a href="{{'#'+menu.PageRoute}}" ng-click="fnSelect(status,menu.MenuName)" ng-bind="menu.MenuName"></a>
+            <li ng-repeat="menu in module.Children" ng-class="{active:menu.ID==Active}">
+                <a href="{{'#'+menu.PageRoute}}" ng-click="fnSelect(menu.ID,menu.MenuName)" ng-bind="menu.MenuName"></a>
             </li>
         </ul>
     </div>

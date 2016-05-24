@@ -1,0 +1,50 @@
+﻿<div ng-controller="LogContainerCtrl">
+    <div class="header-bar">
+        <div class="input-group pull-left">
+            <input type="text" class="form-control" placeholder="输入关键字" ng-change="fnInstantSearch()" ng-model="Params.Key">
+            <span class="input-group-btn">
+                <button type="button" class="btn btn-gray btn-search" ng-click="fnSearch()">查询</button>
+                <button type="button" class="btn btn-gray btn-search" ng-click="fnShowSearch($event, 'search')"><i class="fa fa-search-plus"></i></button>
+            </span>
+        </div>
+
+        <!--<div class="header-toolbar pull-right">
+            <button class="btn btn-white" ng-click="fnDelete()">删除</button>
+        </div>-->
+        <div class="help-info">
+            <a href="javascript:;" class="fa fa-question-circle" data-toggle="tooltip" data-placement="left" title="帮助中心"></a>
+        </div>
+    </div>
+    <div class="contentpanel">
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover" bi-checkbox="CheckConf">
+                <thead>
+                    <tr>
+                        <th width="5%"><input type="checkbox"></th>
+                        <th width="8%">级别</th>
+                        <th width="17%">记录时间</th>
+                        <th width="10%">来源</th>
+                        <th width="34%">内容</th>
+                        <th width="12%">用户名称</th>
+                        <th width="14%">操作IP</th>
+                    </tr>
+                </thead>
+                <tbody class="sortable-table tbody-hover">
+                    <tr ng-click="fnShowSlider($event, log)" ng-repeat="log in PageInfo.Items">
+                        <td class="alignCenter"><input type="checkbox" ng-value="log.ID"></td>
+                        <td><span ng-class="fnGetLogLevel(log.LogLevel).Icon"></span> {{fnGetLogLevel(log.LogLevel).Name}}</td>
+                        <td>{{log.CreateTime | date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>{{log.EntityModule}}</td>
+                        <td class="alignLeft">{{log.OperateContent}}</td>
+                        <td>{{log.UserName}}</td>
+                        <td>{{log.UserIP}}</td>
+                    </tr>
+                </tbody>
+                </table>
+            <div bi-Pagination conf="PageConfig"></div>
+        </div>
+    </div>
+
+    <div bi-dialog src="System/Audit/log.slider.html" id="slider" />
+    <div bi-dialog src="System/Audit/log.search.html" id="search" size="search-panel-sm" />
+</div>

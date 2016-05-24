@@ -2,139 +2,144 @@
     function (app) {
         'use strict'
 
-        var biIncludeDirective = ['$templateRequest', '$anchorScroll', '$animate',
-                  function ($templateRequest, $anchorScroll, $animate, $rootScope) {
-                      return {
-                          restrict: 'ECA',
-                          priority: 400,
-                          terminal: true,
-                          transclude: 'element',
-                          controller: angular.noop,
-                          compile: function (element, attr) {
-                              var onloadExp = attr.onload || '',
-                                  autoScrollExp = attr.autoscroll,
-                                  target = $.trim(attr.target),
-                                  event = $.trim(attr.event);
+        var isDefined = angular.isDefined, toString=Object.prototype.toString;
 
-                              return function (scope, $element, $attr, ctrl, $transclude) {
-                                  var changeCounter = 0,
-                                      currentScope,
-                                      previousElement,
-                                      currentElement,
-                                      srcExp = attr.biInclude || attr.src || attr.templateurl,
-                                      ctrlUrl = $attr.controllerurl,
-                                      action = $.trim(attr.action),
-                                      async = !!(target || action);
+        app.directive('biInclude', biIncludeDirective)
+           .directive('biInclude', biIncludeFillContentDirective)
 
-                                  if (srcExp) srcExp = scope.$eval(srcExp) || srcExp;
+        biIncludeDirective.$inject = ['$templateRequest', '$anchorScroll', '$animate']
+        function biIncludeDirective($templateRequest, $anchorScroll, $animate) {
+            return {
+                restrict: 'ECA',
+                priority: 400,
+                terminal: true,
+                transclude: 'element',
+                controller: angular.noop,
+                compile: function (element, attr) {
+                    var onloadExp = attr.onload || '',
+                        autoScrollExp = attr.autoscroll;
 
-                                  if (srcExp && !ctrlUrl) ctrlUrl = [((ctrlUrl = srcExp.match(/(.+)\.htm+l?$/i)) ? ctrlUrl[1] : srcExp) + '.js'];
-                                  else if (ctrlUrl) ctrlUrl = (scope.$eval(srcExp) || ctrlUrl).split(/;*,+;*|,*;+/);
+                    return function (scope, $element, $attr, ctrl, $transclude) {
+                        var changeCounter = 0,
+                            srcExp = attr.biInclude || attr.src || attr.templateurl,
+                            ctrlSrc = attr.controllerurl,
+                            currentScope,
+                            previousElement,
+                            currentElement, target = $.trim(attr.target),
+                            action = $.trim(attr.action);
 
-                                  ctrl.Url = ctrlUrl;
+                        if (srcExp) srcExp = scope.$eval(srcExp) || srcExp;
 
-                                  var cleanupLastIncludeContent = function () {
-                                      if (previousElement) {
-                                          previousElement.remove();
-                                          previousElement = null;
-                                      }
-                                      if (currentScope) {
-                                          currentScope.$destroy();
-                                          currentScope = null;
-                                      }
-                                      if (currentElement) {
-                                          $animate.leave(currentElement).then(function () {
-                                              previousElement = null;
-                                          });
-                                          previousElement = currentElement;
-                                          currentElement = null;
-                                      }
-                                  };
+                        if (srcExp && !ctrlSrc) ctrlSrc = [((ctrlSrc = srcExp.match(/(.+)\.htm+l?$/i)) ? ctrlSrc[1] : srcExp) + '.js'];
+                        else if (ctrlSrc) ctrlSrc = (scope.$eval(ctrlSrc) || ctrlSrc).split(/;*,+;*|,*;+/);
 
-                                  scope.$watch('"' + srcExp + '"', function ngIncludeWatchAction(src) {
-                                      var afterAnimation = function () {
-                                          if (angular.isDefined(autoScrollExp) && (!autoScrollExp || scope.$eval(autoScrollExp))) {
-                                              $anchorScroll();
-                                          }
-                                      };
+                        ctrl.src = ctrlSrc;
 
-                                      var thisChangeId = ++changeCounter, func, load;
+                        var cleanupLastIncludeContent = function () {
+                            if (previousElement) {
+                                previousElement.remove();
+                                previousElement = null;
+                            }
+                            if (currentScope) {
+                                currentScope.$destroy();
+                                currentScope = null;
+                            }
+                            if (currentElement) {
+                                $animate.leave(currentElement).then(function () {
+                                    previousElement = null;
+                                });
+                                previousElement = currentElement;
+                                currentElement = null;
+                            }
+                        };
 
-                                      if (src) {
-                                          func = function (callback) {
-                                              if (ctrl.callback) ctrl.callback();
-                                              else if (action !== 0) {
-                                                  action = 0, typeof callback === 'function' && (ctrl.callback = callback);
+                        scope.$watch('"' + srcExp + '"', function biIncludeWatchAction(src) {
+                            var afterAnimation = function () {
+                                if (isDefined(autoScrollExp) && (!autoScrollExp || scope.$eval(autoScrollExp))) {
+                                    $anchorScroll();
+                                }
+                            };
 
-                                                  $templateRequest(require.toUrl(src), true).then(function (response) {
-                                                      if (thisChangeId !== changeCounter) return;
-                                                      var newScope = scope.$new();
-                                                      ctrl.template = response;
 
-                                                      var clone = $transclude(newScope, function (clone) {
-                                                          cleanupLastIncludeContent();
-                                                          $animate.enter(clone, null, $element).then(afterAnimation);
-                                                      });
+                            if (src) {
 
-                                                      currentScope = newScope;
-                                                      currentElement = clone;
+                                if (!(target || action)) biIncludeTemplateRequest()
+                                else {
+                                    if (target) {
+                                        var event = ($.trim($attr.event) || 'click') + '.biInclude'
+                                        $(document).off(event, target, load).on(event, target, load)
 
-                                                      currentScope.$emit('$includeContentLoaded', src);
-                                                      scope.$eval(onloadExp);
-                                                  }, function () {
-                                                      if (thisChangeId === changeCounter) {
-                                                          cleanupLastIncludeContent();
-                                                          scope.$emit('$includeContentError', src);
-                                                      }
-                                                  });
-                                                  scope.$emit('$includeContentRequested', src);
-                                              }
-                                          }
+                                        function load() { $(document).off(event, target, load), biIncludeTemplateRequest() }
+                                    }
 
-                                          if (async) {
-                                              if (target) $(document).off(event || 'click', target, load = function () { $(document).off(event || 'click', target, load), func() }).on(event || 'click', target, load)
+                                    if (action) scope[action] = biIncludeTemplateRequest;
+                                }
 
-                                              if (action) (scope.infos || scope)[action] = func;
-                                          } else func();
-                                      } else {
-                                          cleanupLastIncludeContent();
-                                          ctrl.template = null;
-                                      }
-                                  });
-                              };
-                          }
-                      };
-                  }];
+                                function biIncludeTemplateRequest() {
+                                    var thisChangeId = ++changeCounter;
 
-        var biIncludeFillContentDirective = ['$compile',
-          function ($compile) {
-              return {
-                  restrict: 'ECA',
-                  priority: -400,
-                  require: 'biInclude',
-                  link: function (scope, $element, $attr, ctrl) {
-                      if (/SVG/.test($element[0].toString())) {
-                          $element.empty();
-                          $compile(jqLiteBuildFragment(ctrl.template, document).childNodes)(scope,
-                              function namespaceAdaptedClone(clone) {
-                                  $element.append(clone);
-                              }, { futureParentElement: $element });
-                          return;
-                      }
+                                    $templateRequest(src, true).then(function (response) {
+                                        if (scope.$$destroyed) return;
 
-                      function fn() {
-                          $element.html(ctrl.template);
-                          $compile($element.contents())(scope);
+                                        if (thisChangeId !== changeCounter) return;
+                                        var newScope = scope.$new();
+                                        ctrl.template = response;
 
-                          if (ctrl.callback) ctrl.callback();
+                                        var clone = $transclude(newScope, function (clone) {
+                                            cleanupLastIncludeContent();
+                                            $animate.enter(clone, null, $element).then(afterAnimation);
+                                        });
 
-                          scope.$digest();
-                      }
+                                        currentScope = newScope;
+                                        currentElement = clone;
 
-                      Array.isArray(ctrl.Url) && require(ctrl.Url, fn) || fn();
-                  }
-              };
-          }];
+                                        currentScope.$emit('$includeContentLoaded', src);
+                                        scope.$eval(onloadExp);
+                                    }, function () {
+                                        if (scope.$$destroyed) return;
 
-        app.directive('biInclude', biIncludeDirective).directive('biInclude', biIncludeFillContentDirective)
+                                        if (thisChangeId === changeCounter) {
+                                            cleanupLastIncludeContent();
+                                            scope.$emit('$includeContentError', src);
+                                        }
+                                    });
+                                    scope.$emit('$includeContentRequested', src);
+                                }
+                            } else {
+                                cleanupLastIncludeContent();
+                                ctrl.template = null;
+                            }
+                        });
+                    };
+                }
+            };
+        };
+
+        biIncludeFillContentDirective.$inject = ['$compile']
+        function biIncludeFillContentDirective($compile) {
+            return {
+                restrict: 'ECA',
+                priority: -400,
+                require: 'biInclude',
+                link: function (scope, $element, $attr, ctrl) {
+                    if (toString.call($element[0]).match(/SVG/)) {
+                        $element.empty();
+                        $compile(jqLiteBuildFragment(ctrl.template, window.document).childNodes)(scope,
+                            function namespaceAdaptedClone(clone) {
+                                $element.append(clone);
+                            }, { futureParentElement: $element });
+                        return;
+                    }
+
+                    function fn() {
+                        $element.html(ctrl.template);
+                        $compile($element.contents())(scope);
+
+                        scope.$digest();
+                    }
+
+                    Array.isArray(ctrl.src) && require(ctrl.src, fn) || fn();
+                }
+            };
+        };
     })

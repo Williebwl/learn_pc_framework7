@@ -1,0 +1,19 @@
+﻿<div ng-controller="AclContainerCtrl" class="contentpanel">
+    <div class="maintop">
+        <div class="maintop-title clearfix">
+            <h2>{{Info.OperationName}}（<span ng-bind="Info.OperationCode"></span>）</h2>
+            <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="right" title="帮助"></i></h2>
+        </div>
+        <p>{{Info.Remark}}</p>
+    </div>
+    <div class="tabs" bi-tabs>
+        <ul class="nav nav-pills nav-tabs-primary">
+            <li class="active">操作策略</li>
+            <li>筛选器</li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane active" src="System/Acl/acl.strategy.html" id="strategy"></div>
+            <div class="tab-pane" src="System/Acl/acl.filter.html" id="filter"></div>
+        </div>
+    </div>
+</div>
