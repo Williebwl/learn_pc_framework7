@@ -51,8 +51,9 @@
                             PRoute = $$route && $$route.PRoute,
                             templateUrl = $$route && $$route.navTemplateUrl;
 
-                        if (PRoute && PRoute === ctrl.lastPRoute && templateUrl === ctrl.lastTemplateUrl) return;
+                        if (PRoute && (PRoute === ctrl.lastPRoute || PRoute === ctrl.lastRoute) && templateUrl === ctrl.lastTemplateUrl) return;
 
+                        ctrl.lastRoute = $$route && $$route.Route;
                         ctrl.lastPRoute = PRoute;
                         ctrl.lastTemplateUrl = templateUrl;
 
@@ -163,8 +164,9 @@
                             PRoute = $$route && $$route.PRoute,
                             templateUrl = $$route && $$route.toolBarTemplateUrl;
 
-                        if (PRoute && PRoute === ctrl.lastPRoute && templateUrl === ctrl.lastTemplateUrl) return;
+                        if (PRoute && (PRoute === ctrl.lastPRoute || PRoute === ctrl.lastRoute) && templateUrl === ctrl.lastTemplateUrl) return;
 
+                        ctrl.lastRoute = $$route && $$route.Route;
                         ctrl.lastPRoute = PRoute;
                         ctrl.lastTemplateUrl = templateUrl;
 
@@ -275,8 +277,9 @@
                             PRoute = $$route && $$route.PRoute,
                             templateUrl = $$route && $$route.containerTemplateUrl;
 
-                        if (PRoute && PRoute === ctrl.lastPRoute && templateUrl === ctrl.lastTemplateUrl) return;
+                        if (PRoute && (PRoute === ctrl.lastPRoute || PRoute === ctrl.lastRoute) && templateUrl === ctrl.lastTemplateUrl) return;
 
+                        ctrl.lastRoute = $$route && $$route.Route;
                         ctrl.lastPRoute = PRoute;
                         ctrl.lastTemplateUrl = templateUrl;
 
