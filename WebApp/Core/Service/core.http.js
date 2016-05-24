@@ -2,7 +2,7 @@
     function (angular) {
         'use strict'
 
-        var api = location.host === 'localhost:6696' && '//localhost:2206/' || location.host === 'localhost:8000' && '//192.168.1.246:88/bis7/' || '';
+        var api = location.host === 'localhost:1496' && '//localhost:2266/' || location.host === 'localhost:8000' && '//192.168.1.246:88/bis7/' || '';
 
         angular.module('biHttp', ['ng']).provider('$$http', function () {
 
