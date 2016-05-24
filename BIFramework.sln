@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "WebApi\WebApi.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{8848E490-0646-494C-BB2E-23D3555E9EDB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "7 Presentation", "7 Presentation", "{4F6E466E-0420-4105-84F4-E68E287DA4E2}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{CD2C6C3E-294E-4A44-9DF6-5E1671DB1B51}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -20,7 +18,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIFramework.BestPractice", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BIFramework.BestPractice.Impl", "BIFramework.BestPractice.Impl\BIFramework.BestPractice.Impl.csproj", "{D4C0EAF7-3127-49FA-9117-AEE78491097D}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebApp(1)", "http://localhost:1496", "{A5506E82-F53B-4731-9022-659D275180AD}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "WebApp", "http://localhost:1496", "{A5506E82-F53B-4731-9022-659D275180AD}"
 	ProjectSection(WebsiteProperties) = preProject
 		SccProjectName = "SAK"
 		SccAuxPath = "SAK"
@@ -81,13 +79,5 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{3A267B9C-71A8-4AFA-9225-74A6F789081A} = {4F6E466E-0420-4105-84F4-E68E287DA4E2}
-		{8848E490-0646-494C-BB2E-23D3555E9EDB} = {4F6E466E-0420-4105-84F4-E68E287DA4E2}
-		{1167A456-4056-46C3-9B2D-B0291B068472} = {4F6E466E-0420-4105-84F4-E68E287DA4E2}
-		{D4C0EAF7-3127-49FA-9117-AEE78491097D} = {4F6E466E-0420-4105-84F4-E68E287DA4E2}
-		{A5506E82-F53B-4731-9022-659D275180AD} = {4F6E466E-0420-4105-84F4-E68E287DA4E2}
-		{D69FC456-01E6-4F64-85B9-72AACD384CBB} = {4F6E466E-0420-4105-84F4-E68E287DA4E2}
 	EndGlobalSection
 EndGlobal

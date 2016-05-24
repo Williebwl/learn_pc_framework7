@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using BIStudio.Framework.Log;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using BIStudio.Framework;
 
 namespace BIFramework.Test
 {
@@ -15,16 +16,24 @@ namespace BIFramework.Test
         [TestMethod]
         public void LocalLogTest()
         {
-            LogService.Default.WriteInfo("测试操作内容1");
-            List<STDLog> items = LogService.Default.Read(new LogCondtiton { EntityModule = "BIFramework.Local", EntityID = 0 });
+            AppRuntime.Log.Info("测试操作内容1");
+            var items = AppRuntime.Log.Query(item=>
+            {
+                item.EntityModule = "BIFramework.Local";
+                item.EntityID = 0;
+            });
             Assert.IsNotNull(items);
         }
 
         [TestMethod]
         public void DBLogTest()
         {
-            LogService.Default.WriteInfo("测试操作内容2");
-            List<STDLog> items = LogService.Default.Read(new LogCondtiton { EntityModule = "BIFramework.Remoting", EntityID = 0 });
+            AppRuntime.Log.Info("测试操作内容2");
+            var items = AppRuntime.Log.Query(item =>
+            {
+                item.EntityModule = "BIFramework.Remoting";
+                item.EntityID = 0;
+            });
             Assert.IsNotNull(items);
         }
     }

@@ -12,6 +12,7 @@ namespace WebApi.Controllers.Institution
     /// <summary>
     /// 部门视图模型
     /// </summary>
+    [Mark(Name = "DeptVM")]
     public class SYSDeptVM : ViewModel
     {
         #region Write Model
@@ -25,19 +26,19 @@ namespace WebApi.Controllers.Institution
         /// <summary>
         /// 部门名称
         /// </summary>
-        [Required, StringLength(50), RegularExpression(@"^[\t\r\n\u0020-\u007e]*$", ErrorMessage = "字段 {0} 必须是英文字母、数字或符号。"), Display(Name = "部门名称")]
+        [Required, StringLength(50), Display(Name = "部门名称")]
         public string DeptName { get; set; }
 
         /// <summary>
         /// 部门名称简称
         /// </summary>
-        [StringLength(50), RegularExpression(@"^[\t\r\n\u0020-\u007e]*$", ErrorMessage = "字段 {0} 必须是英文字母、数字或符号。"), Display(Name = "部门名称简称")]
+        [StringLength(50), Display(Name = "部门名称简称")]
         public string ShortName { get; set; }
 
         /// <summary>
         /// 代码
         /// </summary>
-        [StringLength(200), RegularExpression(@"^[\t\r\n\u0020-\u007e]*$", ErrorMessage = "字段 {0} 必须是英文字母、数字或符号。"), Display(Name = "代码")]
+        [Required, StringLength(200), Identifier, Display(Name = "代码")]
         public string DeptCode { get; set; }
 
         /// <summary>
@@ -49,13 +50,13 @@ namespace WebApi.Controllers.Institution
         /// <summary>
         /// 层级 1开始计算
         /// </summary>
-        [Required, Display(Name = "层级 1开始计算")]
+        [Display(Name = "层级 1开始计算")]
         public int? Layer { get; set; }
 
         /// <summary>
         /// 路径
         /// </summary>
-        [Required, StringLength(50), RegularExpression(@"^[\t\r\n\u0020-\u007e]*$", ErrorMessage = "字段 {0} 必须是英文字母、数字或符号。"), Display(Name = "路径")]
+        [Display(Name = "路径")]
         public string Path { get; set; }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace WebApi.Controllers.Institution
         /// <summary>
         /// ID
         /// </summary>
-        [Required, Display(Name = "ID")]
+        [Display(Name = "ID")]
         public long? ID { get; set; }
 
         #endregion

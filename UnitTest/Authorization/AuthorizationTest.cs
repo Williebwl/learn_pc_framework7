@@ -68,11 +68,11 @@ namespace BIFramework.Test
         [TestMethod]
         public void SystemTest()
         {
-            var auth = CFAspect.Resolve<IAppService>();
+            var auth = AppRuntime.Container.Resolve<IAppMgrService>();
 
-            auth.SystemRegist(new SYSSystemRegistDTO { SystemCode = "test", SystemName = "网站运营管理" });
+            auth.SystemRegist(new SYSSystemRegistRequest { SystemCode = "test", SystemName = "网站运营管理" });
 
-            var certificate = auth.CertificateIssue(new SYSSystemCertificateIssueDTO { ApiKey = "test1", SystemCode = "test", CertificateName = "系统管理" });
+            var certificate = auth.CertificateIssue(new SYSSystemCertificateIssueRequest { ApiKey = "test1", SystemCode = "test", CertificateName = "系统管理" });
             Assert.AreEqual(certificate.ApiKey, "test1");
             auth.RecyleCertificate(certificate.ApiKey);
             auth.UnRegisterSystem("test");
@@ -81,25 +81,25 @@ namespace BIFramework.Test
         [TestMethod]
         public void OAuth2Test()
         {
-            var auth = CFAspect.Resolve<IAuthorizationService>();
+            var auth = AppRuntime.Container.Resolve<IAuthorizationService>();
 
-            var passport = auth.PassportRegist(new SYSPassportRegistDTO("test1", "123456", "123456", "michael78@126.com"));
+            var passport = auth.PassportRegist(new SYSPassportRegistRequest("test1", "123456", "123456", "michael78@126.com"));
 
-            var account = auth.AccountRegist(new SYSAccountRegistDTO { SystemCode = "BICMS", UID = "测试账号5" });
-            var linkDto = new SYSPassportLinkDTO { LoginName = "test1", SystemCode = "BICMS", UID = "测试账号5" };
+            var account = auth.AccountRegist(new SYSAccountRegistRequest { SystemID = 1, UID = "测试账号5" });
+            var linkDto = new SYSPassportLinkRequest { LoginName = "test1", SystemID = 1, UID = "测试账号5" };
             //auth.PassportLink(linkDto);
 
             //授权码模式
-            var authorize = auth.Authorize(new SYSAuthorizeDTO("BICMS_Master"));
+            var authorize = auth.Authorize(new SYSAuthorizeRequest("BICMS_Master"));
 
-            auth.AuthorizeLogin(new SYSAuthorizeLoginDTO(authorize.code, passport.LoginName, "123456"));
+            auth.AuthorizeLogin(new SYSAuthorizeLoginRequest(authorize.code, passport.LoginName, "123456"));
 
-            var accessTokenByCode = auth.AccessToken(new SYSAccessTokenDTO("BICMS_Master", "44678314ba0efa0c", authorize.code));
+            var accessTokenByCode = auth.AccessToken(new SYSAccessTokenRequest("BICMS_Master", "44678314ba0efa0c", authorize.code));
             //客户端模式
-            var accessTokenByCredentials = auth.AccessToken(new SYSAccessTokenDTO("BICMS_Master", "44678314ba0efa0c"));
+            var accessTokenByCredentials = auth.AccessToken(new SYSAccessTokenRequest("BICMS_Master", "44678314ba0efa0c"));
 
             //更新令牌
-            var accessTokenByRefreshToken = auth.AccessToken(new SYSAccessTokenDTO(accessTokenByCredentials.refresh_token));
+            var accessTokenByRefreshToken = auth.AccessToken(new SYSAccessTokenRequest(accessTokenByCredentials.refresh_token));
 
             auth.DestroyToken(accessTokenByCredentials.access_token);
             //auth.PassportUnlink(linkDto);
@@ -111,16 +111,16 @@ namespace BIFramework.Test
         [TestMethod]
         public void PassportTest()
         {
-            var auth = CFAspect.Resolve<IAuthorizationService>();
-            var passport = auth.PassportRegist(new SYSPassportRegistDTO("test1", "123456", "123456", "michael78@126.com"));
+            var auth = AppRuntime.Container.Resolve<IAuthorizationService>();
+            var passport = auth.PassportRegist(new SYSPassportRegistRequest("test1", "123456", "123456", "michael78@126.com"));
 
             var forgetDto = auth.PassportForgot(passport.Email);
 
             Assert.IsTrue(auth.VerifyCode(passport.LoginName,forgetDto.VerificationCode));
 
-            auth.PassportRetrievePassword(new SYSPassportRetrievePasswordDTO(passport.LoginName, "123456", "123456"));
+            auth.PassportRetrievePassword(new SYSPassportRetrievePasswordRequest(passport.LoginName, "123456", "123456"));
 
-            auth.PassportChangePassword(new SYSPassportChangePasswordDTO(passport.LoginName, "123456", "1234567", "1234567"));
+            auth.PassportChangePassword(new SYSPassportChangePasswordRequest(passport.LoginName, "123456", "1234567", "1234567"));
 
             auth.PassportValid(passport.LoginName, false);
 

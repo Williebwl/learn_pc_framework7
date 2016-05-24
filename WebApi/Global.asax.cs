@@ -1,5 +1,8 @@
 ﻿using BIStudio.Framework;
+using BIStudio.Framework.Auth;
 using BIStudio.Framework.Configuration;
+using BIStudio.Framework.Data;
+using BIStudio.Framework.Domain;
 using BIStudio.Framework.MQ;
 using System.Net;
 using System.Web;
@@ -12,9 +15,9 @@ namespace WebApi
     {
         protected void Application_Start()
         {
-            CFConfig.Default
-                .RegisterContainer()
-                .RegisterDataMapping()
+            AppRuntime.Module
+                .RegisterModule()
+                .RegisterORMapping()
                 .RegisterEFRepository()
                 .RegisterMessageDispatcher();
 

@@ -1,36 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 
 namespace WebApi.Controllers.Institution
 {
-    using BIStudio.Framework.Data;
-    using BIStudio.Framework.Domain;
     using BIStudio.Framework.Institution;
     using BIStudio.Framework.UI;
 
-    public partial class DeptController : ApplicationService<SYSDeptVM, PagedQuery, SYSDept>
+    public partial class DeptController : AppService<SYSDeptVM, DeptQuery, SYSDept>
     {
-        protected IRepository<SYSDept> _deptBO;
+        #region 编辑
 
-        public DeptController() : base("Name", "ShortName") { }
+        public override bool Delete(string id) => _deptService.Delete(id);
 
-        protected virtual IList<SmartTreeVM> GetSmartTreeInfos()
-        {
-            var q = from d in _deptBO.Entities
-                    orderby d.Path, d.Sequence
-                    select new SmartTreeVM
-                    {
-                        ID = d.ID,
-                        Value = d.ID.ToString(),
-                        Layer = d.Layer,
-                        Path = d.Path,
-                        ParentID = d.ParentID,
-                        Text = string.IsNullOrEmpty(d.ShortName) ? d.DeptName : d.ShortName
-                    };
-
-            return q.ToArray();
-        }
+        #endregion 编辑
     }
 }

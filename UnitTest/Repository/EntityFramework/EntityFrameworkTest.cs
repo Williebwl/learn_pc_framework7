@@ -24,7 +24,7 @@ namespace BIFramework.Test
         [TestMethod]
         public void EntityFrameworkData()
         {
-            IDBQuery dbQuery = CFAspect.Resolve<IDBQuery>();
+            IDBQuery dbQuery = AppRuntime.Container.Resolve<IDBQuery>();
             DBBuilder dbBuilder = DBBuilder.Define();
             //单表查询
             dbBuilder = DBBuilder.Select("User", new { LoginName = "system" });
@@ -66,12 +66,12 @@ namespace BIFramework.Test
         {
             //CFAspect.Resolve<Repository<TCTest>>().Remove(466001131959028);
 
-            var result = CFAspect.Resolve<Repository<TCTest>>().GetAll(new TrueSpec<TCTest>(), new SortExpression<TCTest>("Name"));
+            var result = AppRuntime.Container.Resolve<Repository<TCTest>>().GetAll(new TrueSpec<TCTest>(), new SortExpression<TCTest>("Name"));
         }
         [TestMethod]
         public void EntityFrameworkUnitofwork()
         {
-            var dbQuery = CFAspect.Resolve<IDBQuery>();
+            var dbQuery = AppRuntime.Container.Resolve<IDBQuery>();
             //使用Data.Core插入数据
             dbQuery.Execute(DBBuilder.Delete("TCTest"));
             dbQuery.Execute(DBBuilder.Insert("TCTest", new { ID = CFID.NewID(), Name = "张三" }));
@@ -85,12 +85,12 @@ namespace BIFramework.Test
                 var rp = uow.Repository<TCTest>();
                 //Linq
                 var queryByLinq = from test in rp.Entities
-                                  where test.Inputer == CFContext.User.UserName
+                                  where test.Inputer == AppRuntime.Context.User.UserName
                             select test;
                 //表达式
-                var queryByLambda = rp.GetAll(new Spec<TCTest>(entity => entity.Inputer == CFContext.User.UserName));
+                var queryByLambda = rp.GetAll(new Spec<TCTest>(entity => entity.Inputer == AppRuntime.Context.User.UserName));
                 //规约
-                var queryBySpec1 = rp.GetPaged(new MyOrder(CFContext.User.UserName));
+                var queryBySpec1 = rp.GetPaged(new MyOrder(AppRuntime.Context.User.UserName));
 
                 rp.Entities.Where(d => d.ID > 9);
 

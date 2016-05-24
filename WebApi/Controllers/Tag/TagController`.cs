@@ -9,7 +9,7 @@ using BIStudio.Framework.UI;
 
 namespace WebApi.Controllers.Tag
 {
-    public partial class TagController : ApplicationService<TagVM, TagQuery, SYSTag>
+    public partial class TagController : AppService<TagVM, TagQuery, SYSTag>
     {
         protected IRepository<SYSTag> _tagRepository;
         protected IRepository<SYSTagClass> _tagClassRepository;
@@ -18,12 +18,11 @@ namespace WebApi.Controllers.Tag
 
         protected override ISpecification<SYSTag> GetQueryParams<T>(T info)
         {
-            var sql = @"SELECT  tag.* ,
-                                tg.TagName AS ParentName
-                        FROM    SYSTag tag
-                                LEFT JOIN SYSTag tg ON tag.ParentID > 0
-                                                        AND tg.ID =tag.ParentID
-                        WHERE   1 = 1";
+            var sql = @"
+SELECT tag.*, 
+    (SELECT tg.TagName FROM SYSTag tg WHERE tag.ParentID>0 AND tg.ID=tag.ParentID) ParentName
+FROM SYSTag tag
+WHERE   1 = 1";
 
             var dbBuilder = DBBuilder.Define(sql);
 

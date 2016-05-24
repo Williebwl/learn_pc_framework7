@@ -1,0 +1,90 @@
+﻿<style type="text/css">
+    <!--
+    .personal-info-b .dept-list li {
+        margin: 0px;
+        height: 22px;
+        line-height: 22px;
+    }
+    -->
+</style>
+<div ng-controller="AccountSliderCtrl">
+    <div class="prop-slider w400 prop02" data-prop-direction="right">
+        <div class="prop-slider-header">
+            <h2 class="prop-slider-title">详细资料</h2>
+            <button class="close" data-close-slider="self" type="button">×</button>
+        </div>
+        <div class="prop-slider-content scroller scrollerbar-primary">
+            <div class="personal-info">
+                <div class="personal-info-t clearfix">
+                    <i class="personal-mark background-x" ng-bind="Info.Account.Avatar"></i>
+                    <div class="contact-user">
+                        <h1 ng-bind="Info.Account.RealName"></h1>
+                        <h2><span>({{Info.IsLocked?'已锁定':Info.IsValid?'有效':'无效'}})</span></h2>
+                    </div>
+                </div>
+                <div class="personal-info-b">
+                    <ul>
+                        <li>
+                            <span>账号：</span>
+                            <span ng-bind="Info.Account.UserName"></span>
+                        </li>
+                        <li>
+                            <span>部门：</span>
+                            <ul class="dept-list">
+                                <li ng-repeat="position in Info.Positions">{{position.DeptName}}&nbsp;<span ng-if="position.PositionName" ng-bind="'('+position.PositionName+')'"></span><span class="danger" ng-if="!position.IsValid">已停用</span></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <span>手机：</span>
+                            <span ng-bind="Info.Account.Mobile"></span>
+                        </li>
+                        <li>
+                            <span>邮箱：</span>
+                            <span ng-bind="Info.Account.Email"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="tabs personal-tabs">
+                <ul class="nav nav-pills nav-tabs-default">
+                    <li class="active">角色(<span span ng-bind="Groups.length"></span>)</li>
+                    <li class="">应用(<span ng-bind="Apps.length"></span>)</li>
+                </ul>
+                <div class="tab-content scroller scrollerbar-primary">
+                    <div class="tab-pane active">
+                        <ul>
+                            <li ng-repeat="group in Groups">
+                                {{$index+1+'.'+group.GroupName}}
+                                <span ng-if="(group.GroupCode||'').toLowerCase()!='everyone'&&Info.Account.UserName!='System'" ng-click="fnCancelGroup(Info.Account.ID,group)">【取消】</span>
+                            </li>
+                        </ul>
+                        <div data-toggle="tooltip" title="更多角色">
+                            <i class="fa fa-plus-circle"></i>
+                            <span>更多角色</span>
+                        </div>
+                    </div>
+                    <div class="tab-pane">
+                        <ul>
+                            <li ng-repeat="app in Apps">{{$index+1+'.'+app.AppName}}<span ng-click="fnCancelApp(Info.Account.ID,app)">【取消】</span><span>【操作权限】</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="prop-slider-footer clearfix">
+            <div class="pull-right">
+                <button class="btn btn-white" data-toggle="modal" ng-if="target==='Account'&&Info.IsValid" ng-click="ShowDialog('edit',Info.Account)">修改</button>
+                <button class="btn btn-white" data-toggle="modal" ng-if="target==='dept'">停用</button>
+                <div class="btn-group dropup">
+                    <button class="btn btn-white dropdown-toggle" data-toggle="dropdown">更多</button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a href="javascript:;" ng-click="fnLogout(Info.IsValid)" ng-bind="Info.IsValid?'注销':'启用'"></a></li>
+                        <li><a href="javascript:;">日志</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div bi-dialog src="System/Account/account.edit.html" id="edit" size="md" title="编辑用户信息"></div>
+</div>

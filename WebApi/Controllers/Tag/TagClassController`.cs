@@ -9,9 +9,9 @@ using BIStudio.Framework.UI;
 
 namespace WebApi.Controllers.Tag
 {
-    public partial class TagClassController : ApplicationService<TagClassVM, TagQuery, SYSTagClass>
+    public partial class TagClassController : AppService<TagClassVM, TagQuery, SYSTagClass>
     {
-        public TagClassController() : base("ClassName") { }
+        public TagClassController() : base("ClassName", "ClassCode") { }
 
         protected override ISpecification<SYSTagClass> GetQueryParams<T>(T info)
         {

@@ -49,12 +49,12 @@ namespace WebApi.Controllers.Tenant
         /// <summary>
         /// 是否内置（1-是；0-否）
         /// </summary>
-        public int? IsBuiltIn { get; set; }
+        public bool? IsBuiltIn { get; set; }
 
         /// <summary>
         /// 是否有效（1-有效，0-停用）
         /// </summary>
-        public int? IsValid { get; set; }
+        public bool? IsValid { get; set; }
 
         /// <summary>
         /// 序列号

@@ -65,22 +65,22 @@ namespace BIFramework.Test.System
         [TestMethod]
         public void ResourseTest()
         {
-            var privilege = CFAspect.Resolve<IPermissionService>();
-            var org = CFAspect.Resolve<IGroupService>();
+            var privilege = AppRuntime.Container.Resolve<IPermissionService>();
+            var org = AppRuntime.Container.Resolve<IGroupService>();
             long userId = 1;
-            var operation = privilege.OperationInject(new SYSOperationDTO
+            var operation = privilege.OperationInject(new SYSOperationRequest
             {
                 OperationCode = "Order_SalesManager_CreateOrder",
                 OperationName = "客服创建订单",
             });
             Assert.AreEqual(operation.OperationCode, "Order_SalesManager_CreateOrder");
 
-            var role = org.GroupInject(new SYSGroupInjectDTO(systemId, 742, "客服代表", "Order_SalesManager"));
+            var role = org.GroupInject(new SYSGroupInjectRequest(systemId, 742, "客服代表", "Order_SalesManager"));
             Assert.AreEqual(role.GroupCode, "Order_SalesManager");
 
-            var roleAccount = org.GroupAccountAssign(new SYSGroupUserAssignDTO(systemId, role.GroupCode, userId));
+            var roleAccount = org.GroupAccountAssign(new SYSGroupUserAssignRequest(systemId, role.GroupCode, userId));
 
-            var filter = privilege.FilterInject(new SYSFilterInjectDTO(systemId, 742, "客服代表订单查询", "Order_SalesManager_MyOrder", "Order", "Name", "=", "1"));
+            var filter = privilege.FilterInject(new SYSFilterInjectRequest(systemId, 742, "客服代表订单查询", "Order_SalesManager_MyOrder", "Order", "Name", "=", "1"));
             Assert.AreEqual(filter.FilterCode, "Order_SalesManager_MyOrder");
 
             org.Remove(roleAccount);
@@ -95,34 +95,34 @@ namespace BIFramework.Test.System
         [TestMethod]
         public void StrategyTest()
         {
-            var privilege = CFAspect.Resolve<IPermissionService>();
-            var org = CFAspect.Resolve<IGroupService>();
+            var privilege = AppRuntime.Container.Resolve<IPermissionService>();
+            var org = AppRuntime.Container.Resolve<IGroupService>();
             long userId = 1;
 
-            var operation = privilege.OperationInject(new SYSOperationDTO
+            var operation = privilege.OperationInject(new SYSOperationRequest
             {
                 OperationCode = "Order_SalesManager_CreateOrder",
                 OperationName = "客服创建订单",
             });
             Assert.AreEqual(operation.OperationCode, "Order_SalesManager_CreateOrder");
 
-            var group = org.GroupInject(new SYSGroupInjectDTO(systemId, 742, "客服代表", "Order_SalesManager"));
+            var group = org.GroupInject(new SYSGroupInjectRequest(systemId, 742, "客服代表", "Order_SalesManager"));
             Assert.AreEqual(group.GroupCode, "Order_SalesManager");
 
-            var groupAccount = org.GroupAccountAssign(new SYSGroupUserAssignDTO(systemId, group.GroupCode, userId));
+            var groupAccount = org.GroupAccountAssign(new SYSGroupUserAssignRequest(systemId, group.GroupCode, userId));
 
-            var filter = privilege.FilterInject(new SYSFilterInjectDTO(systemId, 742, "客服代表订单查询", "Order_SalesManager_MyOrder", "Order", "Name", "=", "1"));
+            var filter = privilege.FilterInject(new SYSFilterInjectRequest(systemId, 742, "客服代表订单查询", "Order_SalesManager_MyOrder", "Order", "Name", "=", "1"));
             Assert.AreEqual(filter.FilterCode, "Order_SalesManager_MyOrder");
 
             var operationFilter = privilege.OperationFilterAssign(
-                new SYSOperationFilterAssignDTO(systemId, "Order_SalesManager_CreateOrder", "Order_SalesManager_MyOrder"));
+                new SYSOperationFilterAssignRequest(systemId, "Order_SalesManager_CreateOrder", "Order_SalesManager_MyOrder"));
 
-            var strategy = privilege.StrategyInject(new SYSStrategyDTO(systemId, 742, "订单策略", "Order_SalesManager_Order_Strategy"));
+            var strategy = privilege.StrategyInject(new SYSStrategyRequest(systemId, 742, "订单策略", "Order_SalesManager_Order_Strategy"));
             Assert.AreEqual(strategy.StrategyCode, "Order_SalesManager_Order_Strategy");
 
-            var strategyOperation = privilege.StrategyOperationAssign(new SYSStrategyOperationAssignDTO(systemId, "Order_SalesManager_Order_Strategy", "Order_SalesManager_CreateOrder"));
+            var strategyOperation = privilege.StrategyOperationAssign(new SYSStrategyOperationAssignRequest(systemId, "Order_SalesManager_Order_Strategy", "Order_SalesManager_CreateOrder"));
 
-            var strategyGroup = privilege.StrategyGroupAssign(new SYSStrategyGroupAssignDTO(systemId, "Order_SalesManager", "Order_SalesManager_Order_Strategy"));
+            var strategyGroup = privilege.StrategyGroupAssign(new SYSStrategyGroupAssignRequest(systemId, "Order_SalesManager", "Order_SalesManager_Order_Strategy"));
 
             org.Remove(groupAccount);
             privilege.Remove(strategyGroup);
@@ -142,20 +142,20 @@ namespace BIFramework.Test.System
         [TestMethod]
         public void OrderTestCase()
         {
-            var privilege = CFAspect.Resolve<IPermissionService>();
-            var auth = CFAspect.Resolve<IAuthorizationService>();
-            var org = CFAspect.Resolve<IGroupService>();
-            var operation = privilege.OperationInject(new SYSOperationDTO
+            var privilege = AppRuntime.Container.Resolve<IPermissionService>();
+            var auth = AppRuntime.Container.Resolve<IAuthorizationService>();
+            var org = AppRuntime.Container.Resolve<IGroupService>();
+            var operation = privilege.OperationInject(new SYSOperationRequest
             {
                 OperationCode = "Order_SalesManager_CreateOrder",
                 OperationName = "客服创建订单",
             });
             Assert.AreEqual(operation.OperationCode, "Order_SalesManager_MyOrder");
 
-            var group = org.GroupInject(new SYSGroupInjectDTO(systemId, 742, "客服代表", "Order_SalesManager"));
+            var group = org.GroupInject(new SYSGroupInjectRequest(systemId, 742, "客服代表", "Order_SalesManager"));
             Assert.AreEqual(group.GroupCode, "Order_SalesManager");
 
-            var custom1 = auth.AccountRegist(new SYSAccountRegistDTO { SystemCode = "BICMS", UID = "custom1" });
+            var custom1 = auth.AccountRegist(new SYSAccountRegistRequest { SystemID = 1, UID = "custom1" });
             Assert.AreEqual(custom1.UID, "custom1");
 
             SYSGroupUser groupAccount = null;
@@ -170,7 +170,7 @@ namespace BIFramework.Test.System
             for (int i = 0; i < 10; i++)
             {
                 //新增客服
-                var sale = auth.AccountRegist(new SYSAccountRegistDTO { SystemCode = "BICMS", UID = "sale" + i });
+                var sale = auth.AccountRegist(new SYSAccountRegistRequest { SystemID = 1, UID = "sale" + i });
                 Assert.AreEqual(sale.UID, "sale" + i);
                 sales.Add(sale);
 
@@ -180,37 +180,37 @@ namespace BIFramework.Test.System
                 orders.Add(order);
 
                 if (i != 1) continue;
-                groupAccount = org.GroupAccountAssign(new SYSGroupUserAssignDTO(systemId, group.GroupCode, sale.ID.Value));
+                groupAccount = org.GroupAccountAssign(new SYSGroupUserAssignRequest(systemId, group.GroupCode, sale.ID.Value));
                 saleId = sale.ID.Value;
                 //设置当前连接id
                 //ALCurrentUser.OperationIdentify = new ThreadLocal<string>(() => saleId.ToString()); ;
 
-                var idFilter = privilege.FilterInject(new SYSFilterInjectDTO(systemId, 742, "客服代表订单查询", "Order_SalesManager_MyOrder", typeof(TCOrder).FullName, "SaleId", "=", saleId.ToString()));
+                var idFilter = privilege.FilterInject(new SYSFilterInjectRequest(systemId, 742, "客服代表订单查询", "Order_SalesManager_MyOrder", typeof(TCOrder).FullName, "SaleId", "=", saleId.ToString()));
                 Assert.AreEqual(idFilter.FilterCode, "Order_SalesManager_MyOrder");
 
                 filters.Add(idFilter);
 
-                var operationFilter1 = privilege.OperationFilterAssign(new SYSOperationFilterAssignDTO(systemId, operation.OperationCode, idFilter.FilterCode));
+                var operationFilter1 = privilege.OperationFilterAssign(new SYSOperationFilterAssignRequest(systemId, operation.OperationCode, idFilter.FilterCode));
                 operationFilters.Add(operationFilter1);
 
-                var nameFilter = privilege.FilterInject(new SYSFilterInjectDTO(systemId, 742, "客服代表订单按照名字查询", "Order_SalesManager_OrderNameLikeSale", typeof(TCOrder).FullName, "Name", "like", "order%"));
+                var nameFilter = privilege.FilterInject(new SYSFilterInjectRequest(systemId, 742, "客服代表订单按照名字查询", "Order_SalesManager_OrderNameLikeSale", typeof(TCOrder).FullName, "Name", "like", "order%"));
                 Assert.AreEqual(nameFilter.FilterCode, "Order_SalesManager_OrderNameLikeSale");
                 filters.Add(nameFilter);
 
-                var operationFilter2 = privilege.OperationFilterAssign(new SYSOperationFilterAssignDTO(systemId, operation.OperationCode, nameFilter.FilterCode));
+                var operationFilter2 = privilege.OperationFilterAssign(new SYSOperationFilterAssignRequest(systemId, operation.OperationCode, nameFilter.FilterCode));
                 operationFilters.Add(operationFilter2);
             }
-            var strategy = privilege.StrategyInject(new SYSStrategyDTO(systemId, 742, "订单策略", "Order_SalesManager_Order_Strategy"));
+            var strategy = privilege.StrategyInject(new SYSStrategyRequest(systemId, 742, "订单策略", "Order_SalesManager_Order_Strategy"));
             Assert.AreEqual(strategy.StrategyCode, "Order_SalesManager_Order_Strategy");
 
-            var strategyOperation = privilege.StrategyOperationAssign(new SYSStrategyOperationAssignDTO(systemId, strategy.StrategyCode, operation.OperationCode));
+            var strategyOperation = privilege.StrategyOperationAssign(new SYSStrategyOperationAssignRequest(systemId, strategy.StrategyCode, operation.OperationCode));
 
-            var strategyGroup = privilege.StrategyGroupAssign(new SYSStrategyGroupAssignDTO(systemId, group.GroupCode, strategy.StrategyCode));
+            var strategyGroup = privilege.StrategyGroupAssign(new SYSStrategyGroupAssignRequest(systemId, group.GroupCode, strategy.StrategyCode));
 
             //CFContext.User.UserID = saleId;
 
             //核心
-            var service = CFAspect.Resolve<IOrderService>();
+            var service = AppRuntime.Container.Resolve<IOrderService>();
             var infos = service.TestMethod();
 
 
@@ -242,7 +242,7 @@ namespace BIFramework.Test.System
         [TestMethod]
         public void GetValidateOperationCodesTest()
         {
-            var privilege = CFAspect.Resolve<IPermissionService>();
+            var privilege = AppRuntime.Container.Resolve<IPermissionService>();
 
             var orderRepository = new TCOrderRepository();
 
@@ -259,19 +259,19 @@ namespace BIFramework.Test.System
 
             var operations = new List<SYSOperation>();
             var filter =
-                   privilege.FilterInject(new SYSFilterInjectDTO(systemId, 742, "客服代表订单查询", "Order_SalesManager_MyOrder",
+                   privilege.FilterInject(new SYSFilterInjectRequest(systemId, 742, "客服代表订单查询", "Order_SalesManager_MyOrder",
                        typeof(TCOrder).FullName, "Name", "not like", "123"));
             filters.Add(filter);
             for (int i = 2; i < 5; i++)
             {
-                var operation = privilege.OperationInject(new SYSOperationDTO
+                var operation = privilege.OperationInject(new SYSOperationRequest
                 {
                     OperationCode = "Order_SalesManager_MyOrder"+i,
                     OperationName = "客服创建订单",
                 });
                 operations.Add(operation);
 
-                operationFilters.Add(privilege.OperationFilterAssign(new SYSOperationFilterAssignDTO(systemId, operation.OperationCode, filter.FilterCode)));
+                operationFilters.Add(privilege.OperationFilterAssign(new SYSOperationFilterAssignRequest(systemId, operation.OperationCode, filter.FilterCode)));
             }
             //var items = privilege.GetValidateOperationCodes(typeof(TCOrder).FullName, orders.FirstOrDefault(item => item.SaleId == 0));
             //Assert.IsNotNull(items);
@@ -285,7 +285,7 @@ namespace BIFramework.Test.System
         [TestMethod]
         public void IocOrderTest()
         {
-            var service = CFAspect.Resolve<IOrderService>();
+            var service = AppRuntime.Container.Resolve<IOrderService>();
 
             //try
             //{

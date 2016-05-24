@@ -15,9 +15,9 @@ namespace BIStudio.Framework.Test.UnitTest
         [AssemblyInitialize]
         public static void Application_Start(TestContext context)
         {
-            CFConfig.Default
-                .RegisterContainer()
-                .RegisterDataMapping()
+            AppRuntime.Module
+                .RegisterModule()
+                .RegisterORMapping()
                 .RegisterEFRepository()
                 .RegisterMessageDispatcher();
         }

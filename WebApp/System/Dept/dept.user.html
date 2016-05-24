@@ -1,0 +1,50 @@
+﻿<div ng-controller="DeptUserTabCtrl">
+    <div class="toolbar clearfix">
+        <div class="pull-left col-sm-4">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="用户名 | 真实姓名" ng-change="fnInstantSearch()" ng-model="Params.Key">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-gray" ng-click="fnSearch()"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+        <span class="pull-left">全部成员(<strong class="danger" ng-bind="PageInfo.TotalItems"></strong>)</span>
+        <div class="pull-right">
+            <a href="javascript:;" ng-click="fnRelateduser()">[分配用户]</a>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered" bi-checkbox="CheckConf">
+            <thead>
+                <tr>
+                    <th width="5%" class="alignCenter"><input type="checkbox"></th>
+                    <th width="18%">姓名</th>
+                    <th width="15%">用户名</th>
+                    <th width="19%">邮箱</th>
+                    <th width="18%">上次登录时间</th>
+                    <th width="25%">所属部门</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="user in PageInfo.Items" ng-click="fnShowSlider($event, user.Account,'dept')">
+                    <td class="alignCenter"><input type="checkbox" ng-value="user.Account.ID"></td>
+                    <td ng-bind="user.Account.RealName"></td>
+                    <td ng-bind="user.LoginName"></td>
+                    <td ng-bind="user.Account.Email"></td>
+                    <td class="alignCenter">{{user.LastLoginTime | date:'yyyy-MM-dd HH:mm'}}</td>
+                    <td>
+                        <div ng-repeat="position in user.Positions">
+                            {{position.DeptName}}
+                            <span ng-if="position.PositionName" ng-bind="'('+position.PositionName+')'"></span>
+                            <span class="danger" ng-if="!position.IsValid">已停用</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div bi-Pagination conf="PageConfig"></div>
+    </div>
+    <div bi-dialog src="System/Dept/dept.relateduser.html" id="relatedUser" size="md" title="分配用户" />
+    <div bi-dialog src="System/Account/account.slider.html" id="slider" />
+</div>

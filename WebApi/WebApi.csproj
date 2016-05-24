@@ -27,7 +27,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <UseGlobalApplicationHostFile />
-    <TypeScriptToolsVersion>1.7</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -48,72 +48,72 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AsyncIO, Version=0.1.17.0, Culture=neutral, PublicKeyToken=44a94435bd6f33f8, processorArchitecture=MSIL">
-      <HintPath>..\packages\AsyncIO.0.1.17.0\lib\net40\AsyncIO.dll</HintPath>
+    <Reference Include="AsyncIO, Version=0.1.18.0, Culture=neutral, PublicKeyToken=44a94435bd6f33f8, processorArchitecture=MSIL">
+      <HintPath>..\packages\AsyncIO.0.1.18.0\lib\net40\AsyncIO.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework, Version=7.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.7.0.3\lib\net461\BIFramework.dll</HintPath>
+    <Reference Include="BIFramework, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.7.0.5\lib\net461\BIFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Auth, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Auth.7.0.1\lib\net461\BIFramework.Auth.dll</HintPath>
+    <Reference Include="BIFramework.Auth, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Auth.7.0.5\lib\net461\BIFramework.Auth.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Cache, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Cache.7.0.1\lib\net461\BIFramework.Cache.dll</HintPath>
+    <Reference Include="BIFramework.Cache, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Cache.7.0.5\lib\net461\BIFramework.Cache.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Data, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Data.7.0.2\lib\net461\BIFramework.Data.dll</HintPath>
+    <Reference Include="BIFramework.Data, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Data.7.0.5\lib\net461\BIFramework.Data.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Data.Sql2005, Version=7.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Data.Sql2005.7.0.2\lib\net461\BIFramework.Data.Sql2005.dll</HintPath>
+    <Reference Include="BIFramework.Data.Sql2005, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Data.Sql2005.7.0.5\lib\net461\BIFramework.Data.Sql2005.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Domain, Version=7.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Domain.7.0.2\lib\net461\BIFramework.Domain.dll</HintPath>
+    <Reference Include="BIFramework.Domain, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Domain.7.0.5\lib\net461\BIFramework.Domain.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Domain.EntityFramework, Version=7.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Domain.EntityFramework.7.0.2\lib\net461\BIFramework.Domain.EntityFramework.dll</HintPath>
+    <Reference Include="BIFramework.Domain.EntityFramework, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Domain.EntityFramework.7.0.5\lib\net461\BIFramework.Domain.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.File, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.File.7.0.1\lib\net461\BIFramework.File.dll</HintPath>
+    <Reference Include="BIFramework.File, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.File.7.0.5\lib\net461\BIFramework.File.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Institution, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Institution.7.0.1\lib\net461\BIFramework.Institution.dll</HintPath>
+    <Reference Include="BIFramework.Institution, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Institution.7.0.5\lib\net461\BIFramework.Institution.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Log, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Log.7.0.1\lib\net461\BIFramework.Log.dll</HintPath>
+    <Reference Include="BIFramework.Log, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Log.7.0.5\lib\net461\BIFramework.Log.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.MQ, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.MQ.7.0.1\lib\net461\BIFramework.MQ.dll</HintPath>
+    <Reference Include="BIFramework.MQ, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.MQ.7.0.5\lib\net461\BIFramework.MQ.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Permission, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Permission.7.0.1\lib\net461\BIFramework.Permission.dll</HintPath>
+    <Reference Include="BIFramework.Permission, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Permission.7.0.5\lib\net461\BIFramework.Permission.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Tag, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Tag.7.0.1\lib\net461\BIFramework.Tag.dll</HintPath>
+    <Reference Include="BIFramework.Tag, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Tag.7.0.5\lib\net461\BIFramework.Tag.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Tenant, Version=7.0.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Tenant.7.0.2\lib\net461\BIFramework.Tenant.dll</HintPath>
+    <Reference Include="BIFramework.Tenant, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Tenant.7.0.5\lib\net461\BIFramework.Tenant.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.UI, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.UI.7.0.2\lib\net461\BIFramework.UI.dll</HintPath>
+    <Reference Include="BIFramework.UI, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.UI.7.0.5\lib\net461\BIFramework.UI.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="BIFramework.Utils, Version=7.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BIFramework.Utils.7.0.1\lib\net461\BIFramework.Utils.dll</HintPath>
+    <Reference Include="BIFramework.Utils, Version=7.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIFramework.Utils.7.0.5\lib\net461\BIFramework.Utils.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Dapper, Version=1.50.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -136,9 +136,9 @@
       <HintPath>..\packages\ICSharpCode.SharpZipLib.dll.0.85.4.369\lib\net20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Ionic.Zip, Version=1.9.1.5, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>DLL\Assist\Ionic.Zip.dll</HintPath>
+    <Reference Include="Ionic.Zip, Version=1.9.8.0, Culture=neutral, PublicKeyToken=6583c7c814667745, processorArchitecture=MSIL">
+      <HintPath>..\packages\DotNetZip.1.9.8\lib\net20\Ionic.Zip.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -227,8 +227,14 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\DLL\redis64-latest.rar" />
+    <Content Include="Assets\Doc\创建SQLServer同义词.sql" />
     <Content Include="Assets\Doc\启用FILESTREAM.txt" />
-    <Content Include="Assets\DLL\Ionic.Zip.dll" />
+    <Content Include="Config\BIFramework.Local.config" />
+    <Content Include="Config\BIFramework.Remoting.config" />
+    <Content Include="Config\BITag.config" />
+    <Content Include="Config\BIUtils.Web.config" />
+    <Content Include="Config\PAAS.App.config" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="index.html" />
@@ -238,66 +244,77 @@
     <Content Include="Metadata\index.html" />
     <Content Include="Metadata\Js\jquery.min.js" />
     <Content Include="Metadata\Js\js.js" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Properties\PublishProfiles\WebApi.pubxml.user" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\Attach\AttachController.cs" />
     <Compile Include="Controllers\Attach\AttachResultVM.cs" />
     <Compile Include="Controllers\Attach\AttachVM.cs" />
     <Compile Include="Controllers\Attach\FileVM.cs" />
+    <Compile Include="Controllers\Auth\AccountController.cs" />
+    <Compile Include="Controllers\Auth\AccountControllerExport.cs" />
+    <Compile Include="Controllers\Auth\AccountControllerImport.cs" />
     <Compile Include="Controllers\Auth\AccountController`.cs" />
+    <Compile Include="Controllers\Auth\AccountEditVM.cs" />
+    <Compile Include="Controllers\Auth\AccountPagedVM.cs" />
     <Compile Include="Controllers\Auth\AccountPageQuery.cs" />
+    <Compile Include="Controllers\Auth\AccountPageVM.cs" />
     <Compile Include="Controllers\Auth\AccountVM.cs" />
+    <Compile Include="Controllers\Auth\DeptUserQuery.cs" />
+    <Compile Include="Controllers\Auth\DeptUserVM.cs" />
+    <Compile Include="Controllers\Auth\GenerateLoginNameVM.cs" />
+    <Compile Include="Controllers\Auth\LoginController.cs" />
     <Compile Include="Controllers\Auth\LoginVM.cs" />
+    <Compile Include="Controllers\Auth\SYSPassportVM.cs" />
+    <Compile Include="Controllers\Auth\SYSPositionVM.cs" />
+    <Compile Include="Controllers\Core\FormController.cs" />
     <Compile Include="Controllers\Core\MetadataController.cs" />
+    <Compile Include="Controllers\Institution\DeptController.cs" />
     <Compile Include="Controllers\Institution\DeptController`.cs" />
+    <Compile Include="Controllers\Institution\DeptQuery.cs" />
     <Compile Include="Controllers\Institution\DeptVM.cs" />
+    <Compile Include="Controllers\Institution\GenerateGroupCodeVM.cs" />
     <Compile Include="Controllers\Institution\GroupAppVM.cs" />
+    <Compile Include="Controllers\Institution\GroupController.cs" />
+    <Compile Include="Controllers\Institution\GroupController`.cs" />
+    <Compile Include="Controllers\Institution\GroupQuery.cs" />
     <Compile Include="Controllers\Institution\GroupVM.cs" />
+    <Compile Include="Controllers\Institution\PositionController.cs" />
+    <Compile Include="Controllers\Institution\PositionController`.cs" />
+    <Compile Include="Controllers\Institution\PositionPagedQuery.cs" />
+    <Compile Include="Controllers\Institution\PositionPagedVM.cs" />
+    <Compile Include="Controllers\Institution\SYSPositionUserVM.cs" />
+    <Compile Include="Controllers\Institution\SYSPositionVM.cs" />
+    <Compile Include="Controllers\Tag\TagClassController.cs" />
+    <Compile Include="Controllers\Tag\TagClassController`.cs" />
     <Compile Include="Controllers\Tag\TagClassVM.cs" />
-    <Compile Include="Controllers\Tag\TagGroupVM.cs" />
+    <Compile Include="Controllers\Tag\TagController.cs" />
+    <Compile Include="Controllers\Tag\TagController`.cs" />
     <Compile Include="Controllers\Tag\TagQuery.cs" />
     <Compile Include="Controllers\Tag\TagVMs.cs" />
     <Compile Include="Controllers\Tenant\AppAccessVM.cs" />
+    <Compile Include="Controllers\Tenant\AppController.cs" />
+    <Compile Include="Controllers\Tenant\AppController`.cs" />
     <Compile Include="Controllers\Tenant\AppEditVM.cs" />
     <Compile Include="Controllers\Tenant\AppGroupVM.cs" />
     <Compile Include="Controllers\Tenant\AppVM.cs" />
+    <Compile Include="Controllers\Tenant\MenuController.cs" />
     <Compile Include="Controllers\Tenant\MenuVM.cs" />
     <Compile Include="Controllers\Tenant\RouteInfoVM.cs" />
     <Compile Include="Controllers\Tenant\RouteVM.cs" />
-    <Compile Include="Controllers\Tenant\AppController.cs" />
-    <Compile Include="Controllers\Tenant\AppController`.cs" />
-    <Compile Include="Controllers\Attach\AttachController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controllers\Core\FormController.cs" />
-    <Compile Include="Controllers\Institution\DeptController.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Controllers\Institution\GroupController.cs" />
-    <Compile Include="Controllers\Institution\GroupController`.cs" />
-    <Compile Include="Controllers\Auth\LoginController.cs" />
-    <Compile Include="Controllers\Tag\TagClassController.cs" />
-    <Compile Include="Controllers\Tag\TagClassController`.cs" />
-    <Compile Include="Controllers\Tag\TagController`.cs" />
-    <Compile Include="Controllers\Tag\TagController.cs" />
-    <Compile Include="Controllers\Tag\TagGroupController.cs" />
-    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Controllers\Tenant\MenuController.cs" />
-    <Compile Include="Controllers\Auth\AccountController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="packages.config" />
-    <Content Include="Assets\DLL\redis64-latest.rar" />
-    <Content Include="Config\BIFramework.Local.config" />
-    <Content Include="Config\BIFramework.Remoting.config" />
-    <Content Include="Config\BITag.config" />
-    <Content Include="Config\BIUtils.Web.config" />
     <None Include="Properties\PublishProfiles\Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\WebApi.pubxml" />
     <None Include="Web.Debug.config">
@@ -307,12 +324,7 @@
       <DependentUpon>Web.config</DependentUpon>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\Permission\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Assets\Doc\创建SQLServer同义词.sql" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

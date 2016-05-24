@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace WebApi.Controllers.Core
 {
-    public class FormController : ApplicationService
+    public class FormController : AppService
     {
         protected static MarkAttribute[] ValidatableObject = null;
 
@@ -41,7 +41,7 @@ namespace WebApi.Controllers.Core
         [NonAction]
         protected void GetValidatableObject()
         {
-            ValidatableObject = CFConfig.Default.ParallelGetTypes(t => typeof(IValidatableObject).IsAssignableFrom(t))
+            ValidatableObject = AppRuntime.Module.ParallelGetTypes(t => typeof(IValidatableObject).IsAssignableFrom(t))
                                                 .AsParallel().Select(d =>
                                                 {
                                                     var attr = d.GetCustomAttribute<MarkAttribute>(false) ?? new MarkAttribute();

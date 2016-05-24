@@ -4,30 +4,35 @@ using System.Linq;
 
 namespace WebApi.Controllers.Institution
 {
+    using System.Web.Http;
     using BIStudio.Framework;
+    using BIStudio.Framework.Auth;
     using BIStudio.Framework.Data;
     using BIStudio.Framework.Domain;
     using BIStudio.Framework.Institution;
     using BIStudio.Framework.Tenant;
     using BIStudio.Framework.UI;
     using Tenant;
-
-    public partial class GroupController : ApplicationService<GroupVM, Query, SYSGroup>
+    using BIStudio.Framework.Utils;
+    public partial class GroupController : AppService<GroupVM, GroupQuery, SYSGroup>
     {
         public GroupController() : base("GroupName") { }
 
+        protected IRepository<SYSAccount> _accountBO;
         protected IRepository<SYSGroup> _groupBO;
         protected IRepository<SYSGroupUser> _groupUserBO;
         protected IRepository<SYSAppAccess> _appAccessBO;
         protected IRepository<SYSApp> _appBO;
         protected IRepository<SYSMenu> _menuBO;
+        protected IRepository<SYSPositionUser> _positionUserBO;
+        protected IRepository<SYSPassport> _passportBO;
 
         #region 查询
 
-        public virtual IEnumerable<GroupVM> GetAllInfos(Query info)
+        public virtual IEnumerable<GroupVM> GetAllInfos(GroupQuery info)
         {
             var q = from d in _groupBO.Entities
-                    orderby d.GroupTypeID, d.Sequence
+                    orderby d.AppID, d.GroupFlagID, !d.IsBuiltin, d.Sequence
                     select new GroupVM
                     {
                         ID = d.ID,
@@ -39,9 +44,11 @@ namespace WebApi.Controllers.Institution
                         GroupTypeID = d.GroupTypeID,
                         GroupFlag = d.GroupFlag,
                         GroupFlagID = d.GroupFlagID,
-                        UserCount = (from b in _groupUserBO.Entities where b.GroupID == d.ID select b.GroupID).Count()
+                        UserCount = (from b in _groupUserBO.Entities where b.GroupID == d.ID select b.GroupID).Count(),
+                        IsBuiltin = d.IsBuiltin,
                     };
-
+            q = q.WhereIf(info?.AppID, item => item.AppID == info.AppID)
+                .WhereIf(info?.Key, item => item.GroupName.Contains(info.Key) || item.GroupCode.Contains(info.Key));
             return q.ToArray();
         }
 
@@ -75,16 +82,36 @@ namespace WebApi.Controllers.Institution
 
         protected virtual bool SaveAppAccessInfos(long groupId, AppAccessVM[] infos)
         {
-            _appAccessBO.Remove(d => d.GroupID == groupId);
-
-            if (infos != null && _appAccessBO.Add(infos.Map<AppAccessVM, SYSAppAccess>().ToArray()).Any())
+            using (var ctx = BoundedContext.Create())
             {
-                (_appAccessBO as ITransientDependency).UnitOfWork.Rollback();
+                this.DependOn(ctx);
 
-                return false;
+                _appAccessBO.Remove(d => d.GroupID == groupId);
+
+                if (infos != null && _appAccessBO.Add(infos.Map<AppAccessVM, SYSAppAccess>().ToArray()).Any())
+                {
+                    ctx.Rollback();
+
+                    return false;
+                }
             }
 
             return true;
+        }
+
+        public override GroupVM Post([FromBody] GroupVM vm)
+        {
+            this.GetCurrentUser().Apply(u =>
+            {
+                vm.SystemID = u.SystemID;
+                vm.AppID = vm.AppID ?? 1;
+                vm.GroupType = vm.GroupTypeID.HasValue ? ALEnumAttribute.GetDescription((SYSGroupType)vm.GroupTypeID) : null;
+                vm.GroupFlagID = vm.GroupFlagID ?? 1;
+                vm.GroupFlag = vm.GroupFlagID.HasValue ? ALEnumAttribute.GetDescription((SYSGroupFlag)vm.GroupFlagID) : null;
+                vm.IsBuiltin = vm.IsBuiltin ?? false;
+                vm.Sequence = vm.Sequence ?? 0;
+            });
+            return base.Post(vm);
         }
     }
 }

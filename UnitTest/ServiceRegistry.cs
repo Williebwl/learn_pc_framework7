@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace BIFramework.Test
 {
-    public class ServiceRegistry : ApplicationModule
+    public class ServiceRegistry : AppModule
     {
         protected override void Init()
         {
-            CFAspect.RegisterType<IRepository<TCTest>, TCTestEntityFrameworkBO>();
+            AppRuntime.Container.RegisterType<IRepository<TCTest>, TCTestEntityFrameworkBO>();
         }
     }
 }

@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Text;
 using System.Web.Http;
+using BIStudio.Framework;
 using BIStudio.Framework.Auth;
 using BIStudio.Framework.UI;
 using Newtonsoft.Json;
+using BIStudio.Framework.Utils;
 
 namespace WebApi.Controllers.Auth
 {
 
-    public class LoginController : ApplicationService
+    public class LoginController : AppService
     {
         private const string ApiKey = "PAAS_Master";
         private const string Secret = "44678314ba0efa0c";
@@ -20,11 +22,11 @@ namespace WebApi.Controllers.Auth
         {
             if (vm == null) throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
 
-            var authorize = auth.Authorize(new SYSAuthorizeDTO(ApiKey));
-            auth.AuthorizeLogin(new SYSAuthorizeLoginDTO(authorize.code, vm.LoginName, vm.Password));
-            var token = auth.AccessToken(new SYSAccessTokenDTO(ApiKey, Secret, authorize.code));
+            var authorize = auth.Authorize(new SYSAuthorizeRequest(ApiKey));
+            auth.AuthorizeLogin(new SYSAuthorizeLoginRequest(authorize.code, vm.LoginName, vm.Password));
+            var token = auth.AccessToken(new SYSAccessTokenRequest(ApiKey, Secret, authorize.code));
 
-            return "Basic " + Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(token)));
+            return "Basic " + JsonConvert.SerializeObject(token).ToBase64String();
         }
     }
 }

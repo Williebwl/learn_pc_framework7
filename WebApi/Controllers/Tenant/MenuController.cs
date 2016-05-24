@@ -13,7 +13,7 @@ namespace WebApi.Controllers.Tenant
     /// <summary>
     /// 菜单
     /// </summary>
-    public class MenuController : ApplicationService<MenuVM, PagedQuery, SYSMenu>
+    public class MenuController : AppService<MenuVM, PagedQuery, SYSMenu>
     {
         protected IMenuService _moduleBO;
 
@@ -46,8 +46,8 @@ namespace WebApi.Controllers.Tenant
 
                 vm.Routes.Insert(0, vmInfo);
 
-                vm.RedirectTo = string.Concat(vmInfo.Route, "/", info.ID.ToString());
-                vmInfo.Route = string.Concat(vmInfo.Route, "/:id");
+                vm.RedirectTo = vmInfo.Route;// string.Concat(vmInfo.Route, "/", info.ID.ToString());
+                //vmInfo.Route = string.Concat(vmInfo.Route, "/:id");
             }
 
             return vm;
@@ -64,6 +64,8 @@ namespace WebApi.Controllers.Tenant
         {
             return new RouteVM
             {
+                ID = module.ID.Value,
+                AppID = module.AppID.Value,
                 Title = string.IsNullOrEmpty((module.ShortName ?? string.Empty).Trim()) ? module.MenuName : module.ShortName,
                 Route = GetRouteTag(module),
                 navTemplateUrl = GetTemplateUrl(module.NavUrl),
@@ -130,6 +132,16 @@ namespace WebApi.Controllers.Tenant
         {
             return _moduleBO.GetInfoByAppId(id).Map<SYSMenu, MenuVM>().ToList();
         }
+        /// <summary>
+        /// 根据应用id获取菜单信息
+        /// </summary>
+        /// <param name="id">菜单id</param>
+        /// <returns>应用菜单信息</returns>
+        [HttpGet]
+        public virtual IList<MenuVM> GetTreeByAppId(long id)
+        {
+            return _moduleBO.GetInfoByAppId(id).Map<SYSMenu, MenuVM>().ToList().GetTree();
+        }
 
         /// <summary>
         /// 添加
@@ -137,7 +149,7 @@ namespace WebApi.Controllers.Tenant
         /// <param name="vm">菜单信息</param>
         /// <returns>菜单id</returns>
         [HttpPost]
-        public virtual long Post(MenuVM vm)
+        public new long Post(MenuVM vm)
         {
             return _moduleBO.Save(vm.Map<MenuVM, SYSMenu>());
         }

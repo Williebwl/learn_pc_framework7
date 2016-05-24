@@ -24,7 +24,7 @@ namespace BIStudio.Framework.BestPractice.Impl
         public long CreateUser(string name)
         {
             var cmd = new CreateUserCommand(name);
-            MessageService.Default.Dispatch(cmd);
+            AppRuntime.Message.Dispatch(MessageProcessContext.CreateFrom(BoundedContext.Create()), cmd);
             //异步操作，无法立即获取返回值
             //return cmd.UserID.Value;
             return 0;

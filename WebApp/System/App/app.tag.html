@@ -1,0 +1,51 @@
+﻿<div ng-controller="AppContainerTagCtrl">
+    <div class="toolbar clearfix">
+        <div class="pull-left col-sm-4">
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="标签名称 | 代码" ng-change="fnInstantSearch()" ng-model="Params.Key">
+                <span class="input-group-btn"><button type="button" class="btn btn-gray" ng-click="fnSearch()"><i class="fa fa-search"></i></button></span>
+            </div>
+        </div>
+        <div class="pull-right">
+            <button class="btn btn-icon" data-toggle="tooltip" title="排序" ng-click="fnSequence()"><i class="fa fa-list-ol"></i></button>
+            <button class="btn btn-icon" data-toggle="tooltip" title="添加"><i class="fa fa-plus-circle"></i></button>
+            <button class="btn btn-white">删除</button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover" bi-checkbox="CheckConf" conf="CheckConf">
+            <thead>
+                <tr>
+                    <th width="5%"><input type="checkbox"></th>
+                    <th width="25%" class="alignLeft">标签名称</th>
+                    <th width="15%">标签代码</th>
+                    <th width="10%">排序</th>
+                    <th width="30%">备注</th>
+                    <th width="15%">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-click="ShowDialog('slider',tagClass)" ng-repeat="tagClass in PageInfo.Items">
+                    <td class="alignCenter"><input type="checkbox" ng-value="user.ID"></td>
+                    <td class="alignLeft">
+                        <span class="fa fa-tag" ng-show="tagClass.DisplayLevel==1"></span>
+                        <span class="fa fa-indent" ng-show="tagClass.DisplayLevel==2"></span>
+                        <span class="fa fa-list" ng-show="tagClass.DisplayLevel==3"></span>
+                        {{tagClass.ClassName}}
+                    </td>
+                    <td ng-bind="tagClass.ClassCode"></td>
+                    <td><input type="number" ng-model="tagClass.Sequence" ng-change="tagClass.SChanged=View.CanSort=1" /></td>
+                    <td class="alignLeft">{{tagClass.Remark}}</td>
+                    <td>
+                        <div class="icon-group">
+                            <a href="javascript:;" class="icon-items fa fa-edit" data-toggle="tooltip" data-placement="bottom" title="编辑"></a>
+                            <a href="javascript:;" class="icon-items fa fa-trash" data-toggle="tooltip" data-placement="bottom" ng- title="删除" ng-click="menu.Layer&&fnDelete($index,menu.ID)"></a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div bi-Pagination conf="PageConfig"></div>
+    </div>
+</div>
