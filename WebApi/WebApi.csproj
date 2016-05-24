@@ -52,6 +52,10 @@
       <HintPath>..\packages\AsyncIO.0.1.18.0\lib\net40\AsyncIO.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="BIApplication, Version=7.0.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\BIApplication.7.0.6\lib\net461\BIApplication.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="BIFramework, Version=7.0.6.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BIFramework.7.0.6\lib\net461\BIFramework.dll</HintPath>
       <Private>True</Private>
