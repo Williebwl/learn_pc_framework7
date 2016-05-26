@@ -78,12 +78,14 @@
 
           biValidateDirective.$inject = ['$parse']
           function biValidateDirective($parse) {
-              function fnBind(validate, ngModel, $element) {
+              function fnBind(validate, name, ngModel, $element) {
                   if (!validate) return;
+
+                  if (validate['required']) $element.closest('.form-group').find("label[for='" + $element.attr("name") + "']").addClass("required-label");
 
                   Object.getOwnPropertyNames(validate).forEach(function (key) {
                       var fn = biFormValidates[key];
-                      isFn(fn) ? fn.call(ngModel.$validators, key, validate[key], ngModel.$errorMsg, $element, ngModel) : console.warn('暂不支持【' + key + '】类型的验证.');
+                      isFn(fn) ? fn.call(ngModel.$validators, key, validate[key], ngModel.$errorMsg, $element, ngModel, biFormValidates) : console.warn('暂不支持【' + key + '】类型的验证.');
                   })
               }
 
@@ -106,7 +108,7 @@
                   var getter = fnValidateGetter(ctrl.formValidate.mark, attr.name),
                       fn = scope.$eval(attr.biValidate);
 
-                  ctrl.formValidate.fnBind(function (vms) { fnBind(getter(vms), ctrl.ngModel, $element) })
+                  ctrl.formValidate.fnBind(function (vms) { fnBind(getter(vms), attr.name, ctrl.ngModel, $element) })
 
                   if (isFn(fn)) fn.call(ctrl.ngModel.$validators, ctrl.ngModel.$errorMsg, $element, ctrl.ngModel);
 
@@ -138,26 +140,26 @@
                       return fnValidate(key, $element, isSelect && !$element.data('canValid') || !ngModel.$isEmpty(viewValue), $error, validate);
                   }
               },
-              regularexpression: function (key, validate, $error, $element, ngModel) {
-                  biFormValidates.pattern.apply(this, arguments)
+              regularexpression: function (key, validate, $error, $element, ngModel, validates) {
+                  validates.pattern.apply(this, arguments)
               },
-              emailaddress: function (key, validate, $error, $element, ngModel) {
-                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/) && arguments)
+              emailaddress: function (key, validate, $error, $element, ngModel, validates) {
+                  validates.pattern.apply(this, (arguments[1].pattern = /^[a-z\d]+(\.[a-z\d]+)*@([\da-z](-[\da-z])?)+(\.{1,2}[a-z]+)+$/) && arguments)
               },
-              phone: function (key, validate, $error, $element, ngModel) {
-                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^[\d-]+$/) && arguments)
+              phone: function (key, validate, $error, $element, ngModel, validates) {
+                  validates.pattern.apply(this, (arguments[1].pattern = /^[\d-]+$/) && arguments)
               },
-              telphone: function (key, validate, $error, $element, ngModel) {
-                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^(\d{3,4}-)?\d{6,8}$/) && arguments)
+              telphone: function (key, validate, $error, $element, ngModel, validates) {
+                  validates.pattern.apply(this, (arguments[1].pattern = /^(\d{3,4}-)?\d{6,8}$/) && arguments)
               },
-              mobilephone: function (key, validate, $error, $element, ngModel) {
-                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^1\d{10}$/) && arguments)
+              mobilephone: function (key, validate, $error, $element, ngModel,validates) {
+                  validates.pattern.apply(this, (arguments[1].pattern = /^1\d{10}$/) && arguments)
               },
-              identifier: function (key, validate, $error, $element, ngModel) {
-                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^[a-zA-Z][a-zA-Z0-9_]*$/) && arguments)
+              identifier: function (key, validate, $error, $element, ngModel, validates) {
+                  validates.pattern.apply(this, (arguments[1].pattern = /^[a-zA-Z][a-zA-Z0-9_]*$/) && arguments)
               },
-              visiblechar: function (key, validate, $error, $element, ngModel) {
-                  biFormValidates.pattern.apply(this, (arguments[1].pattern = /^[\u0020-\u007e]+$/) && arguments)
+              visiblechar: function (key, validate, $error, $element, ngModel, validates) {
+                  validates.pattern.apply(this, (arguments[1].pattern = /^[\u0020-\u007e]+$/) && arguments)
               },
               pattern: function (key, validate, $error, $element, ngModel) {
                   var regex = (regex = validate.pattern || validate.value || validate) && angular.isString(regex) && regex.length > 0 && new RegExp(regex) || validate.pattern, regexp;
@@ -172,8 +174,8 @@
 
                   $element.attr('pattern', regexp);
               },
-              stringlength: function (key, validate, $error, $element, ngModel) {
-                  biFormValidates.minlength.apply(this, (arguments[0] = 'minlength') && arguments), biFormValidates.maxlength.apply(this, (arguments[0] = 'maxlength') && arguments)
+              stringlength: function (key, validate, $error, $element, ngModel, validates) {
+                  validates.minlength.apply(this, (arguments[0] = 'minlength') && arguments), validates.maxlength.apply(this, (arguments[0] = 'maxlength') && arguments)
               },
               maxlength: function (key, validate, $error, $element, ngModel) {
                   var maxlength = parseInt(validate.length || validate.maximumlength || validate, 10);
@@ -197,8 +199,8 @@
                       return fnValidate(key, $element, ngModel.$isEmpty(viewValue) || viewValue.length >= minlength, $error, validate);
                   }
               },
-              range: function (key, validate, $error, $element, ngModel) {
-                  this.min.apply(this, (arguments[0] = 'min') && arguments), this.max.apply(this, (arguments[0] = 'max') && arguments)
+              range: function (key, validate, $error, $element, ngModel, validates) {
+                  validates.min.apply(this, (arguments[0] = 'min') && arguments), validates.max.apply(this, (arguments[0] = 'max') && arguments)
               },
               max: function (key, validate, $error, $element, ngModel) {
                   var max = parseFloat(validate.maximum || validate, 10);
